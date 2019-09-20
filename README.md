@@ -3,7 +3,7 @@
 iti0203 project
 
 ### How to run:
-cd to project root
+cd to project root <br />
 buil prjoect with gradle (bootJar task)
 
 ```console
