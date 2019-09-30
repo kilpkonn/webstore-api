@@ -1,0 +1,4 @@
+allprojects {
+    group = 'ee.taltech.iti0203.webstore'
+    version = '0.0.1-SNAPSHOT'
+}
