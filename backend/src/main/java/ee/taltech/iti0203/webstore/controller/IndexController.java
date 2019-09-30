@@ -16,7 +16,7 @@ public class IndexController {
     @Autowired
     NewsRepository newsRepository;
 
-    @GetMapping("/test")
+    @GetMapping("test")
     public List<NewsModel> test() {
         newsRepository.save(new NewsModel());
         NewsModel m = new NewsModel();
