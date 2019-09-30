@@ -1,4 +1,5 @@
 FROM openjdk:11
-ADD build/libs/webstore-0.0.1-SNAPSHOT.jar webstore.jar
+VOLUME /tmp
+ADD build/libs/webstore-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "webstore.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
