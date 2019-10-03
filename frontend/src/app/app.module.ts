@@ -7,7 +7,10 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { BaseComponent } from './base/base.component';
-import { HeaderComponent } from './shared/header/header.component';
+
+import {
+  HeaderComponent
+} from "./shared/layout/header/header.component";
 
 @NgModule({
   declarations: [
