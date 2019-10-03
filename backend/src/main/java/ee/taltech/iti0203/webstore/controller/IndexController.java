@@ -4,13 +4,16 @@ import ee.taltech.iti0203.webstore.model.NewsModel;
 import ee.taltech.iti0203.webstore.repository.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/*
+* Just a test class
+* Delete if some working stuff is ready!
+* */
+
 @RestController
-@RequestMapping
 public class IndexController {
 
     @Autowired
