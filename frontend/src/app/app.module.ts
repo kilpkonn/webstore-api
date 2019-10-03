@@ -1,20 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { NewsComponent } from './news/news.component';
+import { BaseComponent } from './base/base.component';
+import { HeaderComponent } from './shared/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewsComponent
+    BaseComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    RouterModule,
     HttpClientModule
   ],
   providers: [],
