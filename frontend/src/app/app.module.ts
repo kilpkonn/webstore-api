@@ -6,17 +6,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { BaseComponent } from './base/base.component';
 
-import {
-  HeaderComponent
-} from "./shared/layout/header/header.component";
+import { HeaderComponent } from "./shared/layout/header/header.component";
+import { FooterComponent} from "./shared/layout/footer/footer.component";
 
 @NgModule({
   declarations: [
     AppComponent,
-    BaseComponent,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
