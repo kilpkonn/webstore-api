@@ -1,5 +1,7 @@
 package ee.taltech.iti0203.webstore.model;
 
+import ee.taltech.iti0203.webstore.pojo.ProductDto;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,6 +30,12 @@ public class Product {
         this.name = name;
         this.description = description;
         this.amount = amount;
+    }
+
+    public Product(ProductDto productDto) {
+        this.name = productDto.getName();
+        this.description = productDto.getDescription();
+        this.amount = productDto.getAmount();
     }
 
     public Long getId() {
