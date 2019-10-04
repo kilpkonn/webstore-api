@@ -1,3 +1,9 @@
-<p>header works!</p>
-<button routerLink="/home">Home</button>
-<button routerLink="/products">products</button>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <h1>Webstore</h1>
+    <div>
+      <a mat-button [routerLink]="'/home'">Home</a>
+      <a mat-button [routerLink]="'products'">Products</a>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

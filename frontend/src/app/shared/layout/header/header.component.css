@@ -1,0 +1,15 @@
+.mat-toolbar-row, .mat-toolbar {
+  background-color: #414444;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: #e5e5e5;
+  margin: 5px;
+}
+
+a:hover,
+a:active {
+  color: #c5c5c5;
+}
