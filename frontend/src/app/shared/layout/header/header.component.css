@@ -6,10 +6,14 @@
 a {
   text-decoration: none;
   color: #e5e5e5;
-  margin: 5px;
+  margin-right: 15px;
 }
 
 a:hover,
 a:active {
   color: #c5c5c5;
+}
+
+.fill {
+  flex: 1 1 auto;
 }
