@@ -1,1 +1,7 @@
-<p>products works!</p>
+<div *ngIf="products">
+  <ul>
+    <li *ngFor="let product of products">
+      <span>{{product.name}} - {{product.description}}</span>
+    </li>
+  </ul>
+</div>
