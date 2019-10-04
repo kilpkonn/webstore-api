@@ -1,9 +1,7 @@
 package ee.taltech.iti0203.webstore.controller;
 
-import ee.taltech.iti0203.webstore.exception.ProductNotFoundException;
 import ee.taltech.iti0203.webstore.model.Product;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
-import ee.taltech.iti0203.webstore.repository.ProductRepository;
 import ee.taltech.iti0203.webstore.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
