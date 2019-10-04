@@ -13,10 +13,18 @@ const routes: Routes = [
     path: 'contact',
     loadChildren: () => import ('./modules/contact/contact.module').then(m => m.ContactModule)
   },
+  {
+    path: 'error',
+    loadChildren: () => import('./modules/error/error.module').then(m => m.ErrorModule)
+  },
   { path: '',
     redirectTo: '/home',
     pathMatch: 'full'
   },
+  {
+    path: '**',
+    redirectTo: '/error'
+  }
 ];
 
 @NgModule({
