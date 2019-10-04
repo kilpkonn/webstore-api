@@ -13,7 +13,3 @@ a:hover,
 a:active {
   color: #c5c5c5;
 }
-
-.fill {
-  flex: 1 1 auto;
-}
