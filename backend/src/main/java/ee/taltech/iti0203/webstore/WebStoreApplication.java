@@ -1,6 +1,8 @@
 package ee.taltech.iti0203.webstore;
 
+import ee.taltech.iti0203.webstore.model.News;
 import ee.taltech.iti0203.webstore.model.Product;
+import ee.taltech.iti0203.webstore.repository.NewsRepository;
 import ee.taltech.iti0203.webstore.repository.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,4 +31,16 @@ public class WebStoreApplication {
 		};
 	}
 
+	@Bean
+	public CommandLineRunner initNews(NewsRepository repository) {
+		return (args) -> {
+			List<News> news = List.of(
+					new News("Headline1", "Content1"),
+					new News("Headline2", "Content2"),
+					new News("Headline3", "Content3"),
+					new News("Headline4", "Content4")
+			);
+			repository.saveAll(news);
+		};
+	}
 }
