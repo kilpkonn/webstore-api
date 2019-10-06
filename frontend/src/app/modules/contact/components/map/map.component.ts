@@ -76,7 +76,4 @@ export class MapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.map.setTarget('map');
   }
-
-
-
 }
