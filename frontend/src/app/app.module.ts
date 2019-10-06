@@ -6,8 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
-import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
-
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -29,7 +27,6 @@ import { FooterComponent} from "./shared/layout/footer/footer.component";
     HttpClientModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
-    AgmCoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
