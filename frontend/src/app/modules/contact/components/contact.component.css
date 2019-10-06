@@ -1,0 +1,8 @@
+.text-container, .map-container {
+  color: #1c1c1c;
+}
+
+span {
+  margin: 0.3em;
+  font-size: 1.1em;
+}
