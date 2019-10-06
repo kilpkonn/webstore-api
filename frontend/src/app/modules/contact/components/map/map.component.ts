@@ -43,29 +43,32 @@ export class MapComponent implements OnInit, AfterViewInit {
 
     /* Feature and vector */
 
+    // TODO: fancy marker
     this.marker = new OlFeature({
       // Added fromLonLat
       geometry: new OlPoint(fromLonLat(this.markerLocation)),
     });
+
 
     this.vectorSource = new OlVectorSource({
       features: [this.marker]
     });
 
     this.vectorLayer = new OlVectorLayer({
-      source: this.vectorSource
+      source: this.vectorSource,
     });
 
     /* View and map */
 
     this.view = new OlView({
       center: fromLonLat(this.markerLocation),
+      resolutions: this.source.getTileGrid().getResolutions(),
       zoom: 16
     });
 
     this.map = new OlMap({
       target: 'map',
-      layers: [this.layer],
+      layers: [this.layer, this.vectorLayer],
       view: this.view
     });
   }
