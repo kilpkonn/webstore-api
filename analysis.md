@@ -18,7 +18,7 @@
   - [ ] Can add, edit or remove announcements
   - [ ] Can add, edit or remove (some) static pages
 - __Static pages__
-  - [ ] Information about store
+  - [x] Information about store
   - [ ] Terms of use
   - [ ] Privacy policy
   - [ ] Contact form
@@ -31,5 +31,5 @@
 - [ ] Coupon code system (for discounts)
 - [ ] Ability to modify footer or header menu on admin page
 - [ ] Display new / popular products on landing page
-- [ ] Interactive map with store location
+- [x] Interactive map with store location
 - [ ] Statistics
