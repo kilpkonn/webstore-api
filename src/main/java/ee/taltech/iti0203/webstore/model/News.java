@@ -6,6 +6,8 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import java.util.Date;
 
 @Data
 @Entity
@@ -16,6 +18,14 @@ public class News {
     private long id;
     private String headline;
     private String content;
+    private Date createdAt;
+
+    @PrePersist
+    private void prePersist() {
+        if (this.createdAt == null) {
+            createdAt = new Date();
+        }
+    }
 
     public News() {
     }

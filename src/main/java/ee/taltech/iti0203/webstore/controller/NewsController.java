@@ -1,12 +1,15 @@
 package ee.taltech.iti0203.webstore.controller;
 
+import antlr.StringUtils;
 import ee.taltech.iti0203.webstore.model.News;
 import ee.taltech.iti0203.webstore.pojo.NewsDto;
 import ee.taltech.iti0203.webstore.service.NewsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("news")
@@ -16,8 +19,15 @@ public class NewsController {
     private NewsService newsService;
 
     @GetMapping
-    public List<News> news() {
-        return newsService.getAllNews();
+    public List<News> news(@RequestParam(required=false) String sort) {
+        if (sort != null && sort.equals("latest")) {
+            return newsService.getAllNews().stream()
+                    .filter(n -> n.getCreatedAt() != null)
+                    .sorted(Comparator.comparing(News::getCreatedAt).reversed())
+                    .collect(Collectors.toList());
+        } else {
+            return newsService.getAllNews();
+        }
     }
 
     @GetMapping("/{id}")
