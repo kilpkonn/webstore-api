@@ -1,11 +1,10 @@
 package ee.taltech.iti0203.webstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -17,6 +16,11 @@ public class Product {
     private String name;
     private String description;
     private int amount;
+
+    @ManyToOne
+    @JoinColumn
+    @JsonIgnoreProperties("products")
+    private Category category;
 
     public Product() {
     }
@@ -31,5 +35,6 @@ public class Product {
         this.name = productDto.getName();
         this.description = productDto.getDescription();
         this.amount = productDto.getAmount();
+        this.category = productDto.getCategory();
     }
 }
