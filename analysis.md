@@ -1,3 +1,20 @@
+# User Stories
+
+## Must haves
+* [ ] As a customer I can view latest announcements.
+* [ ] As a customer I can view all the available products.
+* [ ] As a customer I can view details for a specific product by clicking on it.
+* [ ] As a customer I can sort products by price / availability.
+* [ ] As a customer I can filter products by category.
+
+## Nice to haves
+* [ ] As a customer I can search for products by name.
+* [ ] As an admin I can log in.
+* [ ] As an admin I can add/edit/delete products, categories and announcements.
+
+
+
+
 # Analysis
 
 ## Must haves  
