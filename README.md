@@ -1,4 +1,4 @@
-# iti0203-2019-project
+# iti0203-2019-project (team 06)
 
 iti0203 project
 
