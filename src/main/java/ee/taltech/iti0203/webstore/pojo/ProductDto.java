@@ -1,5 +1,6 @@
 package ee.taltech.iti0203.webstore.pojo;
 
+import ee.taltech.iti0203.webstore.model.Category;
 import ee.taltech.iti0203.webstore.model.Product;
 
 public class ProductDto {
@@ -8,6 +9,7 @@ public class ProductDto {
     private String name;
     private String description;
     private int amount;
+    private Category category;
 
     public ProductDto() {
     }
@@ -49,5 +51,13 @@ public class ProductDto {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
