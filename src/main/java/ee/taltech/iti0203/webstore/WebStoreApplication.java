@@ -12,6 +12,7 @@ public class WebStoreApplication {
 
 	/*@Bean
 	public CommandLineRunner initProducts(ProductRepository repository) {
+		repository.deleteAll();
 		return (args) -> {
 			List<Product> products = List.of(
 					new Product("Flower1", "Description1", 10),
@@ -26,6 +27,7 @@ public class WebStoreApplication {
 	@Bean
 	public CommandLineRunner initNews(NewsRepository repository) {
 		return (args) -> {
+			repository.deleteAll();
 			List<News> news = List.of(
 					new News("Headline1", "Content1"),
 					new News("Headline2", "Content2"),
