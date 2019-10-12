@@ -1,8 +1,8 @@
 # User Stories
 
 ## Must haves
-* [ ] As a customer I can view latest announcements.
-* [ ] As a customer I can view all the available products.
+* [x] As a customer I can view latest announcements.
+* [x] As a customer I can view all the available products.
 * [ ] As a customer I can view details for a specific product by clicking on it.
 * [ ] As a customer I can sort products by price / availability.
 * [ ] As a customer I can filter products by category.
@@ -19,7 +19,7 @@
 
 ## Must haves  
 - __Products page__
-  - [ ] Can view all available products  
+  - [x] Can view all available products  
   - [ ] Can view single product  
   - [ ] Can add products to shopping cart  
   - [ ] Products have images
@@ -28,7 +28,7 @@
   - [ ] Can edit amount of products to order
   - [ ] Can remove products from cart
 - __News / Landing page__
-  - [ ] Display recent announcements 
+  - [x] Display recent announcements 
 - __Admin page__
   - [ ] Requires logging in
   - [ ] Can add, edit or remove products
