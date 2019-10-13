@@ -21,23 +21,23 @@ public class ProductController {
 
     @Resource
     private ProductService productService;
-    @Resource
-    private CategoryService categoryService;
 
     @GetMapping
-    public List<Product> products(@RequestParam(required=false) String category) {
-        if (!StringUtils.isEmpty(category)) {
-            Set<Product> result = new HashSet<>();
-            for (Category current : categoryService.getByName(category)) {
-                result.addAll(current.getProducts());
-            }
-            return new ArrayList<>(result);
+    public List<ProductDto> products(@RequestParam(required = false) String category,
+                                     @RequestParam(required = false) String name) {
+
+        if (StringUtils.isEmpty(category) && StringUtils.isEmpty(name)) {
+            return productService.getAllProducts();
+        } else if (StringUtils.isEmpty(category)) {
+            return productService.getByName(name);
+        } else if (StringUtils.isEmpty(name)) {
+            return productService.getByCategory(category);
         }
-        return productService.getAllProducts();
+        return productService.getByNameAndCategory(name, category);
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id) {
+    public ProductDto getProduct(@PathVariable Long id) {
         return productService.getById(id);
     }
 

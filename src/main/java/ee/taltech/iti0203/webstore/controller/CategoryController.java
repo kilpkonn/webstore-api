@@ -1,13 +1,10 @@
 package ee.taltech.iti0203.webstore.controller;
 
-import ee.taltech.iti0203.webstore.model.Category;
-import ee.taltech.iti0203.webstore.model.Product;
 import ee.taltech.iti0203.webstore.pojo.CategoryDto;
 import ee.taltech.iti0203.webstore.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,18 +15,13 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public List<Category> categories() {
+    public List<CategoryDto> categories() {
         return categoryService.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public Category getCategory(@PathVariable Long id) {
+    public CategoryDto getCategory(@PathVariable Long id) {
         return categoryService.getById(id);
-    }
-
-    @GetMapping("/{id}/products")
-    public List<Product> getProducts(@PathVariable Long id) {
-        return new ArrayList<>(categoryService.getById(id).getProducts());
     }
 
     @PostMapping
