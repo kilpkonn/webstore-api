@@ -39,10 +39,10 @@ public class WebStoreApplicationTests {
         newsRepository.saveAll(news);
 
         List<Product> products = List.of(
-                new Product("Flower1", "Description1", 10),
-                new Product("Flower2", "Description2", 20),
-                new Product("Flower3", "Description3", 30),
-                new Product("Flower4", "Description4", 40)
+                new Product("Flower1", "Description1", 10, 10),
+                new Product("Flower2", "Description2", 20, 10),
+                new Product("Flower3", "Description3", 30, 30),
+                new Product("Flower4", "Description4", 40, 40)
         );
         productRepository.saveAll(products);
     }
