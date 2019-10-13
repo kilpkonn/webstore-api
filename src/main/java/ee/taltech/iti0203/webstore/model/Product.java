@@ -15,7 +15,8 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private int amount;
+    private Integer amount;
+    private Double price;
 
     @ManyToOne
     @JoinColumn
@@ -25,7 +26,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String description, int amount) {
+    public Product(String name, String description, Integer amount, Integer price) {
         this.name = name;
         this.description = description;
         this.amount = amount;
@@ -35,6 +36,6 @@ public class Product {
         this.name = productDto.getName();
         this.description = productDto.getDescription();
         this.amount = productDto.getAmount();
-        this.category = productDto.getCategory();
+        this.category = new Category(productDto.getCategory());
     }
 }
