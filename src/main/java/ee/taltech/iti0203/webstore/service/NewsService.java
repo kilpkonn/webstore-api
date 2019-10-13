@@ -7,6 +7,7 @@ import ee.taltech.iti0203.webstore.repository.NewsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NewsService {
@@ -17,13 +18,18 @@ public class NewsService {
         this.newsRepository = newsRepository;
     }
 
-    public List<News> getAllNews() {
-        return newsRepository.findAll();
+    public List<NewsDto> getAllNews() {
+        return newsRepository.findAll().stream().map(NewsDto::new).collect(Collectors.toList());
     }
 
-    public News getById(Long id) {
-        return newsRepository.findById(id)
-                .orElseThrow(NewsNotFoundException::new);
+    public List<NewsDto> getLatestNews() {
+        return newsRepository.findByCreatedAtNotNullOrderByCreatedAtDesc().stream()
+                .map(NewsDto::new).collect(Collectors.toList());
+    }
+
+    public NewsDto getById(Long id) {
+        return new NewsDto(newsRepository.findById(id)
+                .orElseThrow(NewsNotFoundException::new));
     }
 
     public NewsDto createNewNews(NewsDto newsDto) {

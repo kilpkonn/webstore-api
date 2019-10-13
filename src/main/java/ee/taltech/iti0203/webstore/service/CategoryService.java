@@ -7,6 +7,7 @@ import ee.taltech.iti0203.webstore.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -17,17 +18,13 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public List<Category> getAllCategories() {
-        return repository.findAll();
+    public List<CategoryDto> getAllCategories() {
+        return repository.findAll().stream().map(CategoryDto::new).collect(Collectors.toList());
     }
 
-    public Category getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(CategoryNotFoundException::new);
-    }
-
-    public List<Category> getByName(String name) {
-        return repository.findByName(name);
+    public CategoryDto getById(Long id) {
+        return new CategoryDto(repository.findById(id)
+                .orElseThrow(CategoryNotFoundException::new));
     }
 
     public CategoryDto createNewCategory(CategoryDto categoryDto) {
