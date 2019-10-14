@@ -36,6 +36,8 @@ public class Product {
         this.name = productDto.getName();
         this.description = productDto.getDescription();
         this.amount = productDto.getAmount();
-        this.category = new Category(productDto.getCategory());
+        if (productDto.getCategory() != null) {
+          this.category = new Category(productDto.getCategory());
+        }
     }
 }
