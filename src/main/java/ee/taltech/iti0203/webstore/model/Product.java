@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
+@Table(schema = "webstore")
 public class Product {
 
     @Id
@@ -19,7 +20,7 @@ public class Product {
     private Double price;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "category")
     @JsonIgnoreProperties("products")
     private Category category;
 

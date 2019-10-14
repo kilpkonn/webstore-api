@@ -3,14 +3,12 @@ package ee.taltech.iti0203.webstore.model;
 import ee.taltech.iti0203.webstore.pojo.NewsDto;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @Entity
+@Table(schema = "webstore")
 public class News {
 
     @Id
