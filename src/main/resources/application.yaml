@@ -4,7 +4,7 @@ server:
     context-path: /api
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5632/postgres
+    url: jdbc:postgresql://localhost:5632/webstoredb
     username: postgres
     password: sakv41basvbwoiv45yhwrcbo
     platform: postgres
