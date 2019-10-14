@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 @Table(schema = "webstore")
 public class Category {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
     @Column(unique=true)
     private String name;

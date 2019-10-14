@@ -12,7 +12,7 @@ import java.util.Date;
 public class News {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
     private String headline;
     private String content;
