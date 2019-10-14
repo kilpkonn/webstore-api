@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 @Data
 @EqualsAndHashCode(exclude="products")
 @Entity
+@Table(schema = "webstore")
 public class Category {
     @Id
     @GeneratedValue

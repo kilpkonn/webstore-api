@@ -1,10 +1,10 @@
-CREATE TABLE IF NOT EXISTS product (
+CREATE TABLE IF NOT EXISTS webstore.product (
     id          SERIAL PRIMARY KEY,
     amount      INT,
     description VARCHAR(255),
     name        VARCHAR(255),
     price       DOUBLE PRECISION,
-    category_id INT REFERENCES category
+    category INT REFERENCES webstore.category
 );
 
-create index product_category on product(category_id);
+create index product_category on webstore.product(category);

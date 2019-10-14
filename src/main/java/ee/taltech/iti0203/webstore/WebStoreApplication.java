@@ -1,7 +1,15 @@
 package ee.taltech.iti0203.webstore;
 
+import ee.taltech.iti0203.webstore.model.News;
+import ee.taltech.iti0203.webstore.model.Product;
+import ee.taltech.iti0203.webstore.repository.NewsRepository;
+import ee.taltech.iti0203.webstore.repository.ProductRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.util.List;
 
 @SpringBootApplication
 public class WebStoreApplication {
@@ -10,15 +18,15 @@ public class WebStoreApplication {
 		SpringApplication.run(WebStoreApplication.class, args);
 	}
 
-	/*@Bean
+	@Bean
 	public CommandLineRunner initProducts(ProductRepository repository) {
 		repository.deleteAll();
 		return (args) -> {
 			List<Product> products = List.of(
-					new Product("Flower1", "Description1", 10),
-					new Product("Flower2", "Description2", 20),
-					new Product("Flower3", "Description3", 30),
-					new Product("Flower4", "Description4", 40)
+					new Product("Flower1", "Description1", 10, 20),
+					new Product("Flower2", "Description2", 20, 20),
+					new Product("Flower3", "Description3", 30, 20),
+					new Product("Flower4", "Description4", 40, 20)
 			);
 			repository.saveAll(products);
 		};
@@ -36,5 +44,5 @@ public class WebStoreApplication {
 			);
 			repository.saveAll(news);
 		};
-	}*/
+	}
 }
