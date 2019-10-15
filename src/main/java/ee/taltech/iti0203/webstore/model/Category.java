@@ -36,6 +36,7 @@ public class Category {
 
     public Category(CategoryDto categoryDto) {
         this.name = categoryDto.getName();
+        this.id = categoryDto.getId();
     }
 
 }
