@@ -1,19 +1,17 @@
 package ee.taltech.iti0203.webstore.controller;
 
-import ee.taltech.iti0203.webstore.model.Category;
-import ee.taltech.iti0203.webstore.model.Product;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
-import ee.taltech.iti0203.webstore.service.CategoryService;
 import ee.taltech.iti0203.webstore.service.ProductService;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("products")
@@ -39,6 +37,18 @@ public class ProductController {
     @GetMapping("/{id}")
     public ProductDto getProduct(@PathVariable Long id) {
         return productService.getById(id);
+    }
+
+    @GetMapping("{id}/image")
+    public ResponseEntity<InputStreamResource> getImage(@PathVariable Long id) throws IOException {
+        String uri = "image/" + productService.getById(id).getName().toLowerCase().replace(" ", "_") + ".jpg";
+        ClassPathResource imgFile = new ClassPathResource(uri);
+        if (!imgFile.exists()) {
+            imgFile = new ClassPathResource("image/placeholder.jpg");
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(new InputStreamResource(imgFile.getInputStream()));
     }
 
     @PostMapping
