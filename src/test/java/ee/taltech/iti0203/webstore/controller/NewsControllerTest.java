@@ -1,6 +1,5 @@
 package ee.taltech.iti0203.webstore.controller;
 
-import ee.taltech.iti0203.webstore.model.News;
 import ee.taltech.iti0203.webstore.pojo.NewsDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,12 +50,14 @@ public class NewsControllerTest {
 
     @Test
     public void can_add_news() {
-        News news = new News("Headline", "Content");
-        HttpEntity<News> httpEntity = new HttpEntity<>(news);
+        NewsDto news = new NewsDto();
+        news.setHeadline("Head Line");
+        news.setContent("Con Tent");
+        HttpEntity<NewsDto> httpEntity = new HttpEntity<>(news);
         ResponseEntity<NewsDto> entity = template.exchange("/news", POST, httpEntity, NewsDto.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         NewsDto newsItem = entity.getBody();
         assertNotNull(newsItem);
-        assertEquals("Headline", newsItem.getHeadline());
+        assertEquals("Head Line", newsItem.getHeadline());
     }
 }
