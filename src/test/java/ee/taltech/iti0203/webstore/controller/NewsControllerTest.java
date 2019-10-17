@@ -1,6 +1,5 @@
 package ee.taltech.iti0203.webstore.controller;
 
-import ee.taltech.iti0203.webstore.model.News;
 import ee.taltech.iti0203.webstore.pojo.NewsDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
