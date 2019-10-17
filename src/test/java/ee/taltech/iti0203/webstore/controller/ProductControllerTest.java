@@ -1,6 +1,5 @@
 package ee.taltech.iti0203.webstore.controller;
 
-import ee.taltech.iti0203.webstore.model.Product;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,12 +83,16 @@ public class ProductControllerTest {
 
     @Test
     public void can_add_products() {
-        Product product = new Product("Product", "Description", 11, 11);
-        HttpEntity<Product> httpEntity = new HttpEntity<>(product);
+        ProductDto product = new ProductDto();
+        product.setName("TestProduct");
+        product.setDescription("Random");
+        product.setAmount(10);
+        product.setPrice(5.0);
+        HttpEntity<ProductDto> httpEntity = new HttpEntity<>(product);
         ResponseEntity<ProductDto> entity = template.exchange("/products", POST, httpEntity, ProductDto.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         ProductDto prod = entity.getBody();
         assertNotNull(prod);
-        assertEquals("Product", prod.getName());
+        assertEquals("TestProduct", prod.getName());
     }
 }
