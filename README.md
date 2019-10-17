@@ -3,17 +3,26 @@
 iti0203 project
 
 ### How to run:
+
+__Make sure you have:__
+- [x] Docker (or Docker toolbox for windows)
+- [x] Docker-compose
+- [x] Java 11 or newer
+
 cd to project root <br />
-buil prjoect with gradle (bootJar task)
+Start database:
 
 ```console
-docker build -f Dockerfile -t docker-webstore .
-docker run -p 8080:8080 docker-webstore
+docker-compose up
 ```
+Start backend:
+```console
+./gradlew bootRun
+```
+You can find api at localhost:8080/api/{api_name}
 
-To see webpage in browser you need to use ip shown in docker on startup instead of localhost.
-Port is 8080
-
+**Currently spring app is NOT packed into docker container.**
+Will be aviable soon :)
 
 ### Analysis
 Analysis can be found in [analysis.md](analysis.md)
