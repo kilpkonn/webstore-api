@@ -11,6 +11,7 @@ spring:
   jackson:
     default-property-inclusion: non_null
   jpa:
+    open-in-view: false
     database: POSTGRESQL
     hibernate:
       ddl-auto: none
@@ -22,3 +23,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+logging:
+  file: logs/dev_app.log
+  level:
+    ROOT: INFO
