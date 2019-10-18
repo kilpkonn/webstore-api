@@ -1,6 +1,8 @@
 # iti0203-2019-project (team 06)
 
-iti0203 project
+### Description
+
+A RESTful API backend for a webstore created for ITI0203 course.
 
 ### How to run:
 
