@@ -38,7 +38,8 @@ there was an option to also see basic statistics of the page (visits, views os c
 # Architecture  
 
 Web store data will be stored in a PostgreSQL database, which will be accessed and modified by a Spring RESTful API backend. 
-The customer will interact with the store using an Angular frontend which in turn uses the aforementioned API.
+The customer will interact with the store using an Angular frontend which in turn uses the aforementioned API.  
+  
 ![architecture diagram](architecture.png)
   
 # User Stories
