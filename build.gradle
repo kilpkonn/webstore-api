@@ -7,9 +7,6 @@ plugins {
 group = 'ee.taltech.iti0203'
 version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
-
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -26,14 +23,9 @@ dependencies {
 	compile group: 'org.flywaydb', name: 'flyway-core'
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 	compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
-	//runtime 'org.postgresql:postgresql:9.4-1206-jdbc42'
 	implementation 'org.postgresql:postgresql'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'com.h2database:h2'
-
-
-	//implementation(project(':frontend'))
 }
