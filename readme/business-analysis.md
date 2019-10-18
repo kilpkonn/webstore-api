@@ -33,4 +33,30 @@ There should be a page, where administrator can log in, to get access to editing
 
 ##### Administration module
 Admin can add/edit/remove all news and products that are in the store. It would be good if
-there was an option to also see basic statistics of the page (visits, views os certain product, etc). 
+there was an option to also see basic statistics of the page (visits, views os certain product, etc).  
+  
+# Architecture  
+
+Web store data will be stored in a PostgreSQL database, which will be accessed and modified by a Spring RESTful API backend. 
+The customer will interact with the store using an Angular frontend which in turn uses the aforementioned API.
+![architecture diagram](architecture.png)
+  
+# User Stories
+
+### Must haves
+* [x] As a customer I can view latest announcements.
+* [x] As a customer I can view all the available products.
+* [x] As a customer I can view details for a specific product by clicking on it.
+* [x] As a customer I can sort products by price / availability.
+* [x] As a customer I can filter products by category.
+* [ ] As an admin I can log in on a separate login page.
+* [x] As an admin I can add/delete products, categories and announcements. _(currently everyone can do it as we have
+ not learnt spring security)_
+
+### Nice to haves
+* [x] As a customer I can search for products by name.
+* [x] As a customer I can find contact information through the menu to order products.
+* [x] As a customer I can view store location from interactive map
+* [ ] As a customer I can view most popular products
+* [ ] As a admin I can view statistics of visitors
+* [ ] As a admin I can pin my current outlet location to contacts map
