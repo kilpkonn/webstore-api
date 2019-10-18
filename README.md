@@ -27,4 +27,4 @@ You can find api at localhost:8080/api/{api_name}
 Will be aviable soon :)
 
 ### Analysis
-Analysis can be found in [analysis.md](analysis.md)
+Analysis can be found in [analysis.md](readme/business-analysis.md)
