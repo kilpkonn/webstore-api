@@ -4,7 +4,7 @@
 * [x] As a customer I can view latest announcements.
 * [x] As a customer I can view all the available products.
 * [x] As a customer I can view details for a specific product by clicking on it.
-* [ ] As a customer I can sort products by price / availability.
+* [x] As a customer I can sort products by price / availability.
 * [x] As a customer I can filter products by category.
 * [ ] As an admin I can log in on a separate login page.
 * [ ] As an admin I can add/edit/delete products, categories and announcements.
@@ -16,4 +16,3 @@
 * [ ] As a customer I can view most popular products
 * [ ] As a admin I can view statistics of visitors
 * [ ] As a admin I can pin my current outlet location to contacts map
-* [ ] As any kind of user I can translate page to estonian as well as english
