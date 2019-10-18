@@ -7,7 +7,8 @@
 * [x] As a customer I can sort products by price / availability.
 * [x] As a customer I can filter products by category.
 * [ ] As an admin I can log in on a separate login page.
-* [ ] As an admin I can add/edit/delete products, categories and announcements.
+* [x] As an admin I can add/delete products, categories and announcements. _(currently everyone can do it as we have
+ not learnt spring security)_
 
 ## Nice to haves
 * [x] As a customer I can search for products by name.
