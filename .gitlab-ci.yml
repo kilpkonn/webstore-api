@@ -19,6 +19,14 @@ build webstore:
     - webstore
   script:
     - ./gradlew assemble
+    
+test webstore:
+  stage: test
+  tags:
+    - webstore
+  script:
+    - ./gradlew check
+
 
 deploy webstore:
   stage: deploy
