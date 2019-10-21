@@ -1,0 +1,28 @@
+stages:
+  - build
+  - test
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+build webstore:
+  stage: build
+  image: node:11-alpine
+  cache:
+    paths:
+      - .gradle/wrapper
+      - .gradle/caches
+  artifacts:
+    paths:
+      - build/libs
+  tags:
+    - webstore
+  script:
+    - ./gradlew assemble
+
+test webstore:
+  stage: test
+  tags:
+    - webstore
+  script:
+    - ./gradlew check
