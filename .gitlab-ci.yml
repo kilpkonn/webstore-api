@@ -5,6 +5,9 @@ stages:
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
 
 build webstore:
   stage: build
@@ -20,7 +23,7 @@ build webstore:
     - webstore
   script:
     - ./gradlew assemble
-    
+
 test webstore:
   stage: test
   tags:
