@@ -93,6 +93,16 @@ sudo service webstore restart # Start service
 sudo service webstore status # Check service status
 ```
 
+### Allow gitlab-runner to use sudo for restarting service after build
+**Modify sudoers file**
+```bash
+sudo visudo
+```
+Add following line to the end of the file and save it
+```
+gitlab-runner ALL = NOPASSWD: /usr/sbin/service webstore *
+```
+
 ## Frontend setup
 
 ### Installing necessary packages
@@ -128,4 +138,60 @@ sudo ln -s /etc/nginx/sites-available/frontend /etc/nginx/sites-enabled/
 
 #Remove default symlink in sites-enabled
 sudo rm default
+```
+
+### Add nginx proxy to backend
+
+**Open configuration file**
+```bash
+cd /etc/nginx/sites-available
+sudo nano frontend
+```
+
+**Add following configuration** (right after existing conf for location /)
+```
+location /api/ {  
+         proxy_pass   http://localhost:8080;  
+}  
+
+```
+
+**Restart nginx**
+```bash
+sudo service nginx restart
+```
+
+### Make nginx display frontend
+**Create a symlink from frontend code to /var/www**
+```bash
+sudo ln -s /home/gitlab-runner/front-deployment/ /var/www/front-deployment
+```
+
+**Modify root to point to /var/www/front-deployment**
+```bash
+cd /etc/nginx/sites-available
+sudo nano frontend
+# change line "root /var/www/html" to "/var/www/front-deployment"
+# save file and restart nginx
+sudo service nginx restart
+```
+
+### Make frontend URLs and refreshing work
+**Open configuration file**
+```bash
+cd /etc/nginx/sites-available
+sudo nano frontend
+```
+**Replace current location / configuration with following**
+```
+location / {
+        index index.html index.htm;
+        if (!-e $request_filename) {
+                rewrite ^(.*)$ /index.html break;
+        }
+}
+```
+**Save file and restart nginx**
+```bash
+sudo service nginx restart
 ```
