@@ -1,4 +1,10 @@
 # Installation guide for the server 
+
+## Information
+
+(this will change)  
+Public IP: **13.48.149.235**  
+Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
   
 ## Initial setup
   
