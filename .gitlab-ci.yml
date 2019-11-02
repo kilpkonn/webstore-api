@@ -37,4 +37,5 @@ deploy webstore:
     - mkdir -p ~/api-deployment
     - rm -rf ~/api-deployment/*
     - cp -r build/libs/. ~/api-deployment
+    - sudo service webstore restart
 
