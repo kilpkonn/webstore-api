@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - deploy
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
@@ -19,10 +20,22 @@ build webstore:
     - webstore
   script:
     - ./gradlew assemble
-
+    
 test webstore:
   stage: test
   tags:
     - webstore
   script:
     - ./gradlew check
+
+
+deploy webstore:
+  stage: deploy
+  tags:
+    - webstore
+  script:
+    - mkdir -p ~/api-deployment
+    - rm -rf ~/api-deployment/*
+    - cp -r build/libs/. ~/api-deployment
+    - sudo service webstore restart
+
