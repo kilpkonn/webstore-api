@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 import static org.springframework.http.HttpMethod.POST;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.springframework.http.HttpMethod.PUT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -74,6 +75,16 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void can_search_products_by_name_and_category() {
+        ResponseEntity<List<ProductDto>> entity = template.exchange("/products?name=bells&category=green", HttpMethod.GET, null, LIST_OF_PRODUCTS);
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+        List<ProductDto> products = entity.getBody();
+        assertTrue(isNotEmpty(products));
+        assertEquals(1, products.size());
+        assertTrue(products.stream().anyMatch(p -> p.getName().equals("Bells of Ireland")));
+    }
+
+    @Test
     public void search_by_name_returns_nothing_if_not_found() {
         ResponseEntity<List<ProductDto>> entity = template.exchange("/products?name=carburetor", HttpMethod.GET, null, LIST_OF_PRODUCTS);
         assertNotNull(entity);
@@ -94,5 +105,23 @@ public class ProductControllerTest {
         ProductDto prod = entity.getBody();
         assertNotNull(prod);
         assertEquals("TestProduct", prod.getName());
+    }
+
+    @Test
+    public void can_update_product() {
+        ProductDto dummyProduct = new ProductDto();
+        dummyProduct.setName("DummyItem");
+        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, new HttpEntity<>(dummyProduct), ProductDto.class);
+        assertNotNull(entity);
+        assertNotNull(entity.getBody());
+        long id = entity.getBody().getId();
+
+        ProductDto product = new ProductDto();
+        product.setName("Realname");
+        entity = template.exchange(String.format("/products/%d", id), PUT, new HttpEntity<>(product), ProductDto.class);
+        ProductDto updatedProduct = entity.getBody();
+        assertNotNull(updatedProduct);
+        assertEquals("Realname", updatedProduct.getName());
+        template.exchange(String.format("/products/%d", id), HttpMethod.DELETE, null, ProductDto.class);
     }
 }

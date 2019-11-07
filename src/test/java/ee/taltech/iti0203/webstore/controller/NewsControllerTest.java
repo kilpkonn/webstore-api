@@ -106,6 +106,5 @@ public class NewsControllerTest {
         assertNotNull(entity);
         assertNotNull(entity.getBody());
         assertNull(entity.getBody().getHeadline());
-
     }
 }

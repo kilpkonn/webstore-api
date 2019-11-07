@@ -54,9 +54,7 @@ public class ProductController {
         if (!imgFile.exists()) {
             imgFile = new ClassPathResource("image/placeholder.jpg");
         }
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(new InputStreamResource(imgFile.getInputStream()));
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(imgFile.getInputStream()));
     }
 
     @PostMapping
