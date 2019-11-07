@@ -18,6 +18,7 @@ import java.util.List;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.junit.Assert.*;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -59,5 +60,51 @@ public class NewsControllerTest {
         NewsDto newsItem = entity.getBody();
         assertNotNull(newsItem);
         assertEquals("Head Line", newsItem.getHeadline());
+    }
+
+    @Test
+    public void can_get_news_by_id() {
+        ResponseEntity<NewsDto> entity = template.exchange("/news/3", HttpMethod.GET, null, NewsDto.class);
+        assertNotNull(entity);
+        NewsDto news = entity.getBody();
+        assertNotNull(news);
+        assertEquals("Imminent downtime.", news.getHeadline());
+    }
+
+    @Test
+    public void can_update_news_item() {
+        NewsDto dummyNews = new NewsDto();
+        dummyNews.setHeadline("Head Line");
+        dummyNews.setContent("Con Tent");
+        ResponseEntity<NewsDto> entity = template.exchange("/news", POST, new HttpEntity<>(dummyNews), NewsDto.class);
+        assertNotNull(entity);
+        assertNotNull(entity.getBody());
+        long id = entity.getBody().getId();
+
+        NewsDto news = new NewsDto();
+        news.setHeadline("New Headline!");
+        news.setContent("Content");
+        entity = template.exchange(String.format("/news/%d", id), PUT, new HttpEntity<>(news), NewsDto.class);
+        NewsDto newNews = entity.getBody();
+        assertNotNull(newNews);
+        assertEquals("New Headline!", newNews.getHeadline());
+        template.exchange("/news/4", HttpMethod.DELETE, null, NewsDto.class);
+    }
+
+    @Test
+    public void can_delete_news_by_id() {
+        NewsDto dummyNews = new NewsDto();
+        dummyNews.setHeadline("Head Line");
+        dummyNews.setContent("Con Tent");
+        ResponseEntity<NewsDto> entity = template.exchange("/news", POST, new HttpEntity<>(dummyNews), NewsDto.class);
+        assertNotNull(entity);
+        assertNotNull(entity.getBody());
+        long id = entity.getBody().getId();
+
+        template.exchange(String.format("/news/%d", id), HttpMethod.DELETE, null, NewsDto.class);
+        entity = template.exchange(String.format("/news/%d", id), HttpMethod.GET, null, NewsDto.class);
+        assertNotNull(entity);
+        assertNotNull(entity.getBody());
+        assertNull(entity.getBody().getHeadline());
     }
 }
