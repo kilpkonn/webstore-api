@@ -39,6 +39,15 @@ public class CategoryControllerTest {
     }
 
     @Test
+    public void can_get_category_by_id() {
+        ResponseEntity<CategoryDto> entity = template.exchange("/categories/100", HttpMethod.GET, null, CategoryDto.class);
+        assertNotNull(entity);
+        CategoryDto category = entity.getBody();
+        assertNotNull(category);
+        assertEquals("green", category.getName());
+    }
+
+    @Test
     public void can_add_categories() {
         CategoryDto category = new CategoryDto();
         category.setId(900L);
