@@ -4,8 +4,6 @@ server:
     context-path: /api
 
 spring:
-  profiles:
-    active: "dev"
   jackson:
     default-property-inclusion: non_null
   jpa:
