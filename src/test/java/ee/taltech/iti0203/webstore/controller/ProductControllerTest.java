@@ -1,6 +1,12 @@
 package ee.taltech.iti0203.webstore.controller;
 
+import ee.taltech.iti0203.webstore.model.Category;
+import ee.taltech.iti0203.webstore.model.Product;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
+import ee.taltech.iti0203.webstore.repository.CategoryRepository;
+import ee.taltech.iti0203.webstore.repository.ProductRepository;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -27,8 +34,48 @@ public class ProductControllerTest {
     @Autowired
     private TestRestTemplate template;
 
+    @Autowired
+    ProductRepository repository;
+
+    @Autowired
+    CategoryRepository categoryRepository;  // Needed to test product categories
+
     private static final ParameterizedTypeReference<List<ProductDto>> LIST_OF_PRODUCTS = new ParameterizedTypeReference<>() {
     };
+
+    @Before
+    public void setUp() {
+        // Just in case
+        repository.deleteAll();
+        categoryRepository.deleteAll();
+
+        var p1 = new Product("Agapanthus", "Agapanthus desc", 5, 20.55);
+        var p2 = new Product("Bells of Ireland", "Bells of Ireland desc", 10, 9.99);
+        var p3 = new Product("Carnation", "Carnation desc", 10, 9.11);
+        var p4 = new Product("Daffodil", "Daffodil desc", 3, 3.50);
+        var p5 = new Product("Ornithogalum", "Ornithogalum desc", 101, 6.50);
+        var p6 = new Product("Violet", "Violet desc", 0, 2.20);
+        var p7 = new Product("Chrysanthemum", "Carnation desc", 10, 2.99);
+
+        var cat1 = new Category("red");
+        p3.setCategory(cat1);
+        p7.setCategory(cat1);
+
+        var cat2 = new Category("green");
+        p2.setCategory(cat2);
+
+        var cat3 = new Category("blue");
+        p1.setCategory(cat3);
+
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+        repository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7));
+    }
+
+    @After
+    public void cleanUp() {
+        repository.deleteAll();
+        categoryRepository.deleteAll();
+    }
 
     @Test
     public void application_returns_list_of_products() {
@@ -41,11 +88,20 @@ public class ProductControllerTest {
 
     @Test
     public void can_get_product_by_id() {
-        ResponseEntity<ProductDto> entity = template.exchange("/products/1", HttpMethod.GET, null, ProductDto.class);
+        ProductDto product = new ProductDto();
+        product.setName("TestProduct");
+        product.setDescription("Random");
+        product.setAmount(10);
+        product.setPrice(5.0);
+        HttpEntity<ProductDto> httpEntity = new HttpEntity<>(product);
+        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, httpEntity, ProductDto.class);
+        assertNotNull(entity.getBody());
+
+        entity = template.exchange("/products/" + entity.getBody().getId(), HttpMethod.GET, null, ProductDto.class);
         assertNotNull(entity);
-        ProductDto product = entity.getBody();
+        product = entity.getBody();
         assertNotNull(product);
-        assertEquals("Agapanthus", product.getName());
+        assertEquals("TestProduct", product.getName());
     }
 
     @Test
