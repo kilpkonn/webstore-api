@@ -24,6 +24,8 @@ spring:
           lob:
             non_contextual_creation: true
 logging:
-  file: logs/dev_app.log
+  path: logs
+  file: webstore
+  config: classpath:logback-spring.xml
   level:
     ROOT: INFO
