@@ -23,8 +23,8 @@ spring:
     console:
       enabled: true
 logging:
-  path: .
-  file: logs/webstore
+  path: /var/log
+  file: webstore
   config: classpath:logback-spring.xml
   level:
     ROOT: INFO
