@@ -2,11 +2,39 @@
 
 ## Information
 
-(this will change)  
-Public IP: **13.48.149.235**  
+Domain: [https://www.flowerstore.ee](https://www.flowerstore.ee)  
+Public IP: [13.48.149.235](http://13.48.149.235)  
 Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
-  
+
+## Table of Contents
+* [Initial setup](#initial-setup)
+    * [Access the server](#access-the-server)
+    * [Update server](#update-server)
+    * [Add 2GB of virtual memory]()
+* [Backend setup](#backend-setup)
+    * [Install java](#install-java)
+    * [Install gitlab runner](#install-gitlab-runner)
+    * [Register gitlab runner](#register-gitlab-runner)
+    * [Define backend as linux service](#define-backend-as-linux-service)
+    * [Allow gitlab runner to use sudo](#allow-gitlab-runner-to-use-sudo-for-restarting-service-after-build)
+* [Frontend setup](#frontend-setup)
+    * [Installing necessary packages](#installing-necessary-packages)
+    * [Register new gitlab runner](#register-new-gitlab-runner)
+    * [Setup nginx sites-enabled](#setup-nginx-sites-enabled)
+    * [Add nginx proxy to backend](#add-nginx-proxy-to-backend)
+    * [Make nginx display frontend](#make-nginx-display-frontend)
+    * [Make frontend URLs and refreshing work](#make-frontend-urls-and-refreshing-work)
+* [Other setup](#other-setup)
+    * [Add HTTPS to website](#add-https-to-website)
+
 ## Initial setup
+
+### Access the server
+```bash
+ssh -i KEYFILE ubuntu@PUBLIC_DNS
+```
+[Lecturer keys](https://gitlab.cs.ttu.ee/olpahh/setup-guides/blob/master/iti0203-project/ssh-keys) have been added to user ubuntu as well.
+
   
 ### Update server
   
@@ -86,7 +114,7 @@ After=network.target
 Type=simple
 User=gitlab-runner
 WorkingDirectory=/home/gitlab-runner/api-deployment
-ExecStart=/usr/bin/java -jar webstore-0.0.1-SNAPSHOT.jar
+ExecStart=/usr/bin/java -jar webstore-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
 Restart=on-abort
 [Install]
 WantedBy=multi-user.target
@@ -200,4 +228,28 @@ location / {
 **Save file and restart nginx**
 ```bash
 sudo service nginx restart
+```
+
+## Other setup
+
+### Add HTTPS to website
+Get a working domain before this step, from [this guide](https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx)  
+
+**Add Certbot PPA**
+```bash
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository universe
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+```
+
+**Install Certbot**
+```bash
+sudo apt-get install certbot python-certbot-nginx
+```
+
+**Get and install certificates**
+```bash
+sudo certbot --nginx
 ```
