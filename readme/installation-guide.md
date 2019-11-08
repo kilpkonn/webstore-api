@@ -114,7 +114,7 @@ After=network.target
 Type=simple
 User=gitlab-runner
 WorkingDirectory=/home/gitlab-runner/api-deployment
-ExecStart=/usr/bin/java -jar webstore-0.0.1-SNAPSHOT.jar
+ExecStart=/usr/bin/java -jar webstore-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
 Restart=on-abort
 [Install]
 WantedBy=multi-user.target
