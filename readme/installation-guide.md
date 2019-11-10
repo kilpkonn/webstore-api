@@ -15,6 +15,7 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Install java](#install-java)
     * [Install gitlab runner](#install-gitlab-runner)
     * [Register gitlab runner](#register-gitlab-runner)
+    * [Install docker](#install-docker)
     * [Define backend as linux service](#define-backend-as-linux-service)
     * [Allow gitlab runner to use sudo](#allow-gitlab-runner-to-use-sudo-for-restarting-service-after-build)
 * [Frontend setup](#frontend-setup)
@@ -98,6 +99,38 @@ sudo gitlab-runner start
 # Executor is shell
 sudo gitlab-runner register
 ```
+
+### Install docker
+````bash
+# Update packages
+sudo apt-get update
+# Install packages to allow apt to use a repository over HTTPS
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+# Add Docker’s official GPG key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# Setup the repository
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+# Update the package
+sudo apt-get update
+# Install the latest version of Docker cE
+sudo apt-get install docker-ce
+# Verify
+sudo docker run hello-world
+````
+**Add gitlab-runner to docker group**
+````bash
+sudo usermod -aG docker gitlab-runner
+# Verify that gitlab-runner has access to Docker
+sudo -u gitlab-runner -H docker info
+
+````
 
 ### Define backend as linux service
 **Create necessary service file**

@@ -34,6 +34,17 @@ test webstore:
     - master
     - tags
 
+package webstore:
+  stage: package
+  tags:
+    - webstore
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_TOKEN
+    - docker build -t $CI_REGISTRY_USER/$CI_REGISTRY_REPOSITORY .
+    - docker push $CI_REGISTRY_USER/$CI_REGISTRY_REPOSITORY
+  only:
+    - master
+    - tags
 
 deploy webstore:
   stage: deploy
