@@ -6,7 +6,6 @@ stages:
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
-  - export TAG=git log -1 --pretty=%h
 
 build webstore:
   stage: build
@@ -42,7 +41,7 @@ package webstore:
     - webstore
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_TOKEN
-    - docker build -t $CI_REGISTRY_USER/$CI_REGISTRY_REPOSITORY:$TAG .
+    - docker build -t $CI_REGISTRY_USER/$CI_REGISTRY_REPOSITORY:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_REGISTRY_USER/$CI_REGISTRY_REPOSITORY
   only:
     - master
