@@ -6,6 +6,7 @@ stages:
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_TOKEN
 
 build webstore:
   stage: build
@@ -40,7 +41,6 @@ package webstore:
   tags:
     - webstore
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_TOKEN
     - docker build -t $CI_REGISTRY_USER/$CI_REGISTRY_REPOSITORY:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_REGISTRY_USER/$CI_REGISTRY_REPOSITORY
   only:
@@ -52,10 +52,10 @@ deploy webstore:
   tags:
     - webstore
   script:
-    - mkdir -p ~/api-deployment
-    - rm -rf ~/api-deployment/*
-    - cp -r build/libs/. ~/api-deployment
-    - sudo service webstore restart
+    - docker pull $CI_REGISTRY_USER/$CI_REGISTRY_REPOSITORY:$CI_COMMIT_SHORT_SHA
+    - docker stop webstore-back-container
+    - docker rm webstore-back-container
+    - docker run --name webstore-back-container -p 8080:8080 --net="host" -restart=always
   only:
     - master
     - tags
