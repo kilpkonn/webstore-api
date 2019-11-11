@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Data
-@EqualsAndHashCode(exclude="products")
 @Entity
 @Table(schema = "webstore")
 public class Category {
@@ -23,15 +22,10 @@ public class Category {
 
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
     private Set<Product> products;
 
     public Category() {
-    }
-
-    public Category(String name, Product... products) {
-        this.name = name;
-        this.products = Stream.of(products).collect(Collectors.toSet());
-        this.products.forEach(p -> p.setCategory(this));
     }
 
     public Category(CategoryDto categoryDto) {
