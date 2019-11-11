@@ -42,5 +42,5 @@ logging:
 spring:
   profiles: prod
 logging:
-  path: ./../logs/back
+  path: /logs/back
   file: prod
