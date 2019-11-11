@@ -4,6 +4,8 @@ server:
     context-path: /api
 
 spring:
+  profiles:
+    active: "prod"
   jackson:
     default-property-inclusion: non_null
   jpa:
@@ -22,3 +24,23 @@ spring:
   h2:
     console:
       enabled: true
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    ROOT: INFO
+
+---
+
+spring:
+  profiles: dev
+logging:
+  path: .
+  file: logs/dev
+
+---
+
+spring:
+  profiles: prod
+logging:
+  path: .
+  file: logs/prod

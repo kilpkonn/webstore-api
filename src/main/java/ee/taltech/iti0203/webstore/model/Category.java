@@ -36,7 +36,11 @@ public class Category {
 
     public Category(CategoryDto categoryDto) {
         this.name = categoryDto.getName();
-        this.id = categoryDto.getId();
+        // this.id = categoryDto.getId(); id should be generated in repo
+    }
+
+    public Category(String name) {
+        this.name = name;
     }
 
 }

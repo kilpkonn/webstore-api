@@ -26,9 +26,14 @@ public class NewsRepositoryTest {
     public void setUp() {
         repository.deleteAll();  // Just in case
 
-        repository.save(new News("Headline 1", "Content 1"));
-        repository.save(new News("Headline 2", "Content 2"));
-        repository.save(new News("Headline 3", "Content 3"));
+        for (int i = 1; i < 4; i++) {
+            repository.save(new News("Headline " + i, "Content " + i));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         repository.save(new News("Headline 4", "Content 4"));
     }
 
