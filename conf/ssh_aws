@@ -1,7 +1,0 @@
-#!/bin/bash
-
-cd "${0%/*}"; if [ "$1" != "T" ]; then gnome-terminal -e "'$0' T"; exit; fi;
-
-ssh -i "webstore.pem" ubuntu@ec2-13-48-42-208.eu-north-1.compute.amazonaws.com
-
-read ENTER
