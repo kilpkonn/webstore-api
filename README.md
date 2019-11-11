@@ -24,7 +24,7 @@ Start backend:
 ```console
 gradle bootRun
 ```
-You can find api at 'localhost:8080/api/{api_name}'
+You can find api at `localhost:8080/api/{api_name}`
 
 
 ### Analysis

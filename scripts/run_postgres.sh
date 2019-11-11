@@ -12,6 +12,7 @@ docker network create --driver bridge postgres-network || true # Create only if 
 docker run \
    -e "POSTGRES_USER=postgres" \
    -e "POSTGRES_PASSWORD=$DB_PASS" \
+   -e "POSTGRES_DB=webstoredb" \
    --name postgres-container \
    --network "postgres-network" \
    --restart=always \
