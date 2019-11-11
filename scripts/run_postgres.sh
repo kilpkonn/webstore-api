@@ -3,8 +3,10 @@
 export DB_PASS="fudd386a61h2sdsbn3bu3bi37873bdabd3b73ada56yxvnm4y737ihsgf"
 #export DB_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
-echo "Pulling postgres:latest"
+echo "Pulling postgres"
 docker pull postgres
+
+docker container ls -a -s
 echo "Stopping container: $DATABASE_CONTAINER_NAME"
 docker stop "$DATABASE_CONTAINER_NAME" || true
 echo "Removing container: $DATABASE_CONTAINER_NAME"
@@ -26,3 +28,5 @@ docker run \
    -v /home/gitlab-runner/postgres-data:/var/lib/postgresql/data \
    -d "postgres" \
    -u "postgres" # Will own data folders
+
+docker container ls -a -s
