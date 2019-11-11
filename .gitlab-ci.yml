@@ -23,6 +23,7 @@ build webstore:
   tags:
     - webstore
   script:
+    - ./gradlew clean
     - ./gradlew assemble
   only:
     - master
