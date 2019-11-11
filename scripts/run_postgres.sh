@@ -27,6 +27,6 @@ docker run \
    --restart=always \
    -v /home/gitlab-runner/postgres-data:/var/lib/postgresql/data \
    -d "postgres" \
-   -u "postgres" # Will own data folders
+   # -u "postgres" # Will own data folders
 
 docker container ls -a -s
