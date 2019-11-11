@@ -1,5 +1,7 @@
 # iti0203-2019-project (team 06)
 
+[![pipeline status](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/badges/master/pipeline.svg)](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/commits/master)
+
 ### Description
 
 A RESTful API backend for a webstore created for ITI0203 course.
@@ -22,10 +24,8 @@ Start backend:
 ```console
 gradle bootRun
 ```
-You can find api at localhost:8080/api/{api_name}
+You can find api at 'localhost:8080/api/{api_name}'
 
-**Currently spring app is NOT packed into docker container.**
-Will be aviable soon :)
 
 ### Analysis
 Analysis can be found in [analysis.md](readme/business-analysis.md)
