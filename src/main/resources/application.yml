@@ -29,6 +29,10 @@ logging:
   level:
     ROOT: INFO
 
+info:
+  app:
+    name: Flower Store
+    description: This is a webstore app for iti0203.
 ---
 
 spring:

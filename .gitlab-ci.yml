@@ -31,7 +31,7 @@ test webstore:
   tags:
     - webstore
   script:
-    - ./gradlew check
+    - ./gradlew check jacocoTestReport
   only:
     - master
     - tags
