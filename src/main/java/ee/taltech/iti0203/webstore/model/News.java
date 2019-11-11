@@ -20,9 +20,7 @@ public class News {
 
     @PrePersist
     private void prePersist() {
-        if (this.createdAt == null) {
-            createdAt = new Date();
-        }
+        createdAt = new Date();
     }
 
     public News() {
