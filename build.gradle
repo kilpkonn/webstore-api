@@ -26,9 +26,9 @@ dependencies {
 	implementation 'org.apache.commons:commons-collections4:4.4'
 	implementation 'org.postgresql:postgresql'
 
-	compileOnly 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.10'
 	compileOnly 'org.springframework.boot:spring-boot-starter-actuator'
-	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok:1.18.10'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
   runtimeOnly 'com.h2database:h2'
