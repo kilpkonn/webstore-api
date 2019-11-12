@@ -2,6 +2,7 @@ package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.model.Category;
 import ee.taltech.iti0203.webstore.model.Product;
+import ee.taltech.iti0203.webstore.pojo.CategoryDto;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
 import ee.taltech.iti0203.webstore.repository.CategoryRepository;
 import ee.taltech.iti0203.webstore.repository.ProductRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -105,6 +107,24 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void can_get_product_image_by_id() {
+        ProductDto product = new ProductDto();
+        product.setName("Randomname");
+        product.setDescription("Random");
+        product.setAmount(10);
+        product.setPrice(5.0);
+        HttpEntity<ProductDto> httpEntity = new HttpEntity<>(product);
+        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, httpEntity, ProductDto.class);
+        assertNotNull(entity.getBody());
+
+        ResponseEntity<InputStreamResource> entity2 = template.exchange(String.format("/products/%d/image", entity.getBody().getId()), HttpMethod.GET, null, InputStreamResource.class);
+        assertEquals(HttpStatus.OK, entity2.getStatusCode());
+        InputStreamResource image = entity2.getBody();
+        assertNotNull(image);
+        assertTrue(image.exists());
+    }
+
+    @Test
     public void cant_get_product_by_unknown_id() {
         ResponseEntity<ProductDto> entity = template.exchange("/products/90210", HttpMethod.GET, null, ProductDto.class);
         assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
@@ -155,6 +175,28 @@ public class ProductControllerTest {
         product.setDescription("Random");
         product.setAmount(10);
         product.setPrice(5.0);
+        HttpEntity<ProductDto> httpEntity = new HttpEntity<>(product);
+        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, httpEntity, ProductDto.class);
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+        ProductDto prod = entity.getBody();
+        assertNotNull(prod);
+        assertEquals("TestProduct", prod.getName());
+    }
+
+    @Test
+    public void can_add_product_with_category() {
+        Category category = new Category();
+        category.setName("Category 1");
+        categoryRepository.save(category);
+        CategoryDto categoryDto = new CategoryDto(category);
+
+        ProductDto product = new ProductDto();
+        product.setName("TestProduct");
+        product.setDescription("Random");
+        product.setAmount(10);
+        product.setPrice(5.0);
+        product.setCategory(categoryDto);
+
         HttpEntity<ProductDto> httpEntity = new HttpEntity<>(product);
         ResponseEntity<ProductDto> entity = template.exchange("/products", POST, httpEntity, ProductDto.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());

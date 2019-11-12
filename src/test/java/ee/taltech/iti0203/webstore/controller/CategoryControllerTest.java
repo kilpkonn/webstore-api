@@ -130,4 +130,20 @@ public class CategoryControllerTest {
         assertNotNull(entity.getBody());
         assertEquals("newName", entity.getBody().getName());
     }
+
+    @Test
+    public void can_delete_category() {
+        CategoryDto dummyCategory = new CategoryDto();
+        dummyCategory.setName("oldName");
+        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, new HttpEntity<>(dummyCategory), CategoryDto.class);
+        assertNotNull(entity);
+        assertNotNull(entity.getBody());
+
+        template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.DELETE, null, CategoryDto.class);
+
+        entity = template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.GET, null, CategoryDto.class);
+        assertNotNull(entity);
+        assertNotNull(entity.getBody());
+        assertNull(entity.getBody().getName());
+    }
 }
