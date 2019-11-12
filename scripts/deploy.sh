@@ -6,7 +6,7 @@ docker pull "$CI_REGISTRY_USER"/"$CI_REGISTRY_REPOSITORY":"$CI_COMMIT_SHORT_SHA"
 echo "Moving container $APP_CONTAINER_NAME to $APP_CONTAINER_NAME-old"
 docker rename "$APP_CONTAINER_NAME" "$APP_CONTAINER_NAME-old"
 
-# TODO: use different ips etc for rolling upgrade
+# TODO: use different ports etc for rolling upgrade
 echo "Stopping container $APP_CONTAINER_NAME-old"
 docker container ls -a -s
 docker stop "$APP_CONTAINER_NAME-old" || true

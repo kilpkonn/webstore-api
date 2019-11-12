@@ -1,6 +1,7 @@
 # iti0203-2019-project (team 06)
 
 [![pipeline status](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/badges/master/pipeline.svg)](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/commits/master)
+[![coverage report](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/badges/master/coverage.svg)](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/commits/master)
 
 ### Description
 
