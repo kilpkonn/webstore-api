@@ -19,7 +19,7 @@ public class Product {
     private Integer amount;
     private Double price;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category")
     @JsonIgnoreProperties("products")
     private Category category;
