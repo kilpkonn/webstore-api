@@ -22,7 +22,7 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
 
     docker container ls -a -s
 
-    echo "Creating network bridge (if none exsists)"
+    echo "Creating network bridge for postgres (if none exsists)"
     docker network create --driver bridge postgres-network || true # Create only if none exists
 
     echo "Starting $DATABASE_CONTAINER_NAME"

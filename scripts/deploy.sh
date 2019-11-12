@@ -17,7 +17,7 @@ docker container ls -a -s
 echo "Starting new container: $APP_CONTAINER_NAME"
 docker run -e "SPRING_PROFILES_ACTIVE=prod" \
    --name "$APP_CONTAINER_NAME" \
-   -p 8080:8080 \
+   --network="proxy-network" \
    --network="postgres-network" \
    --restart=always \
    -v /home/gitlab-runner/logs:/logs \
