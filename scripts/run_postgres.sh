@@ -38,5 +38,7 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
         # -u "postgres" # Will own data folders
 
     docker container ls -a -s
+else
+    echo "$DATABASE_CONTAINER_NAME seems to be running."
 fi
 
