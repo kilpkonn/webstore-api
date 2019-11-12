@@ -35,7 +35,7 @@ test webstore:
     - webstore
   script:
     - ./gradlew check jacocoTestReport
-    - cat target/site/jacoco/index.html
+    - cat ./build/jacocoHtml/index.html
   only:
     - master
     - tags
