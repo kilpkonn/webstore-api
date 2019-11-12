@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class Category {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(unique=true)
     private String name;
 
@@ -30,7 +30,7 @@ public class Category {
 
     public Category(CategoryDto categoryDto) {
         this.name = categoryDto.getName();
-        // this.id = categoryDto.getId(); id should be generated in repo
+        this.id = categoryDto.getId();
     }
 
     public Category(String name) {

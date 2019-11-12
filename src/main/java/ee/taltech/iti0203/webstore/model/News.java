@@ -13,7 +13,7 @@ public class News {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String headline;
     private String content;
     private Date createdAt;
