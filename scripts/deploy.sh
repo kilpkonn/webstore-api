@@ -14,16 +14,13 @@ echo "Removing $APP_CONTAINER_NAME-old"
 docker rm "$APP_CONTAINER_NAME-old" || true
 docker container ls -a -s
 
-echo "Creating network bridge for proxy (if none exsists)"
+echo "Creating internal network bridge for proxy-back-database (if none exsists)"
 docker network create --driver bridge api-internal-network || true # Create only if none exists
-echo "Creating network bridge for postgres (if none exsists)"
-docker network create --driver bridge postgres-network || true # Create only if none exists
 
 echo "Starting new container: $APP_CONTAINER_NAME"
 docker run -e "SPRING_PROFILES_ACTIVE=prod" \
    --name "$APP_CONTAINER_NAME" \
    --network="api-internal-network" \
-   --network="postgres-network" \
    --restart=always \
    -v /home/gitlab-runner/logs:/logs \
    -v /home/gitlab-runner/flyway/sql:/flyway/sql \

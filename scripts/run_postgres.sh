@@ -22,8 +22,8 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
 
     docker container ls -a -s
 
-    echo "Creating network bridge for postgres (if none exsists)"
-    docker network create --driver bridge postgres-network || true # Create only if none exists
+    echo "Creating internal network bridge for proxy-back-database (if none exsists)"
+    docker network create --driver bridge api-internal-network || true # Create only if none exists
 
     echo "Starting $DATABASE_CONTAINER_NAME"
     docker run \
@@ -31,7 +31,7 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
         -e "POSTGRES_PASSWORD=$DB_PASS" \
         -e "POSTGRES_DB=webstoredb" \
         --name "$DATABASE_CONTAINER_NAME" \
-        --network "postgres-network" \
+        --network "api-internal-network" \
         --restart=always \
         -v /home/gitlab-runner/postgres-data:/var/lib/postgresql/data \
         -d "postgres" \
