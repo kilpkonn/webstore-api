@@ -33,6 +33,6 @@ Analysis can be found in [analysis.md](readme/business-analysis.md)
 
 ### Installation Guide
 Installation guide to install with docker can be found in 
-[installation-guide-docker.md](readme/installation-guide-docker.md) (Currently in use)
+[installation-guide-docker.md](readme/installation-guide-docker.md) (Currently in use) <br>
 Installation guide to install as service can be found in 
 [installation-guide-service.md](readme/installation-guide-service.md)<br>

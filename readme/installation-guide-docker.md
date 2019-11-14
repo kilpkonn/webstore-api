@@ -104,7 +104,7 @@ sudo gitlab-runner register
 ```
 
 ### Install docker
-````bash
+```bash
 # Update packages
 sudo apt-get update
 # Install packages to allow apt to use a repository over HTTPS
@@ -126,14 +126,14 @@ sudo apt-get update
 sudo apt-get install docker-ce
 # Verify
 sudo docker run hello-world
-````
+```
 **Add gitlab-runner to docker group**
-````bash
+```bash
 sudo usermod -aG docker gitlab-runner
 # Verify that gitlab-runner has access to Docker
 sudo -u gitlab-runner -H docker info
 
-````
+```
 
 ###Generate ssh keys for deployment
 Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.
@@ -247,9 +247,9 @@ Certbot needs to answer a cryptographic challenge issued by the Let’s Encrypt 
 sudo ufw allow 80
 ```
 After that get the certificates.
-````bash
+```bash
 sudo certbot certonly --standalone --preferred-challenges http -d flowerstore.ee
-````
+```
 Your certificates should be saved into `/etc/letsencrypt/...` as this is the directory that will be mounted to nginx
 proxy container.<br>
 If you are using different hostname, don't forget to change nginx config in front end.
