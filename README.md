@@ -7,7 +7,9 @@
 
 A RESTful API backend for a webstore created for ITI0203 course.
 
-### How to run:
+Currently deploy to: [https://www.flowerstore.ee](https://www.flowerstore.ee)  
+
+### How to run locally:
 
 __Make sure you have:__
 * Docker (or Docker toolbox for windows)
@@ -15,7 +17,7 @@ __Make sure you have:__
 * Java 11 or newer
 * Gradle
 
-cd to project root <br />
+cd to project root <br>
 Start database:
 
 ```console
