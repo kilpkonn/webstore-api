@@ -3,13 +3,13 @@
 [![pipeline status](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/badges/master/pipeline.svg)](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/commits/master)
 [![coverage report](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/badges/master/coverage.svg)](https://gitlab.cs.ttu.ee/taannu/iti0203-2019-project-back/commits/master)
 
-### Description
+## Description
 
 A RESTful API backend for a webstore created for ITI0203 course.
 
 **Currently deploy to: [https://www.flowerstore.ee](https://www.flowerstore.ee)**
 
-### How to run locally:
+## How to run locally:
 
 __Make sure you have:__
 * Docker (or Docker toolbox for windows)
@@ -30,10 +30,10 @@ gradle bootRun
 You can find api at `localhost:8080/api/{api_name}`
 
 
-### Analysis
+## Analysis
 Analysis can be found in [analysis.md](readme/business-analysis.md)
 
-### Installation Guide
+## Installation Guide for server / gitlab runner
 Installation guide to install with docker can be found in 
 [installation-guide-docker.md](readme/installation-guide-docker.md) (Currently in use) <br>
 Installation guide to install as service can be found in 
