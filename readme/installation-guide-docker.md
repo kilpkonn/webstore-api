@@ -1,5 +1,10 @@
 # Installation guide for the server 
 
+**Note that we are currently running gitlab-runner in deployment server**
+When we have Rasperry (or something else) set up for gitlab-runner we can move gitlab-runner there.
+Deployment stage in pipeline has to be executed in deployment server so when we have 2 servers ready
+will change pipeline's last stage.
+
 ## Information
 
 Domain: [https://www.flowerstore.ee](https://www.flowerstore.ee)  
@@ -18,13 +23,15 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Install docker](#install-docker)
     * [Generate ssh keys for deployment](#generate-ssh-keys-for-deployment)
 * [Deployment server setup](#deployment-server-setup)
+    * [Add user to deploy](#add-user-that-will-deploy-app)
     * [Install docker](#install-docker-for-front-end)
     * [Add HTTPS to website](#add-https-to-website)
-    * [Add user to deploy](#add-user-that-will-deploy-app)
     * [Add gitlab-runner ssh keys](#add-gitlab-runner-ssh-keys)
     * [Create files to persist containers data](#create-files-to-persist-docker-containers-data)
+* [Gitlab variable setup](#gitlab-variables-setup)
 
 ## Initial setup
+**This part has to be done on both of the servers before starting next part of the configuration**
 
 ### Access the server
 ```bash
@@ -32,7 +39,6 @@ ssh -i KEYFILE ubuntu@PUBLIC_DNS
 ```
 [Lecturer keys](https://gitlab.cs.ttu.ee/olpahh/setup-guides/blob/master/iti0203-project/ssh-keys) have been added to user ubuntu as well.
 
-  
 ### Update server
   
 ```bash
@@ -61,7 +67,9 @@ echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 sudo reboot
 swapon --show
 ```
- 
+
+<hr>
+
 ## Gitlab-runner setup
 
 ### Install java
@@ -69,6 +77,7 @@ swapon --show
 # Install JDK & JRE for compiling and running backend
 sudo apt install openjdk-11-jre openjdk-11-jdk
 ```
+
 ### Install gitlab runner
 From [this](https://docs.gitlab.com/runner/install/linux-manually.html) guide
 
@@ -97,7 +106,7 @@ sudo gitlab-runner register
 ```
 
 ### Install docker
-````bash
+```bash
 # Update packages
 sudo apt-get update
 # Install packages to allow apt to use a repository over HTTPS
@@ -119,43 +128,43 @@ sudo apt-get update
 sudo apt-get install docker-ce
 # Verify
 sudo docker run hello-world
-````
+```
 **Add gitlab-runner to docker group**
-````bash
+```bash
 sudo usermod -aG docker gitlab-runner
 # Verify that gitlab-runner has access to Docker
 sudo -u gitlab-runner -H docker info
 
-````
+```
 
-###Generate ssh keys for deployment
+### Generate ssh keys for deployment
 Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.
 First enter:
-````bash
+```bash
 ssh-keygen
-````
+```
 After entering the command, you should see the following output:
-````bash
+```bash
 Output
 Generating public/private rsa key pair.
 Enter file in which to save the key (/your_home/.ssh/id_rsa):
-````
+```
 Enter `id_webstore` to save the key pair into the .ssh/ subdirectory in your home directory with name `id_webstore` <br>
 After that you should then see the following prompt:
-````bash
+``bash
 Output
 Enter passphrase (empty for no passphrase):
-````
+```
 Here you optionally may enter a secure passphrase, which we will skip as we will use these keys by gitlab-runner.
 Simply press `ENTER` (with empty input) <br>
 You should then see the following output:
-````bash
+```bash
 Output
 Your identification has been saved in /your_home/.ssh/id_webstore.
 Your public key has been saved in /your_home/.ssh/id_webstore.pub.
 The key fingerprint is:
 a9:49:2e:2a:5e:33:3e:a9:de:4e:77:11:58:b6:90:26 username@remote_host
-The key's randomart image is:
+The key´s randomart image is:
 +--[ RSA 2048]----+
 |     ..o         |
 |   E o= .        |
@@ -167,14 +176,22 @@ The key's randomart image is:
 |. =++..          |
 |o=++.            |
 +-----------------+
-````
+```
 Later we will copy this public key to deployment server.
 
+<hr>
 
 ## Deployment server setup
 
+### Add user that will deploy app
+Add user (we are using gitlab-runner) for simplicity. Make sure to choose strong password. Rest of the info can be
+left blank
+```bash
+adduser username
+```
+
 ### Install docker for front end
-````bash
+```bash
 # Update packages
 sudo apt-get update
 # Install packages to allow apt to use a repository over HTTPS
@@ -198,14 +215,15 @@ sudo apt-get install docker-ce
 sudo docker run hello-world
 # Clean
 sudo docker system prune -a
-````
+```
 **Add gitlab-runner (or any other user that will deploy) to docker group**
-````bash
+This is the user we previously created
+```bash
 sudo usermod -aG docker gitlab-runner
 # Verify that gitlab-runner has access to Docker
 sudo -u gitlab-runner -H docker info
 
-````
+```
 
 ### Add HTTPS to website
 Get a working domain before this step, from [this guide](https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-16-04)  
@@ -231,36 +249,39 @@ Certbot needs to answer a cryptographic challenge issued by the Let’s Encrypt 
 sudo ufw allow 80
 ```
 After that get the certificates.
-````bash
+```bash
 sudo certbot certonly --standalone --preferred-challenges http -d flowerstore.ee
-````
+```
 Your certificates should be saved into `/etc/letsencrypt/...` as this is the directory that will be mounted to nginx
 proxy container.<br>
 If you are using different hostname, don't forget to change nginx config in front end.
  
-###Add user that will deploy app
-Add user (we are using gitlab-runner) for simplicity. Make sure to choose strong password. Rest of the info can be
-left blank
-````bash
-adduser username
-````
- 
-###Add gitlab-runner ssh keys
+### Add gitlab-runner ssh keys
 Whilst being ssh-d into gitlab-runner server run following:
 `user` is the user that will deploy the app (previously created) and `host` is the ip od deployment server.
 We will be using gitlab-runner as the user.
-````bash
+```bash
 ssh-copy-id -i ~/.ssh/id_webstore user@host  
-````
+```
 Test the new key
-````bash
+```bash
 ssh -i ~/.ssh/id_webstore user@host
-````
-###Create files to persist docker containers data
+```
+
+### Create files to persist docker containers data
 User is the user that will deploy thus run the app.
-````bash
+```bash
 # For logs
 mkdir /home/<user>/logs
 # For database
 mkdir /home/<user>/postgres-data
-````
+```
+
+## Gitlab variables setup
+**You also need to set following variables under Settings > CI/CD > Variables:**
+ - CI_REGISTRY_USER - user that controls docker repository (currently `kilpkonn`)
+ - CI_REGISTRY_REPOSITORY - repository that will contain your docker files 
+ (currently `webstore-api` for back and `webstore-front` for front)
+ - CI_REGISTRY_TOKEN - token to sign into docker hub
+ 
+**You should be good to go now. Run your first pipeline to see if everything works!**
