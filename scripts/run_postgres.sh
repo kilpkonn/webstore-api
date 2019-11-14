@@ -30,7 +30,6 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
         -e "POSTGRES_PASSWORD=$CI_DB_PASS" \
         -e "POSTGRES_DB=webstoredb" \
         --name "$DATABASE_CONTAINER_NAME" \
-        -p 5432:5432 \
         --network "api-internal-network" \
         --restart=always \
         -v /home/gitlab-runner/postgres-data:/var/lib/postgresql/data \
