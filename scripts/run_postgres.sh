@@ -8,9 +8,7 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
         docker rm "$DATABASE_CONTAINER_NAME"
     fi
 
-    # shellcheck disable=SC2002
-    # shellcheck disable=SC2155
-    export DB_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+    # export DB_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
     echo "Pulling postgres"
     docker pull postgres
@@ -41,7 +39,6 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
 
     docker container ls -a -s
     echo "Generated postgres database with new password. Make sure to write it down!"
-    echo %DB_PASS%
 else
     echo "$DATABASE_CONTAINER_NAME seems to be running."
 fi

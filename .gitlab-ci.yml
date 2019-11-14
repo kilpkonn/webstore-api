@@ -9,6 +9,7 @@ before_script:
   - export APP_CONTAINER_NAME=webstore-back-container
   - export DATABASE_CONTAINER_NAME=postgres-container
   - export CONFIG_FILE=application.yml
+  - export DB_PASS=CI_DB_PASS
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_TOKEN
 
 build webstore:
