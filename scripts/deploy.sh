@@ -22,6 +22,7 @@ docker run -e "SPRING_PROFILES_ACTIVE=prod" \
    --name "$APP_CONTAINER_NAME" \
    --network="api-internal-network" \
    --restart=always \
+   -e DB_PASS=DB_PASS \
    -v /home/gitlab-runner/logs:/logs \
    -v /home/gitlab-runner/flyway/sql:/flyway/sql \
    -v /home/gitlab-runner/config:/config \

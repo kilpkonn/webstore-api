@@ -41,7 +41,7 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
 
     docker container ls -a -s
     echo "Generated postgres database with new password. Make sure to write it down!"
-    echo DB_PASS
+    echo %DB_PASS%
 else
     echo "$DATABASE_CONTAINER_NAME seems to be running."
 fi
