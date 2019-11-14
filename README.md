@@ -7,7 +7,7 @@
 
 A RESTful API backend for a webstore created for ITI0203 course.
 
-Currently deploy to: [https://www.flowerstore.ee](https://www.flowerstore.ee)  
+**Currently deploy to: [https://www.flowerstore.ee](https://www.flowerstore.ee)**
 
 ### How to run locally:
 
