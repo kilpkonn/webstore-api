@@ -137,7 +137,7 @@ sudo -u gitlab-runner -H docker info
 
 ```
 
-###Generate ssh keys for deployment
+### Generate ssh keys for deployment
 Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.
 First enter:
 ```bash
@@ -183,7 +183,7 @@ Later we will copy this public key to deployment server.
 
 ## Deployment server setup
 
-###Add user that will deploy app
+### Add user that will deploy app
 Add user (we are using gitlab-runner) for simplicity. Make sure to choose strong password. Rest of the info can be
 left blank
 ```bash
@@ -256,7 +256,7 @@ Your certificates should be saved into `/etc/letsencrypt/...` as this is the dir
 proxy container.<br>
 If you are using different hostname, don't forget to change nginx config in front end.
  
-###Add gitlab-runner ssh keys
+### Add gitlab-runner ssh keys
 Whilst being ssh-d into gitlab-runner server run following:
 `user` is the user that will deploy the app (previously created) and `host` is the ip od deployment server.
 We will be using gitlab-runner as the user.
@@ -268,7 +268,7 @@ Test the new key
 ssh -i ~/.ssh/id_webstore user@host
 ```
 
-###Create files to persist docker containers data
+### Create files to persist docker containers data
 User is the user that will deploy thus run the app.
 ```bash
 # For logs
@@ -277,7 +277,7 @@ mkdir /home/<user>/logs
 mkdir /home/<user>/postgres-data
 ```
 
-##Gitlab variables setup
+## Gitlab variables setup
 **You also need to set following variables under Settings > CI/CD > Variables:**
  - CI_REGISTRY_USER - user that controls docker repository (currently `kilpkonn`)
  - CI_REGISTRY_REPOSITORY - repository that will contain your docker files 
