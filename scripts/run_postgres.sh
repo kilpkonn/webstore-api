@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export DB_PASS="fudd386a61h2sdsbn3bu3bi37873bdabd3b73ada56yxvnm4y737ihsgf"
+#export DB_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+
 docker container ls -a -s
 
 if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
@@ -7,8 +10,6 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
         # cleanup
         docker rm "$DATABASE_CONTAINER_NAME"
     fi
-
-    # export DB_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
     echo "Pulling postgres"
     docker pull postgres
@@ -27,7 +28,7 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
     echo "Starting $DATABASE_CONTAINER_NAME"
     docker run \
         -e "POSTGRES_USER=postgres" \
-        -e "POSTGRES_PASSWORD=$CI_DB_PASS" \
+        -e "POSTGRES_PASSWORD=$DB_PASS" \
         -e "POSTGRES_DB=webstoredb" \
         --name "$DATABASE_CONTAINER_NAME" \
         --network "api-internal-network" \
@@ -37,7 +38,6 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
         # -u "postgres" # Will own data folders
 
     docker container ls -a -s
-    echo "Generated postgres database with new password. Make sure to write it down!"
 else
     echo "$DATABASE_CONTAINER_NAME seems to be running."
 fi
