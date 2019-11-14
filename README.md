@@ -32,4 +32,4 @@ You can find api at `localhost:8080/api/{api_name}`
 Analysis can be found in [analysis.md](readme/business-analysis.md)
 
 ### Installation Guide
-Installation guide can be found in [installation-guide.md](readme/installation-guide.md)
+Installation guide can be found in [installation-guide.md](readme/installation-guide-service.md)

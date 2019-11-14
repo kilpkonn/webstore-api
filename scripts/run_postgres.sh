@@ -33,7 +33,7 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
         --name "$DATABASE_CONTAINER_NAME" \
         --network "api-internal-network" \
         --restart=always \
-        -v /home/gitlab-runner/postgres-data:/var/lib/postgresql/data \
+        -v ~/postgres-data:/var/lib/postgresql/data \
         -d "postgres" \
         # -u "postgres" # Will own data folders
 
