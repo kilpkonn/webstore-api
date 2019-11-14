@@ -27,7 +27,7 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
     echo "Starting $DATABASE_CONTAINER_NAME"
     docker run \
         -e "POSTGRES_USER=postgres" \
-        -e "POSTGRES_PASSWORD=$DB_PASS" \
+        -e "POSTGRES_PASSWORD=$CI_DB_PASS" \
         -e "POSTGRES_DB=webstoredb" \
         --name "$DATABASE_CONTAINER_NAME" \
         -p 5432:5432 \
