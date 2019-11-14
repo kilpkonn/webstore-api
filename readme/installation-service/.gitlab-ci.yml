@@ -1,0 +1,50 @@
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+build webstore:
+  stage: build
+  image: node:11-alpine
+  cache:
+    paths:
+      - .gradle/wrapper
+      - .gradle/caches
+  artifacts:
+    paths:
+      - build/libs
+  tags:
+    - webstore
+  script:
+    - ./gradlew assemble
+
+  only:
+    - master
+    - tags
+
+test webstore:
+  stage: test
+  tags:
+    - webstore
+  script:
+    - ./gradlew check
+  only:
+    - master
+    - tags
+
+
+deploy webstore:
+  stage: deploy
+  tags:
+    - webstore
+  script:
+    - mkdir -p ~/api-deployment
+    - rm -rf ~/api-deployment/*
+    - cp -r build/libs/. ~/api-deployment
+    - sudo service webstore restart
+  only:
+    - master
+    - tags

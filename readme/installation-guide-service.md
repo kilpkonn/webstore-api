@@ -1,5 +1,9 @@
 # Installation guide for the server 
 
+As we are currently using docker for deployment gitlab-runner's `.gitlab-cy.yml` for installing
+as service is located in `/readme/installation-service/.gitlab-ci.yml`. 
+Copy it's contents to `.gitlab-ci.yml` (the one that's in project root) to build using this guide!
+
 ## Information
 
 Domain: [https://www.flowerstore.ee](https://www.flowerstore.ee)  
@@ -99,38 +103,6 @@ sudo gitlab-runner start
 # Executor is shell
 sudo gitlab-runner register
 ```
-
-### Install docker
-````bash
-# Update packages
-sudo apt-get update
-# Install packages to allow apt to use a repository over HTTPS
-sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
-# Add Docker’s official GPG key
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-# Setup the repository
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-# Update the package
-sudo apt-get update
-# Install the latest version of Docker cE
-sudo apt-get install docker-ce
-# Verify
-sudo docker run hello-world
-````
-**Add gitlab-runner to docker group**
-````bash
-sudo usermod -aG docker gitlab-runner
-# Verify that gitlab-runner has access to Docker
-sudo -u gitlab-runner -H docker info
-
-````
 
 ### Define backend as linux service
 **Create necessary service file**
