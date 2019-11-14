@@ -28,10 +28,11 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Add HTTPS to website](#add-https-to-website)
     * [Add gitlab-runner ssh keys](#add-gitlab-runner-ssh-keys)
     * [Create files to persist containers data](#create-files-to-persist-docker-containers-data)
-*
+* [Gitlab variable setup](#gitlab-variables-setup)
 
 ## Initial setup
 **This part has to be done on both of the servers before starting next part of the configuration**
+
 ### Access the server
 ```bash
 ssh -i KEYFILE ubuntu@PUBLIC_DNS
@@ -76,6 +77,7 @@ swapon --show
 # Install JDK & JRE for compiling and running backend
 sudo apt install openjdk-11-jre openjdk-11-jdk
 ```
+
 ### Install gitlab runner
 From [this](https://docs.gitlab.com/runner/install/linux-manually.html) guide
 
@@ -265,6 +267,7 @@ Test the new key
 ```bash
 ssh -i ~/.ssh/id_webstore user@host
 ```
+
 ###Create files to persist docker containers data
 User is the user that will deploy thus run the app.
 ```bash
