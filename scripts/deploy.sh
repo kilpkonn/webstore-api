@@ -24,6 +24,7 @@ docker run -e "SPRING_PROFILES_ACTIVE=prod" \
    --restart=always \
    -v /home/gitlab-runner/logs:/logs \
    -v /home/gitlab-runner/flyway/sql:/flyway/sql \
+   -v /home/gitlab-runner/config:/config \
    -d "$CI_REGISTRY_USER"/"$CI_REGISTRY_REPOSITORY":"$CI_COMMIT_SHORT_SHA"
 
 docker container ls -a -s

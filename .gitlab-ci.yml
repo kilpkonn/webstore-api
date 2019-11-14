@@ -8,6 +8,7 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - export APP_CONTAINER_NAME=webstore-back-container
   - export DATABASE_CONTAINER_NAME=postgres-container
+  - export CONFIG_FILE=application.yml
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_TOKEN
 
 build webstore:
