@@ -29,7 +29,7 @@ spring:
   datasource:
     url: jdbc:postgresql://postgres-container:5432/webstoredb
     username: postgres
-    password: fudd386a61h2sdsbn3bu3bi37873bdabd3b73ada56yxvnm4y737ihsgf
+    password: ${DB_PASS:weakpass123}
     platform: postgres
   h2:
     console:
