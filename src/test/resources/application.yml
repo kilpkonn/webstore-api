@@ -4,6 +4,8 @@ server:
     context-path: /test_api
 
 spring:
+  profiles:
+    active: "test"
   jackson:
     default-property-inclusion: non_null
   jpa:
@@ -22,3 +24,17 @@ spring:
   h2:
     console:
       enabled: true
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    ROOT: INFO
+
+---
+
+spring:
+  profiles: test
+logging:
+  path: .
+  file: logs/test
+
+---
