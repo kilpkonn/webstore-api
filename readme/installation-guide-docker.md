@@ -18,7 +18,7 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Add 2GB of virtual memory]()
 * [Gitlab runner setup](#gitlab-runner-setup)
     * [Install java](#install-java)
-    * [Installing node](#installing-node)
+    * [Install node](#install-node)
     * [Install gitlab runner](#install-gitlab-runner)
     * [Register gitlab runner](#register-gitlab-runner)
     * [Install docker](#install-docker)
