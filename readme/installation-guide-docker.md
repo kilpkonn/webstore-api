@@ -125,6 +125,7 @@ sudo gitlab-runner register
 ```
 
 ### Install docker
+**For AWS:**
 ```bash
 # Update packages
 sudo apt update
@@ -147,13 +148,41 @@ sudo apt update
 sudo apt install docker-ce
 # Verify
 sudo docker run hello-world
+# Clean
+sudo docker system prune -a
+```
+**For Rasperry:**
+```bash
+# Update packages
+sudo apt update
+# Install packages to allow apt to use a repository over HTTPS
+sudo apt install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+# Import Docker CPG key.
+sudo curl https://download.docker.com/linux/raspbian/gpg
+# Download and install docker
+curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+# Setup the Docker Repo.
+sudo nano /etc/apt/sources.list
+# Add the following line and save:
+deb https://download.docker.com/linux/raspbian/ buster stable
+#  Patch and update your Pi.
+sudo apt update && sudo apt upgrade
+# Start docker service
+sudo systemctl start docker.service
+# Verify
+sudo docker run hello-world
+# Clean
+sudo docker system prune -a
 ```
 **Add gitlab-runner to docker group**
 ```bash
 sudo usermod -aG docker gitlab-runner
 # Verify that gitlab-runner has access to Docker
 sudo -u gitlab-runner -H docker info
-
 ```
 
 ### Generate ssh keys for deployment
