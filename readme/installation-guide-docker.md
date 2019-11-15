@@ -28,7 +28,7 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Add HTTPS to website](#add-https-to-website)
     * [Add gitlab-runner ssh keys](#add-gitlab-runner-ssh-keys)
     * [Create files to persist containers data](#create-files-to-persist-docker-containers-data)
-* [Gitlab variable setup](#gitlab-variables-setup)
+* [Gitlab variables setup](#gitlab-variables-setup)
 
 ## Initial setup
 **This part has to be done on both of the servers before starting next part of the configuration**
@@ -151,7 +151,7 @@ Enter file in which to save the key (/your_home/.ssh/id_rsa):
 ```
 Enter `id_webstore` to save the key pair into the .ssh/ subdirectory in your home directory with name `id_webstore` <br>
 After that you should then see the following prompt:
-``bash
+```bash
 Output
 Enter passphrase (empty for no passphrase):
 ```
