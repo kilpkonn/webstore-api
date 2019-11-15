@@ -38,7 +38,8 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
 ```bash
 ssh -i KEYFILE ubuntu@PUBLIC_DNS
 ```
-[Lecturer keys](https://gitlab.cs.ttu.ee/olpahh/setup-guides/blob/master/iti0203-project/ssh-keys) have been added to user ubuntu as well.
+[Lecturer keys](https://gitlab.cs.ttu.ee/olpahh/setup-guides/blob/master/iti0203-project/ssh-keys) have been added to
+ user ubuntu as well.<br>
 
 ### Update server
   
@@ -48,7 +49,7 @@ sudo apt update && sudo apt upgrade
 ```
 
 ### Add 2GB of virtual memory 
-From [this](https://itsfoss.com/create-swap-file-linux/) guide.
+From [this](https://itsfoss.com/create-swap-file-linux/) guide.<br>
 ```bash
 # Check if swap exists
 free -h
@@ -89,8 +90,8 @@ sudo npm install -g yarn
 ```
 
 ### Install gitlab runner
-From [this](https://docs.gitlab.com/runner/install/linux-manually.html) guide
-
+From [this](https://docs.gitlab.com/runner/install/linux-manually.html) guide<br>
+**For AWS:**
 ```bash
 # Download necessary binary
 sudo curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
@@ -104,6 +105,14 @@ sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/
 # Install and run as service
 sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
 sudo gitlab-runner start
+```
+**For Rasperry:**
+```bash
+# Download necessary binary with script
+curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
+
+# Install gitlab-runner
+sudo apt-get install gitlab-runner
 ```
 
 ### Register gitlab runner
@@ -148,7 +157,7 @@ sudo -u gitlab-runner -H docker info
 ```
 
 ### Generate ssh keys for deployment
-Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.
+Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.<br>
 First enter:
 ```bash
 ssh-keygen
@@ -236,7 +245,8 @@ sudo -u gitlab-runner -H docker info
 ```
 
 ### Add HTTPS to website
-Get a working domain before this step, from [this guide](https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-16-04)  
+Get a working domain before this step, from 
+[this guide](https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-16-04)<br>
 
 **Add Certbot PPA**
 ```bash
