@@ -18,6 +18,7 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Add 2GB of virtual memory]()
 * [Gitlab runner setup](#gitlab-runner-setup)
     * [Install java](#install-java)
+    * [Installing node](#installing-node)
     * [Install gitlab runner](#install-gitlab-runner)
     * [Register gitlab runner](#register-gitlab-runner)
     * [Install docker](#install-docker)
@@ -76,6 +77,15 @@ swapon --show
 ```bash
 # Install JDK & JRE for compiling and running backend
 sudo apt install openjdk-11-jre openjdk-11-jdk
+```
+
+### Install node
+```bash
+# Install node
+sudo curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt install -y nodejs
+# Install yarn
+sudo npm install -g yarn
 ```
 
 ### Install gitlab runner
