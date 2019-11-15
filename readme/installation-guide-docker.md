@@ -25,7 +25,7 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Generate ssh keys for deployment](#generate-ssh-keys-for-deployment)
 * [Deployment server setup](#deployment-server-setup)
     * [Add user to deploy](#add-user-that-will-deploy-app)
-    * [Install docker](#install-docker-for-front-end)
+    * [Install docker](#install-docker-for-deployment-server)
     * [Add HTTPS to website](#add-https-to-website)
     * [Add gitlab-runner ssh keys](#add-gitlab-runner-ssh-keys)
     * [Create files to persist containers data](#create-files-to-persist-docker-containers-data)
@@ -112,7 +112,7 @@ sudo gitlab-runner start
 curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
 
 # Install gitlab-runner
-sudo apt-get install gitlab-runner
+sudo apt install gitlab-runner
 ```
 
 ### Register gitlab runner
@@ -127,9 +127,9 @@ sudo gitlab-runner register
 ### Install docker
 ```bash
 # Update packages
-sudo apt-get update
+sudo apt update
 # Install packages to allow apt to use a repository over HTTPS
-sudo apt-get install \
+sudo apt install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -142,9 +142,9 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 # Update the package
-sudo apt-get update
+sudo apt update
 # Install the latest version of Docker cE
-sudo apt-get install docker-ce
+sudo apt install docker-ce
 # Verify
 sudo docker run hello-world
 ```
@@ -209,12 +209,12 @@ left blank
 adduser username
 ```
 
-### Install docker for front end
+### Install docker for deployment server
 ```bash
 # Update packages
-sudo apt-get update
+sudo apt update
 # Install packages to allow apt to use a repository over HTTPS
-sudo apt-get install \
+sudo apt install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -227,9 +227,9 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 # Update the package
-sudo apt-get update
+sudo apt update
 # Install the latest version of Docker cE
-sudo apt-get install docker-ce
+sudo apt install docker-ce
 # Verify
 sudo docker run hello-world
 # Clean
@@ -250,16 +250,16 @@ Get a working domain before this step, from
 
 **Add Certbot PPA**
 ```bash
-sudo apt-get update
-sudo apt-get install software-properties-common
+sudo apt update
+sudo apt install software-properties-common
 sudo add-apt-repository universe
 sudo add-apt-repository ppa:certbot/certbot
-sudo apt-get update
+sudo apt update
 ```
 
 **Install Certbot**
 ```bash
-sudo apt-get install certbot
+sudo apt install certbot
 ```
 
 **Get and install certificates**<br>
