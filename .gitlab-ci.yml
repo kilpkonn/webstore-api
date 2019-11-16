@@ -56,7 +56,6 @@ deploy webstore:
   tags:
     - webstore
   script:
-    - bash ./scripts/run_postgres.sh
     - bash ./scripts/deploy.sh
   only:
     - master
