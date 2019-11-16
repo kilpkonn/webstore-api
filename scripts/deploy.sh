@@ -19,6 +19,7 @@ docker run -e "SPRING_PROFILES_ACTIVE=prod" \
    --name "$APP_CONTAINER_NAME" \
    --network="api-internal-network" \
    --restart=always \
+   -v ~/config:/config \
    -v ~/logs:/logs \
    -d "$CI_REGISTRY_USER"/"$CI_REGISTRY_REPOSITORY":"$CI_COMMIT_SHORT_SHA"
    # -v /home/gitlab-runner/flyway/sql:/flyway/sql \
