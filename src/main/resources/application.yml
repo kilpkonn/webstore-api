@@ -37,14 +37,14 @@ spring:
 
 logging:
   config: classpath:logback-spring.xml
-  level:
-    ROOT: INFO
 
 ---
 
 spring:
   profiles: dev
 logging:
+  level:
+    ROOT: INFO
   path: .
   file: logs/dev
 
@@ -53,5 +53,7 @@ logging:
 spring:
   profiles: prod
 logging:
+  level:
+    ROOT: ERROR
   path: /logs/back
   file: prod

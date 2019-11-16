@@ -29,6 +29,9 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Add HTTPS to website](#add-https-to-website)
     * [Add gitlab-runner ssh keys](#add-gitlab-runner-ssh-keys)
     * [Create files to persist containers data](#create-files-to-persist-docker-containers-data)
+    * [Custom config setup](#custom-config-setup)
+    * [Database setup](#database-setup)
+    * [Clean up server](#clean-up-server)
 * [Gitlab variables setup](#gitlab-variables-setup)
 
 ## Initial setup
@@ -324,6 +327,8 @@ User is the user that will deploy thus run the app.
 mkdir /home/<user>/logs
 # For database
 mkdir /home/<user>/postgres-data
+# For config
+mkdir /home/<user>/config
 ```
 
 ## Gitlab variables setup
@@ -333,4 +338,43 @@ mkdir /home/<user>/postgres-data
  (currently `webstore-api` for back and `webstore-front` for front)
  - CI_REGISTRY_TOKEN - token to sign into docker hub
  
+## Custom config setup
+Copy `application.yml` to server
+```bash
+# Cd into project root and then
+scp ./src/main/resources/application.yml user@remote_host:/home/<user>/config/
+```
+## Database setup
+Copy `run_postgres.sh` to server.
+```bash
+# Cd into project root and then copy the file to somewhere in server
+# You can simply copy to `/home/<user>/ for simplicity` but you may aswell choose some other path
+scp ./scripts/run_postgres.sh user@remote_host:/home/<some_user>/some/path
+```
+Start up the database
+```bash
+# Cd into path where you previously copied `run_postgres.sh`
+# Then run the file. user is the user that will be deploying you app
+# It is important to run it as that user as postgres data will be saved to home of the user that's
+# running this script
+# On the last line you should see the password of newly created database.
+sudo su <user> -c "./run_postgres.sh"
+
+# If you have database already running you can stop it with
+sudo docker stop postgres-container
+# You need to delete contents postgres-data after that as it will otherwise persist old password
+```
+Save the password to custom config
+```
+# Copy the password printed by `run_postgres.sh`
+# Then edit previously set up application.yml to save the password (change testPassword to one you copied)
+sudo nano /home/<user>/config/application.yml
+# Save with CTRL+O, exit with CTRL+X
+```
+ You can now delete `run_postgres.sh`<br>
+## Clean up server 
+Remove all docker containers, images, networks and volumes currently not in use
+```bash
+sudo docker system prune -a --volumes
+```
 **You should be good to go now. Run your first pipeline to see if everything works!**
