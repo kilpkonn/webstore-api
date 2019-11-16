@@ -25,7 +25,7 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Generate ssh keys for deployment](#generate-ssh-keys-for-deployment)
 * [Deployment server setup](#deployment-server-setup)
     * [Add user to deploy](#add-user-that-will-deploy-app)
-    * [Install docker](#install-docker-for-front-end)
+    * [Install docker](#install-docker-for-deployment-server)
     * [Add HTTPS to website](#add-https-to-website)
     * [Add gitlab-runner ssh keys](#add-gitlab-runner-ssh-keys)
     * [Create files to persist containers data](#create-files-to-persist-docker-containers-data)
@@ -38,7 +38,8 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
 ```bash
 ssh -i KEYFILE ubuntu@PUBLIC_DNS
 ```
-[Lecturer keys](https://gitlab.cs.ttu.ee/olpahh/setup-guides/blob/master/iti0203-project/ssh-keys) have been added to user ubuntu as well.
+[Lecturer keys](https://gitlab.cs.ttu.ee/olpahh/setup-guides/blob/master/iti0203-project/ssh-keys) have been added to
+ user ubuntu as well.<br>
 
 ### Update server
   
@@ -48,7 +49,7 @@ sudo apt update && sudo apt upgrade
 ```
 
 ### Add 2GB of virtual memory 
-From [this](https://itsfoss.com/create-swap-file-linux/) guide.
+From [this](https://itsfoss.com/create-swap-file-linux/) guide.<br>
 ```bash
 # Check if swap exists
 free -h
@@ -89,8 +90,8 @@ sudo npm install -g yarn
 ```
 
 ### Install gitlab runner
-From [this](https://docs.gitlab.com/runner/install/linux-manually.html) guide
-
+From [this](https://docs.gitlab.com/runner/install/linux-manually.html) guide<br>
+**For AWS:**
 ```bash
 # Download necessary binary
 sudo curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
@@ -105,6 +106,14 @@ sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/
 sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
 sudo gitlab-runner start
 ```
+**For Rasperry:**
+```bash
+# Download necessary binary with script
+curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
+
+# Install gitlab-runner
+sudo apt install gitlab-runner
+```
 
 ### Register gitlab runner
 ```bash
@@ -116,11 +125,12 @@ sudo gitlab-runner register
 ```
 
 ### Install docker
+**For AWS:**
 ```bash
 # Update packages
-sudo apt-get update
+sudo apt update
 # Install packages to allow apt to use a repository over HTTPS
-sudo apt-get install \
+sudo apt install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -133,22 +143,50 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 # Update the package
-sudo apt-get update
+sudo apt update
 # Install the latest version of Docker cE
-sudo apt-get install docker-ce
+sudo apt install docker-ce
 # Verify
 sudo docker run hello-world
+# Clean
+sudo docker system prune -a
+```
+**For Rasperry:**
+```bash
+# Update packages
+sudo apt update
+# Install packages to allow apt to use a repository over HTTPS
+sudo apt install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+# Import Docker CPG key.
+sudo curl https://download.docker.com/linux/raspbian/gpg
+# Download and install docker
+curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+# Setup the Docker Repo.
+sudo nano /etc/apt/sources.list
+# Add the following line and save:
+deb https://download.docker.com/linux/raspbian/ buster stable
+#  Patch and update your Pi.
+sudo apt update && sudo apt upgrade
+# Start docker service
+sudo systemctl start docker.service
+# Verify
+sudo docker run hello-world
+# Clean
+sudo docker system prune -a
 ```
 **Add gitlab-runner to docker group**
 ```bash
 sudo usermod -aG docker gitlab-runner
 # Verify that gitlab-runner has access to Docker
 sudo -u gitlab-runner -H docker info
-
 ```
 
 ### Generate ssh keys for deployment
-Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.
+Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.<br>
 First enter:
 ```bash
 ssh-keygen
@@ -200,12 +238,12 @@ left blank
 adduser username
 ```
 
-### Install docker for front end
+### Install docker for deployment server
 ```bash
 # Update packages
-sudo apt-get update
+sudo apt update
 # Install packages to allow apt to use a repository over HTTPS
-sudo apt-get install \
+sudo apt install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -218,9 +256,9 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 # Update the package
-sudo apt-get update
+sudo apt update
 # Install the latest version of Docker cE
-sudo apt-get install docker-ce
+sudo apt install docker-ce
 # Verify
 sudo docker run hello-world
 # Clean
@@ -236,20 +274,21 @@ sudo -u gitlab-runner -H docker info
 ```
 
 ### Add HTTPS to website
-Get a working domain before this step, from [this guide](https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-16-04)  
+Get a working domain before this step, from 
+[this guide](https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-16-04)<br>
 
 **Add Certbot PPA**
 ```bash
-sudo apt-get update
-sudo apt-get install software-properties-common
+sudo apt update
+sudo apt install software-properties-common
 sudo add-apt-repository universe
 sudo add-apt-repository ppa:certbot/certbot
-sudo apt-get update
+sudo apt update
 ```
 
 **Install Certbot**
 ```bash
-sudo apt-get install certbot
+sudo apt install certbot
 ```
 
 **Get and install certificates**<br>
