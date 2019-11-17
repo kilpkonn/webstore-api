@@ -42,7 +42,7 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
 ssh -i KEYFILE ubuntu@PUBLIC_DNS
 ```
 [Lecturer keys](https://gitlab.cs.ttu.ee/olpahh/setup-guides/blob/master/iti0203-project/ssh-keys) have been added to
- user ubuntu as well.<br>
+ user ubuntu as well.  
 
 ### Update server
   
@@ -52,7 +52,7 @@ sudo apt update && sudo apt upgrade
 ```
 
 ### Add 2GB of virtual memory 
-From [this](https://itsfoss.com/create-swap-file-linux/) guide.<br>
+From [this](https://itsfoss.com/create-swap-file-linux/) guide.  
 ```bash
 # Check if swap exists
 free -h
@@ -93,7 +93,7 @@ sudo npm install -g yarn
 ```
 
 ### Install gitlab runner
-From [this](https://docs.gitlab.com/runner/install/linux-manually.html) guide<br>
+From [this](https://docs.gitlab.com/runner/install/linux-manually.html) guide  
 **For AWS:**
 ```bash
 # Download necessary binary
@@ -189,7 +189,7 @@ sudo -u gitlab-runner -H docker info
 ```
 
 ### Generate ssh keys for deployment
-Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.<br>
+Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.  
 First enter:
 ```bash
 ssh-keygen
@@ -200,14 +200,14 @@ Output
 Generating public/private rsa key pair.
 Enter file in which to save the key (/your_home/.ssh/id_rsa):
 ```
-Enter `id_webstore` to save the key pair into the .ssh/ subdirectory in your home directory with name `id_webstore` <br>
+Enter `id_webstore` to save the key pair into the .ssh/ subdirectory in your home directory with name `id_webstore`  
 After that you should then see the following prompt:
 ```bash
 Output
 Enter passphrase (empty for no passphrase):
 ```
 Here you optionally may enter a secure passphrase, which we will skip as we will use these keys by gitlab-runner.
-Simply press `ENTER` (with empty input) <br>
+Simply press `ENTER` (with empty input)  
 You should then see the following output:
 ```bash
 Output
@@ -235,7 +235,8 @@ Later we will copy this public key to deployment server.
 ## Deployment server setup
 
 ### Add user that will deploy app
-Add user (we are using gitlab-runner) for simplicity. Make sure to choose strong password. Rest of the info can be
+Add user _(we are using gitlab-runner)_ for simplicity. Make sure to choose strong password.  
+Rest of the info can be
 left blank
 ```bash
 adduser username
@@ -270,15 +271,15 @@ sudo docker system prune -a
 **Add gitlab-runner (or any other user that will deploy) to docker group**
 This is the user we previously created
 ```bash
-sudo usermod -aG docker gitlab-runner
+sudo usermod -aG docker <user>
 # Verify that gitlab-runner has access to Docker
-sudo -u gitlab-runner -H docker info
+sudo -u <user> -H docker info
 
 ```
 
 ### Add HTTPS to website
 Get a working domain before this step, from 
-[this guide](https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-16-04)<br>
+[this guide](https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-16-04)  
 
 **Add Certbot PPA**
 ```bash
@@ -294,7 +295,7 @@ sudo apt update
 sudo apt install certbot
 ```
 
-**Get and install certificates**<br>
+**Get and install certificates**  
 First open port 80.
 Certbot needs to answer a cryptographic challenge issued by the Let’s Encrypt API in order to prove we control our domain. It uses ports 80 (HTTP) or 443 (HTTPS) to accomplish this. Open up the appropriate port in your firewall:
 ```bash
@@ -305,7 +306,7 @@ After that get the certificates.
 sudo certbot certonly --standalone --preferred-challenges http -d flowerstore.ee
 ```
 Your certificates should be saved into `/etc/letsencrypt/...` as this is the directory that will be mounted to nginx
-proxy container.<br>
+proxy container.  
 If you are using different hostname, don't forget to change nginx config in front end.
  
 ### Add gitlab-runner ssh keys
@@ -321,7 +322,8 @@ ssh -i ~/.ssh/id_webstore user@host
 ```
 
 ### Create files to persist docker containers data
-User is the user that will deploy thus run the app.
+User is the user that will deploy thus run the app.  
+_For us currently it is gitlab-runner_
 ```bash
 # For logs
 mkdir /home/<user>/logs
@@ -371,7 +373,7 @@ Save the password to custom config
 sudo nano /home/<user>/config/application.yml
 # Save with CTRL+O, exit with CTRL+X
 ```
- You can now delete `run_postgres.sh`<br>
+ You can now delete `run_postgres.sh`  
 ## Clean up server 
 Remove all docker containers, images, networks and volumes currently not in use
 ```bash

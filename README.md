@@ -7,7 +7,7 @@
 
 A RESTful API backend for a webstore created for ITI0203 course.
 
-**Currently deployed to: [https://www.flowerstore.ee](https://www.flowerstore.ee)**<br>
+**Currently deployed to: [https://www.flowerstore.ee](https://www.flowerstore.ee)**  
 Public IP: [13.48.149.235](http://13.48.149.235) 
 
 ## How to run locally:
@@ -36,6 +36,6 @@ Analysis can be found in [analysis.md](readme/business-analysis.md)
 
 ## Installation Guide for server / gitlab runner
 Installation guide to install with docker can be found in 
-[installation-guide-docker.md](readme/installation-guide-docker.md) (Currently in use) <br>
+[installation-guide-docker.md](readme/installation-guide-docker.md) (Currently in use)  
 Installation guide to install as service can be found in 
-[installation-guide-service.md](readme/installation-guide-service.md)<br>
+[installation-guide-service.md](readme/installation-guide-service.md)  
