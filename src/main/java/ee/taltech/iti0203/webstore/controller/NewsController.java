@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("news")
+@RequestMapping({"news", "hacks"})
 public class NewsController {
 
     @Resource
