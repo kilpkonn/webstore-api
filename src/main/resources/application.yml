@@ -52,6 +52,11 @@ logging:
 
 spring:
   profiles: prod
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 logging:
   level:
     ROOT: ERROR
