@@ -13,6 +13,39 @@ spring:
     active: "dev"
   jackson:
     default-property-inclusion: non_null
+logging:
+  config: classpath:logback-spring.xml
+
+---
+
+spring:
+  profiles: dev
+  jpa:
+    properties:
+      database-platform: org.hibernate.dialect.H2Dialect
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:h2:~/testdb;AUTO_SERVER=TRUE
+    driverClassName: org.h2.Driver
+    username: test
+    password: test
+  h2:
+    console:
+      enabled: true
+logging:
+  level:
+    ROOT: INFO
+  path: .
+  file: logs/dev
+
+---
+
+spring:
+  profiles: prod
   jpa:
     open-in-view: false
     database: POSTGRESQL
@@ -31,27 +64,6 @@ spring:
     username: postgres
     password: testPassword
     platform: postgres
-  h2:
-    console:
-      enabled: true
-
-logging:
-  config: classpath:logback-spring.xml
-
----
-
-spring:
-  profiles: dev
-logging:
-  level:
-    ROOT: INFO
-  path: .
-  file: logs/dev
-
----
-
-spring:
-  profiles: prod
 management:
   endpoints:
     web:
