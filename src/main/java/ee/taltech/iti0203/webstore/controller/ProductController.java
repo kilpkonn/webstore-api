@@ -1,11 +1,13 @@
 package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
+import ee.taltech.iti0203.webstore.security.Roles;
 import ee.taltech.iti0203.webstore.service.ProductService;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +44,7 @@ public class ProductController {
         return productService.getByNameAndCategory(name, category);
     }
 
+    @Secured(Roles.ROLE_ADMIN)
     @GetMapping("/{id}")
     public ProductDto getProduct(@PathVariable Long id) {
         return productService.getById(id);
@@ -57,16 +60,19 @@ public class ProductController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(imgFile.getInputStream()));
     }
 
+    @Secured(Roles.ROLE_ADMIN)
     @PostMapping
     public ProductDto saveProduct(@RequestBody ProductDto productDto) {
         return productService.createNewProduct(productDto);
     }
 
+    @Secured(Roles.ROLE_ADMIN)
     @PutMapping("/{id}")
     public ProductDto updateProduct(@RequestBody ProductDto productDto, @PathVariable Long id) {
         return productService.updateExistingProduct(productDto, id);
     }
 
+    @Secured(Roles.ROLE_ADMIN)
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);

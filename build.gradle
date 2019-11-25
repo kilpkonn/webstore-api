@@ -25,6 +25,7 @@ dependencies {
 	implementation 'org.apache.commons:commons-lang3:3.9'
 	implementation 'org.apache.commons:commons-collections4:4.4'
 	implementation 'org.postgresql:postgresql'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	compileOnly 'org.projectlombok:lombok:1.18.10'
 	compileOnly 'org.springframework.boot:spring-boot-starter-actuator'
