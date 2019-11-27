@@ -5,9 +5,17 @@ import ee.taltech.iti0203.webstore.model.Product;
 import ee.taltech.iti0203.webstore.pojo.CategoryDto;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
 import ee.taltech.iti0203.webstore.repository.ProductRepository;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,19 +27,14 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductDto> getAllProducts() {
-        return convert(productRepository.findAll());
-    }
-
-    public List<ProductDto> getByName(String name) {
-        return convert(productRepository.findByNameContainingIgnoreCase(name));
-    }
-
-    public List<ProductDto> getByCategory(String category) {
-        return convert(productRepository.findByCategory_NameContainingIgnoreCase(category));
-    }
-
-    public List<ProductDto> getByNameAndCategory(String name, String category) {
+    public List<ProductDto> getProducts(String name, String category) {
+        if (StringUtils.isEmpty(category) && StringUtils.isEmpty(name)) {
+            return convert(productRepository.findAll());
+        } else if (StringUtils.isEmpty(category)) {
+            return convert(productRepository.findByNameContainingIgnoreCase(name));
+        } else if (StringUtils.isEmpty(name)) {
+            return convert(productRepository.findByCategory_NameContainingIgnoreCase(category));
+        }
         return convert(productRepository
                 .findByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase(name, category));
     }
@@ -47,18 +50,30 @@ public class ProductService {
     }
 
     public ProductDto updateExistingProduct(ProductDto productDto, Long id) {
+        Optional<Product> existing = productRepository.findById(id);
+        if (existing.isEmpty()) {
+            throw new ProductNotFoundException();
+        }
+        Product product = existing.get();
         Product newProduct = new Product(productDto);
-        return productRepository.findById(id)
-                .map(product -> {
-                    product.setName(newProduct.getName());
-                    product.setAmount(newProduct.getAmount());
-                    product.setDescription(newProduct.getDescription());
-                    return convert(productRepository.save(product));
-                }).orElseThrow(ProductNotFoundException::new);
+        product.setName(newProduct.getName());
+        product.setAmount(newProduct.getAmount());
+        product.setDescription(newProduct.getDescription());
+        product.setCategory(newProduct.getCategory());
+        return convert(productRepository.save(product));
     }
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public ResponseEntity<InputStreamResource> getProductImage(@PathVariable Long id) throws IOException {
+        String uri = "image/" + getById(id).getName().toLowerCase().replace(" ", "_") + ".jpg";
+        ClassPathResource imgFile = new ClassPathResource(uri);
+        if (!imgFile.exists()) {
+            imgFile = new ClassPathResource("image/placeholder.jpg");
+        }
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(imgFile.getInputStream()));
     }
 
     private ProductDto convert(Product product) {
@@ -77,5 +92,4 @@ public class ProductService {
     private List<ProductDto> convert(List<Product> products) {
         return products.stream().map(this::convert).collect(Collectors.toList());
     }
-
 }

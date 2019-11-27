@@ -7,6 +7,7 @@ import ee.taltech.iti0203.webstore.repository.NewsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,13 +39,15 @@ public class NewsService {
     }
 
     public NewsDto updateExistingNews(NewsDto newsDto, Long id) {
+        Optional<News> existing = newsRepository.findById(id);
+        if (existing.isEmpty()) {
+            throw new NewsNotFoundException();
+        }
+        News news = existing.get();
         News newNews = new News(newsDto);
-        return newsRepository.findById(id)
-                .map(news -> {
-                    news.setHeadline(newNews.getHeadline());
-                    news.setContent(newNews.getContent());
-                    return new NewsDto(newsRepository.save(news));
-                }).orElseThrow(NewsNotFoundException::new);
+        news.setContent(newNews.getContent());
+        news.setHeadline(newNews.getHeadline());
+        return new NewsDto(newsRepository.save(news));
     }
 
     public void deleteNews(Long id) {
