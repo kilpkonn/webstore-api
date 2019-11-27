@@ -5,8 +5,14 @@ import ee.taltech.iti0203.webstore.model.Product;
 import ee.taltech.iti0203.webstore.pojo.CategoryDto;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
 import ee.taltech.iti0203.webstore.repository.ProductRepository;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,6 +69,15 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public ResponseEntity<InputStreamResource> getProductImage(@PathVariable Long id) throws IOException {
+        String uri = "image/" + getById(id).getName().toLowerCase().replace(" ", "_") + ".jpg";
+        ClassPathResource imgFile = new ClassPathResource(uri);
+        if (!imgFile.exists()) {
+            imgFile = new ClassPathResource("image/placeholder.jpg");
+        }
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(imgFile.getInputStream()));
     }
 
     private ProductDto convert(Product product) {
