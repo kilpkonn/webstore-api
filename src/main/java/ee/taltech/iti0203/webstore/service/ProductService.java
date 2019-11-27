@@ -8,6 +8,7 @@ import ee.taltech.iti0203.webstore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,14 +48,17 @@ public class ProductService {
     }
 
     public ProductDto updateExistingProduct(ProductDto productDto, Long id) {
+        Optional<Product> existing = productRepository.findById(id);
+        if (existing.isEmpty()) {
+            throw new ProductNotFoundException();
+        }
+        Product product = existing.get();
         Product newProduct = new Product(productDto);
-        return productRepository.findById(id)
-                .map(product -> {
-                    product.setName(newProduct.getName());
-                    product.setAmount(newProduct.getAmount());
-                    product.setDescription(newProduct.getDescription());
-                    return convert(productRepository.save(product));
-                }).orElseThrow(ProductNotFoundException::new);
+        product.setName(newProduct.getName());
+        product.setAmount(newProduct.getAmount());
+        product.setDescription(newProduct.getDescription());
+        product.setCategory(newProduct.getCategory());
+        return convert(productRepository.save(product));
     }
 
     public void deleteProduct(Long id) {

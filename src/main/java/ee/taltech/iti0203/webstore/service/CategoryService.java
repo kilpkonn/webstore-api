@@ -7,6 +7,7 @@ import ee.taltech.iti0203.webstore.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,12 +34,14 @@ public class CategoryService {
     }
 
     public CategoryDto renameCategory(CategoryDto categoryDto, Long id) {
+        Optional<Category> existing = repository.findById(id);
+        if (existing.isEmpty()) {
+            throw new CategoryNotFoundException();
+        }
+        Category category = existing.get();
         Category newCategory = new Category(categoryDto);
-        return repository.findById(id)
-                .map(category -> {
-                    category.setName(newCategory.getName());
-                    return new CategoryDto(repository.save(category));
-                }).orElseThrow(CategoryNotFoundException::new);
+        category.setName(newCategory.getName());
+        return new CategoryDto(repository.save(category));
     }
 
     public void deleteCategory(Long id) {
