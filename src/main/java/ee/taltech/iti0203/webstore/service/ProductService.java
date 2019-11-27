@@ -10,6 +10,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
@@ -26,19 +27,14 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductDto> getAllProducts() {
-        return convert(productRepository.findAll());
-    }
-
-    public List<ProductDto> getByName(String name) {
-        return convert(productRepository.findByNameContainingIgnoreCase(name));
-    }
-
-    public List<ProductDto> getByCategory(String category) {
-        return convert(productRepository.findByCategory_NameContainingIgnoreCase(category));
-    }
-
-    public List<ProductDto> getByNameAndCategory(String name, String category) {
+    public List<ProductDto> getProducts(String name, String category) {
+        if (StringUtils.isEmpty(category) && StringUtils.isEmpty(name)) {
+            return convert(productRepository.findAll());
+        } else if (StringUtils.isEmpty(category)) {
+            return convert(productRepository.findByNameContainingIgnoreCase(name));
+        } else if (StringUtils.isEmpty(name)) {
+            return convert(productRepository.findByCategory_NameContainingIgnoreCase(category));
+        }
         return convert(productRepository
                 .findByNameContainingIgnoreCaseAndCategory_NameContainingIgnoreCase(name, category));
     }
@@ -96,5 +92,4 @@ public class ProductService {
     private List<ProductDto> convert(List<Product> products) {
         return products.stream().map(this::convert).collect(Collectors.toList());
     }
-
 }

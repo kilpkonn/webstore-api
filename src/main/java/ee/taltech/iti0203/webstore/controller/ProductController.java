@@ -4,7 +4,6 @@ import ee.taltech.iti0203.webstore.pojo.ProductDto;
 import ee.taltech.iti0203.webstore.service.ProductService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,15 +28,7 @@ public class ProductController {
     @GetMapping
     public List<ProductDto> products(@RequestParam(required = false) String category,
                                      @RequestParam(required = false) String name) {
-
-        if (StringUtils.isEmpty(category) && StringUtils.isEmpty(name)) {
-            return productService.getAllProducts();
-        } else if (StringUtils.isEmpty(category)) {
-            return productService.getByName(name);
-        } else if (StringUtils.isEmpty(name)) {
-            return productService.getByCategory(category);
-        }
-        return productService.getByNameAndCategory(name, category);
+        return productService.getProducts(name, category);
     }
 
     @GetMapping("/{id}")
