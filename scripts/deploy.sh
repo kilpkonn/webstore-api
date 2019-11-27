@@ -3,15 +3,12 @@
 echo "Pulling image"
 docker pull "$CI_REGISTRY_USER"/"$CI_REGISTRY_REPOSITORY":"$CI_COMMIT_SHORT_SHA"
 
-echo "Moving container $APP_CONTAINER_NAME to $APP_CONTAINER_NAME-old"
-docker rename "$APP_CONTAINER_NAME" "$APP_CONTAINER_NAME-old"
-
 # TODO: use different ports etc for rolling upgrade
-echo "Stopping container $APP_CONTAINER_NAME-old"
+echo "Stopping container $APP_CONTAINER_NAME"
 docker container ls -a -s
-docker stop "$APP_CONTAINER_NAME-old" || true
-echo "Removing $APP_CONTAINER_NAME-old"
-docker rm "$APP_CONTAINER_NAME-old" || true
+docker stop "$APP_CONTAINER_NAME" || true
+echo "Removing $APP_CONTAINER_NAME"
+docker rm "$APP_CONTAINER_NAME" || true
 docker container ls -a -s
 
 echo "Creating internal network bridge for proxy-back-database (if none exsists)"
@@ -22,9 +19,10 @@ docker run -e "SPRING_PROFILES_ACTIVE=prod" \
    --name "$APP_CONTAINER_NAME" \
    --network="api-internal-network" \
    --restart=always \
-   -v /home/gitlab-runner/logs:/logs \
-   -v /home/gitlab-runner/flyway/sql:/flyway/sql \
+   -v ~/config:/config \
+   -v ~/logs:/logs \
    -d "$CI_REGISTRY_USER"/"$CI_REGISTRY_REPOSITORY":"$CI_COMMIT_SHORT_SHA"
+   # -v /home/gitlab-runner/flyway/sql:/flyway/sql \
 
 docker container ls -a -s
 
