@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(schema = "webstore")
 public class User {
 
     @Id

@@ -44,7 +44,6 @@ public class ProductController {
         return productService.getByNameAndCategory(name, category);
     }
 
-    @Secured(Roles.ROLE_ADMIN)
     @GetMapping("/{id}")
     public ProductDto getProduct(@PathVariable Long id) {
         return productService.getById(id);

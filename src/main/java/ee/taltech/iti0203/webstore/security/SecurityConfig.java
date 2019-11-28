@@ -12,44 +12,41 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.annotation.Resource;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Resource
+    private MyUserDetailsService myUserDetailsService;
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("user")).authorities(Roles.ROLE_ADMIN, Roles.ROLE_USER)
-                .and()
-                .withUser("fred").password(passwordEncoder().encode("fred")).authorities(Roles.ROLE_USER)
-        ;
+        auth.userDetailsService(myUserDetailsService);
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/users/register").permitAll()
+                .antMatchers("/users/login").permitAll()
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
                 .and()
                 .logout()
                 .logoutUrl("/logout") ;
-
-        //                .and()
-        //                .httpBasic()
-        //                .authenticationEntryPoint(authenticationEntryPoint);
-        //        http.addFilterAfter(new CustomFilter(),
-        //                BasicAuthenticationFilter.class);
-
     }
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
