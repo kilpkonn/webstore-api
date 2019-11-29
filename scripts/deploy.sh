@@ -21,6 +21,7 @@ docker run -e "SPRING_PROFILES_ACTIVE=prod" \
    --restart=always \
    -v ~/config:/config \
    -v ~/logs:/logs \
+   -v ~/images:/images \
    -d "$CI_REGISTRY_USER"/"$CI_REGISTRY_REPOSITORY":"$CI_COMMIT_SHORT_SHA"
    # -v /home/gitlab-runner/flyway/sql:/flyway/sql \
 
