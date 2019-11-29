@@ -81,6 +81,7 @@ public class ProductService {
         dto.setName(product.getName());
         dto.setId(product.getId());
         dto.setDescription(product.getDescription());
+        dto.setImageUrl(product.getImageUrl());
         dto.setAmount(product.getAmount());
         dto.setPrice(product.getPrice());
         if (product.getCategory() != null) {

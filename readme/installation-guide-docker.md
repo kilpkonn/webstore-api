@@ -331,6 +331,8 @@ mkdir /home/<user>/logs
 mkdir /home/<user>/postgres-data
 # For config
 mkdir /home/<user>/config
+# For images
+mkdir /home/<user>/images
 ```
 
 ## Gitlab variables setup
