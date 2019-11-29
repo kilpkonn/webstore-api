@@ -4,7 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Data
 @Entity
@@ -12,12 +20,15 @@ import javax.persistence.*;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
     private Integer amount;
     private Double price;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "category")
@@ -37,10 +48,11 @@ public class Product {
     public Product(ProductDto productDto) {
         this.name = productDto.getName();
         this.description = productDto.getDescription();
+        this.imageUrl = productDto.getImageUrl();
         this.amount = productDto.getAmount();
         this.price = productDto.getPrice();
         if (productDto.getCategory() != null) {
-          this.category = new Category(productDto.getCategory());
+            this.category = new Category(productDto.getCategory());
         }
     }
 }

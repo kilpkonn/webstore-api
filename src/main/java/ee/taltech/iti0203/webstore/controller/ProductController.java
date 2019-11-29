@@ -1,6 +1,7 @@
 package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
+import ee.taltech.iti0203.webstore.service.ImageService;
 import ee.taltech.iti0203.webstore.service.ProductService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -24,6 +26,9 @@ public class ProductController {
 
     @Resource
     private ProductService productService;
+
+    @Resource
+    private ImageService imageService;
 
     @GetMapping
     public List<ProductDto> products(@RequestParam(required = false) String category,
@@ -38,8 +43,24 @@ public class ProductController {
 
     @GetMapping("{id}/image")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable Long id) throws IOException {
-        return productService.getProductImage(id);
+        return imageService.getProductImage(productService.getById(id).getImageUrl());
     }
+
+    /*@PostMapping("{id}/image-upload")
+    public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        Path path = Paths.get(fileBasePath + fileName);
+        try {
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/files/download/")
+                .path(fileName)
+                .toUriString();
+        return ResponseEntity.ok(fileDownloadUri);
+    }*/
 
     @PostMapping
     public ProductDto saveProduct(@RequestBody ProductDto productDto) {
