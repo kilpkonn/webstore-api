@@ -42,14 +42,9 @@ public class ProductController {
         return productService.getById(id);
     }
 
-    @GetMapping("{id}/image")
+    @GetMapping("/{id}/image")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable Long id) throws IOException {
         return imageService.getImage(productService.getById(id).getImageUrl());
-    }
-
-    @PostMapping("{id}/image-upload")
-    public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) throws IOException {
-        return imageService.uploadImage(file);
     }
 
     @PostMapping
