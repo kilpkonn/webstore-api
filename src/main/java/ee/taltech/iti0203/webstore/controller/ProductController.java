@@ -5,6 +5,7 @@ import ee.taltech.iti0203.webstore.service.ImageService;
 import ee.taltech.iti0203.webstore.service.ProductService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,24 +44,13 @@ public class ProductController {
 
     @GetMapping("{id}/image")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable Long id) throws IOException {
-        return imageService.getProductImage(productService.getById(id).getImageUrl());
+        return imageService.getImage(productService.getById(id).getImageUrl());
     }
 
-    /*@PostMapping("{id}/image-upload")
-    public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        Path path = Paths.get(fileBasePath + fileName);
-        try {
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/files/download/")
-                .path(fileName)
-                .toUriString();
-        return ResponseEntity.ok(fileDownloadUri);
-    }*/
+    @PostMapping("{id}/image-upload")
+    public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) throws IOException {
+        return imageService.uploadImage(file);
+    }
 
     @PostMapping
     public ProductDto saveProduct(@RequestBody ProductDto productDto) {
