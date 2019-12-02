@@ -29,15 +29,19 @@ public class MyUserDetailsService implements UserDetailsService {
         if (isEmpty(users)){
             throw new UsernameNotFoundException(format("username not found: %s", username));
         }
-        User user = users.get(0);
-        List<SimpleGrantedAuthority> authorities = getRoles(user)
-                .map(r -> "ROLE_" + r.name())
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-        return new MyUser(user.getUsername(), user.getPassword(), authorities, "Estonia");
+      User user = users.get(0); //this application doesn't protect against duplicate users
+      return new MyUser(user.getUsername(), user.getPassword(), getAuthorities(user), user.getRole(), user.getId());
     }
 
-    private Stream<Role> getRoles(User user) {
+  private List<SimpleGrantedAuthority> getAuthorities(User user) {
+    return getRoles(user)
+      .map(Role::toSpringRole)
+      .map(SimpleGrantedAuthority::new)
+      .collect(Collectors.toList());
+  }
+
+
+  private Stream<Role> getRoles(User user) {
         if (user.getRole().isAdmin()){
             return Arrays.stream(Role.values());
         }
