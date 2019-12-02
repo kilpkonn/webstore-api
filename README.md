@@ -31,8 +31,8 @@ gradle bootRun
 You can find api at `localhost:8080/api/{api_name}`
 
 
-## Analysis
-Analysis can be found in [analysis.md](readme/business-analysis.md)
+### Analysis
+Analysis can be found in [business-analysis.md](readme/business-analysis.md)
 
 ## Installation Guide for server / gitlab runner
 Installation guide to install with docker can be found in 

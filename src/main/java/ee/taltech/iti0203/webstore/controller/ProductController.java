@@ -1,11 +1,10 @@
 package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
+import ee.taltech.iti0203.webstore.service.ImageService;
 import ee.taltech.iti0203.webstore.security.Roles;
 import ee.taltech.iti0203.webstore.service.ProductService;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.StringUtils;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -30,18 +30,13 @@ public class ProductController {
     @Resource
     private ProductService productService;
 
+    @Resource
+    private ImageService imageService;
+
     @GetMapping
     public List<ProductDto> products(@RequestParam(required = false) String category,
                                      @RequestParam(required = false) String name) {
-
-        if (StringUtils.isEmpty(category) && StringUtils.isEmpty(name)) {
-            return productService.getAllProducts();
-        } else if (StringUtils.isEmpty(category)) {
-            return productService.getByName(name);
-        } else if (StringUtils.isEmpty(name)) {
-            return productService.getByCategory(category);
-        }
-        return productService.getByNameAndCategory(name, category);
+        return productService.getProducts(name, category);
     }
 
     @GetMapping("/{id}")
@@ -49,14 +44,9 @@ public class ProductController {
         return productService.getById(id);
     }
 
-    @GetMapping("{id}/image")
+    @GetMapping("/{id}/image")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable Long id) throws IOException {
-        String uri = "image/" + productService.getById(id).getName().toLowerCase().replace(" ", "_") + ".jpg";
-        ClassPathResource imgFile = new ClassPathResource(uri);
-        if (!imgFile.exists()) {
-            imgFile = new ClassPathResource("image/placeholder.jpg");
-        }
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(new InputStreamResource(imgFile.getInputStream()));
+        return imageService.getImage(productService.getById(id).getImageUrl());
     }
 
     @Secured(Roles.ROLE_ADMIN)

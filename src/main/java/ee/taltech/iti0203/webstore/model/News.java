@@ -18,6 +18,9 @@ public class News {
     private String content;
     private Date createdAt;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @PrePersist
     private void prePersist() {
         createdAt = new Date();

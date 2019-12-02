@@ -38,7 +38,7 @@ spring:
       enabled: true
 logging:
   level:
-    ROOT: INFO
+    ROOT: DEBUG
   path: .
   file: logs/dev
 
