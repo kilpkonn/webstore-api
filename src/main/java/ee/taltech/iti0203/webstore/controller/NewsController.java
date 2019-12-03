@@ -39,19 +39,19 @@ public class NewsController {
         return newsService.getById(id);
     }
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PostMapping
     public NewsDto saveNews(@RequestBody NewsDto newsDto) {
         return newsService.createNewNews(newsDto);
     }
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PutMapping("/{id}")
     public NewsDto updateNews(@RequestBody NewsDto newsDto, @PathVariable Long id) {
         return newsService.updateExistingNews(newsDto, id);
     }
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @DeleteMapping("/{id}")
     public void deleteNews(@PathVariable Long id) {
         newsService.deleteNews(id);

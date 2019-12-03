@@ -20,7 +20,7 @@ public class ImageController {
     @Resource
     private ImageService imageService;
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PostMapping("/image")
     public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) throws IOException {
         return imageService.uploadImage(file);

@@ -26,19 +26,19 @@ public class CategoryController {
         return categoryService.getById(id);
     }
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PostMapping
     public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto) {
         return categoryService.createNewCategory(categoryDto);
     }
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PutMapping("/{id}")
     public CategoryDto updateProduct(@RequestBody CategoryDto categoryDto, @PathVariable Long id) {
         return categoryService.renameCategory(categoryDto, id);
     }
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);

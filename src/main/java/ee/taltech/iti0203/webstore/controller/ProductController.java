@@ -47,19 +47,19 @@ public class ProductController {
         return imageService.getImage(productService.getById(id).getImageUrl());
     }
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PostMapping
     public ProductDto saveProduct(@RequestBody ProductDto productDto) {
         return productService.createNewProduct(productDto);
     }
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PutMapping("/{id}")
     public ProductDto updateProduct(@RequestBody ProductDto productDto, @PathVariable Long id) {
         return productService.updateExistingProduct(productDto, id);
     }
 
-    @Secured(Roles.ROLE_ADMIN)
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
