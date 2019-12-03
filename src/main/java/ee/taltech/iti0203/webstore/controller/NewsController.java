@@ -1,7 +1,9 @@
 package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.pojo.NewsDto;
+import ee.taltech.iti0203.webstore.security.Roles;
 import ee.taltech.iti0203.webstore.service.NewsService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,16 +39,19 @@ public class NewsController {
         return newsService.getById(id);
     }
 
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PostMapping
     public NewsDto saveNews(@RequestBody NewsDto newsDto) {
         return newsService.createNewNews(newsDto);
     }
 
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PutMapping("/{id}")
     public NewsDto updateNews(@RequestBody NewsDto newsDto, @PathVariable Long id) {
         return newsService.updateExistingNews(newsDto, id);
     }
 
+    @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @DeleteMapping("/{id}")
     public void deleteNews(@PathVariable Long id) {
         newsService.deleteNews(id);

@@ -3,6 +3,7 @@ package ee.taltech.iti0203.webstore.controller;
 import ee.taltech.iti0203.webstore.model.Category;
 import ee.taltech.iti0203.webstore.pojo.CategoryDto;
 import ee.taltech.iti0203.webstore.repository.CategoryRepository;
+import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,12 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
@@ -32,6 +31,10 @@ public class CategoryControllerTest {
 
     @Autowired
     private TestRestTemplate template;
+
+    @Resource
+    private JwtTokenProvider jwtTokenProvider;
+
 
     @Autowired
     private CategoryRepository repository;
@@ -56,7 +59,7 @@ public class CategoryControllerTest {
 
     @Test
     public void application_returns_list_of_categories() {
-        ResponseEntity<List<CategoryDto>> entity = template.exchange("/categories", HttpMethod.GET, null, LIST_OF_CATEGORIES);
+        ResponseEntity<List<CategoryDto>> entity = template.exchange("/categories", HttpMethod.GET, entity(), LIST_OF_CATEGORIES);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<CategoryDto> category = entity.getBody();
         assertTrue(isNotEmpty(category));
@@ -68,10 +71,9 @@ public class CategoryControllerTest {
     public void can_get_category_by_id() {
         CategoryDto category = new CategoryDto();
         category.setName("Category 6");
-        HttpEntity<CategoryDto> httpEntity = new HttpEntity<>(category);
-        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, httpEntity, CategoryDto.class);
+        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, entity(category), CategoryDto.class);
         assertNotNull(entity.getBody());
-        entity = template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.GET, null,
+        entity = template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.GET, entity(),
                 CategoryDto.class);
         assertNotNull(entity);
         category = entity.getBody();
@@ -83,8 +85,7 @@ public class CategoryControllerTest {
     public void can_add_categories() {
         CategoryDto category = new CategoryDto();
         category.setName("Category 5");
-        HttpEntity<CategoryDto> httpEntity = new HttpEntity<>(category);
-        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, httpEntity, CategoryDto.class);
+        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, entity(category), CategoryDto.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         CategoryDto categoryItem = entity.getBody();
         assertNotNull(categoryItem);
@@ -96,13 +97,13 @@ public class CategoryControllerTest {
         CategoryDto dummyCategory = new CategoryDto();
         dummyCategory.setName("Category 3");
         dummyCategory.setId(3L);
-        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, new HttpEntity<>(dummyCategory), CategoryDto.class);
+        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, entity(dummyCategory), CategoryDto.class);
         assertNotNull(entity);
         assertNotNull(entity.getBody());
         assertNotNull(entity.getBody().getName());
 
-        template.exchange("/categories/3", HttpMethod.DELETE, null, CategoryDto.class);
-        entity = template.exchange("/categories/3", HttpMethod.GET, null, CategoryDto.class);
+        template.exchange("/categories/3", HttpMethod.DELETE, entity(), CategoryDto.class);
+        entity = template.exchange("/categories/3", HttpMethod.GET, entity(), CategoryDto.class);
         assertNotNull(entity);
         assertNotNull(entity.getBody());
         assertNull(entity.getBody().getName());
@@ -112,20 +113,20 @@ public class CategoryControllerTest {
     public void can_rename_category() {
         CategoryDto dummyCategory = new CategoryDto();
         dummyCategory.setName("oldName");
-        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, new HttpEntity<>(dummyCategory), CategoryDto.class);
+        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, entity(dummyCategory), CategoryDto.class);
         assertNotNull(entity);
         assertNotNull(entity.getBody());
 
-        entity = template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.GET, null, CategoryDto.class);
+        entity = template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.GET, entity(), CategoryDto.class);
 
         assertNotNull(entity.getBody());
         CategoryDto renamedDummyCategory = new CategoryDto();
         renamedDummyCategory.setName("newName");
         renamedDummyCategory.setId(entity.getBody().getId());
 
-        template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.PUT, new HttpEntity<>(renamedDummyCategory),
+        template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.PUT, entity(renamedDummyCategory),
                 CategoryDto.class);
-        entity = template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.GET, null, CategoryDto.class);
+        entity = template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.GET, entity(), CategoryDto.class);
         assertNotNull(entity);
         assertNotNull(entity.getBody());
         assertEquals("newName", entity.getBody().getName());
@@ -135,15 +136,29 @@ public class CategoryControllerTest {
     public void can_delete_category() {
         CategoryDto dummyCategory = new CategoryDto();
         dummyCategory.setName("oldName");
-        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, new HttpEntity<>(dummyCategory), CategoryDto.class);
+        ResponseEntity<CategoryDto> entity = template.exchange("/categories", POST, entity(dummyCategory), CategoryDto.class);
         assertNotNull(entity);
         assertNotNull(entity.getBody());
 
-        template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.DELETE, null, CategoryDto.class);
+        template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.DELETE, entity(), CategoryDto.class);
 
-        entity = template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.GET, null, CategoryDto.class);
+        entity = template.exchange("/categories/" + entity.getBody().getId(), HttpMethod.GET, entity(), CategoryDto.class);
         assertNotNull(entity);
         assertNotNull(entity.getBody());
         assertNull(entity.getBody().getName());
+    }
+
+    private HttpEntity<CategoryDto> entity(CategoryDto categoryDto) {
+        return new HttpEntity<>(categoryDto, authorizationHeader());
+    }
+
+    private HttpEntity<CategoryDto> entity() {
+        return new HttpEntity<>(authorizationHeader());
+    }
+
+    public HttpHeaders authorizationHeader() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwtTokenProvider.createTokenForTests("user"));
+        return headers;
     }
 }

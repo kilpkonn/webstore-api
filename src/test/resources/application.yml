@@ -3,6 +3,11 @@ server:
   servlet:
     context-path: /test_api
 
+app:
+  jwt:
+    secret: bRUG198EfyW3g7GF8yTufhKUjUbejrRKoJi3lqzZ2V3pYAzWowSTtBc7MOHix6R
+    durationMin: 120
+
 spring:
   profiles:
     active: "test"
