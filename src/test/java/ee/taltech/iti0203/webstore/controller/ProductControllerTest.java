@@ -6,6 +6,7 @@ import ee.taltech.iti0203.webstore.pojo.CategoryDto;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
 import ee.taltech.iti0203.webstore.repository.CategoryRepository;
 import ee.taltech.iti0203.webstore.repository.ProductRepository;
+import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,12 +16,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,6 +40,9 @@ public class ProductControllerTest {
 
     @Autowired
     CategoryRepository categoryRepository;  // Needed to test product categories
+
+    @Resource
+    private JwtTokenProvider jwtTokenProvider;
 
     private static final ParameterizedTypeReference<List<ProductDto>> LIST_OF_PRODUCTS = new ParameterizedTypeReference<>() {
     };
@@ -81,7 +83,7 @@ public class ProductControllerTest {
 
     @Test
     public void application_returns_list_of_products() {
-        ResponseEntity<List<ProductDto>> entity = template.exchange("/products", HttpMethod.GET, null, LIST_OF_PRODUCTS);
+        ResponseEntity<List<ProductDto>> entity = template.exchange("/products", HttpMethod.GET, entity(), LIST_OF_PRODUCTS);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<ProductDto> products = entity.getBody();
         assertTrue(isNotEmpty(products));
@@ -95,11 +97,10 @@ public class ProductControllerTest {
         product.setDescription("Random");
         product.setAmount(10);
         product.setPrice(5.0);
-        HttpEntity<ProductDto> httpEntity = new HttpEntity<>(product);
-        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, httpEntity, ProductDto.class);
+        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, entity(product), ProductDto.class);
         assertNotNull(entity.getBody());
 
-        entity = template.exchange("/products/" + entity.getBody().getId(), HttpMethod.GET, null, ProductDto.class);
+        entity = template.exchange("/products/" + entity.getBody().getId(), HttpMethod.GET, entity(), ProductDto.class);
         assertNotNull(entity);
         product = entity.getBody();
         assertNotNull(product);
@@ -113,11 +114,10 @@ public class ProductControllerTest {
         product.setDescription("Random");
         product.setAmount(10);
         product.setPrice(5.0);
-        HttpEntity<ProductDto> httpEntity = new HttpEntity<>(product);
-        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, httpEntity, ProductDto.class);
+        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, entity(product), ProductDto.class);
         assertNotNull(entity.getBody());
 
-        ResponseEntity<InputStreamResource> entity2 = template.exchange(String.format("/products/%d/image", entity.getBody().getId()), HttpMethod.GET, null, InputStreamResource.class);
+        ResponseEntity<InputStreamResource> entity2 = template.exchange(String.format("/products/%d/image", entity.getBody().getId()), HttpMethod.GET, entity(), InputStreamResource.class);
         assertEquals(HttpStatus.OK, entity2.getStatusCode());
         InputStreamResource image = entity2.getBody();
         assertNotNull(image);
@@ -126,13 +126,13 @@ public class ProductControllerTest {
 
     @Test
     public void cant_get_product_by_unknown_id() {
-        ResponseEntity<ProductDto> entity = template.exchange("/products/90210", HttpMethod.GET, null, ProductDto.class);
+        ResponseEntity<ProductDto> entity = template.exchange("/products/90210", HttpMethod.GET, entity(), ProductDto.class);
         assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
     }
 
     @Test
     public void can_search_products_by_name() {
-        ResponseEntity<List<ProductDto>> entity = template.exchange("/products?name=carn", HttpMethod.GET, null, LIST_OF_PRODUCTS);
+        ResponseEntity<List<ProductDto>> entity = template.exchange("/products?name=carn", HttpMethod.GET, entity(), LIST_OF_PRODUCTS);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<ProductDto> products = entity.getBody();
         assertTrue(isNotEmpty(products));
@@ -142,7 +142,7 @@ public class ProductControllerTest {
 
     @Test
     public void can_search_products_by_category() {
-        ResponseEntity<List<ProductDto>> entity = template.exchange("/products?category=red", HttpMethod.GET, null, LIST_OF_PRODUCTS);
+        ResponseEntity<List<ProductDto>> entity = template.exchange("/products?category=red", HttpMethod.GET, entity(), LIST_OF_PRODUCTS);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<ProductDto> products = entity.getBody();
         assertTrue(isNotEmpty(products));
@@ -152,7 +152,7 @@ public class ProductControllerTest {
 
     @Test
     public void can_search_products_by_name_and_category() {
-        ResponseEntity<List<ProductDto>> entity = template.exchange("/products?name=bells&category=green", HttpMethod.GET, null, LIST_OF_PRODUCTS);
+        ResponseEntity<List<ProductDto>> entity = template.exchange("/products?name=bells&category=green", HttpMethod.GET, entity(), LIST_OF_PRODUCTS);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         List<ProductDto> products = entity.getBody();
         assertTrue(isNotEmpty(products));
@@ -162,7 +162,7 @@ public class ProductControllerTest {
 
     @Test
     public void search_by_name_returns_nothing_if_not_found() {
-        ResponseEntity<List<ProductDto>> entity = template.exchange("/products?name=carburetor", HttpMethod.GET, null, LIST_OF_PRODUCTS);
+        ResponseEntity<List<ProductDto>> entity = template.exchange("/products?name=carburetor", HttpMethod.GET, entity(), LIST_OF_PRODUCTS);
         assertNotNull(entity);
         List<ProductDto> products = entity.getBody();
         assertTrue(isEmpty(products));
@@ -175,8 +175,7 @@ public class ProductControllerTest {
         product.setDescription("Random");
         product.setAmount(10);
         product.setPrice(5.0);
-        HttpEntity<ProductDto> httpEntity = new HttpEntity<>(product);
-        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, httpEntity, ProductDto.class);
+        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, entity(product), ProductDto.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         ProductDto prod = entity.getBody();
         assertNotNull(prod);
@@ -197,8 +196,7 @@ public class ProductControllerTest {
         product.setPrice(5.0);
         product.setCategory(categoryDto);
 
-        HttpEntity<ProductDto> httpEntity = new HttpEntity<>(product);
-        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, httpEntity, ProductDto.class);
+        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, entity(product), ProductDto.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         ProductDto prod = entity.getBody();
         assertNotNull(prod);
@@ -209,17 +207,31 @@ public class ProductControllerTest {
     public void can_update_product() {
         ProductDto dummyProduct = new ProductDto();
         dummyProduct.setName("DummyItem");
-        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, new HttpEntity<>(dummyProduct), ProductDto.class);
+        ResponseEntity<ProductDto> entity = template.exchange("/products", POST, entity(dummyProduct), ProductDto.class);
         assertNotNull(entity);
         assertNotNull(entity.getBody());
         long id = entity.getBody().getId();
 
         ProductDto product = new ProductDto();
         product.setName("Realname");
-        entity = template.exchange(String.format("/products/%d", id), PUT, new HttpEntity<>(product), ProductDto.class);
+        entity = template.exchange(String.format("/products/%d", id), PUT, entity(product), ProductDto.class);
         ProductDto updatedProduct = entity.getBody();
         assertNotNull(updatedProduct);
         assertEquals("Realname", updatedProduct.getName());
-        template.exchange(String.format("/products/%d", id), HttpMethod.DELETE, null, ProductDto.class);
+        template.exchange(String.format("/products/%d", id), HttpMethod.DELETE, entity(), ProductDto.class);
+    }
+
+    private HttpEntity<ProductDto> entity(ProductDto productDto) {
+        return new HttpEntity<>(productDto, authorizationHeader());
+    }
+
+    private HttpEntity<ProductDto> entity() {
+        return new HttpEntity<>(authorizationHeader());
+    }
+
+    public HttpHeaders authorizationHeader() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwtTokenProvider.createTokenForTests("user"));
+        return headers;
     }
 }
