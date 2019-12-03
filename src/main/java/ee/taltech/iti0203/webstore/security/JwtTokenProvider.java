@@ -21,7 +21,7 @@ public class JwtTokenProvider {
 
     private JwtConfig jwtConfig;
 
-    public String getIdCodeFromToken(String token) {
+    public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
@@ -34,7 +34,7 @@ public class JwtTokenProvider {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        return getIdCodeFromToken(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return getUsernameFromToken(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     public String createTokenForTests(String username) {

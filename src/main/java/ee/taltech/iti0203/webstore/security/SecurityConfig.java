@@ -36,13 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    */
   @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(myUserDetailsService)
-      .and()
-      .inMemoryAuthentication()
-      .withUser("admin").password(passwordEncoder().encode("admin")).authorities(Roles.ROLE_ADMIN, Roles.ROLE_USER)
-//                .and()
-//                .withUser("fred").password(passwordEncoder().encode("fred")).authorities(Roles.ROLE_USER)
-    ;
+    auth.userDetailsService(myUserDetailsService);
   }
 
   /**
@@ -51,21 +45,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-      .csrf().disable()
-      .headers().httpStrictTransportSecurity().disable()
-      .and()
-      .sessionManagement().sessionCreationPolicy(STATELESS)
-      .and()
-      .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
-      .and()
-      .authorizeRequests()
-        .antMatchers("/villans").permitAll()
-        .antMatchers("/users/register").permitAll() //so guest can register
-        .antMatchers("/users/login").permitAll() //so guest can login
-        .anyRequest().authenticated()
-      .and()
-      .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-      .logout().logoutUrl("/logout");
+            .csrf().disable() // cross site request forgery, it's a must if we use cookies
+            .headers().httpStrictTransportSecurity().disable() // if this is not disabled your https frontend must have https (not http) on backend
+            .and()
+            .sessionManagement().sessionCreationPolicy(STATELESS) // this is a must for API, API just returns answers, doesn't know anything about any sessions (front-end manages that)
+            .and()
+            .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
+            .and()
+            .authorizeRequests()
+            .antMatchers("/products").permitAll()
+            .antMatchers("/products/*").permitAll()
+            .antMatchers("/products/*/image").permitAll()
+            .antMatchers("/news").permitAll()
+            .antMatchers("/categories").permitAll()
+            .antMatchers("/users/register").permitAll() //so guest can register
+            .antMatchers("/users/login").permitAll() //so guest can login
+            .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+            .logout().logoutUrl("/logout");
   }
 
   /**
@@ -84,3 +82,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return super.authenticationManager();
   }
 }
+

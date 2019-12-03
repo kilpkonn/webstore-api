@@ -26,23 +26,22 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<User> users = userRepository.findByUsername(username);
-        if (isEmpty(users)){
+        if (isEmpty(users)) {
             throw new UsernameNotFoundException(format("username not found: %s", username));
         }
-      User user = users.get(0); //this application doesn't protect against duplicate users
-      return new MyUser(user.getUsername(), user.getPassword(), getAuthorities(user), user.getRole(), user.getId());
+        User user = users.get(0); //this application doesn't protect against duplicate users
+        return new MyUser(user.getUsername(), user.getPassword(), getAuthorities(user), user.getRole(), user.getId());
     }
 
-  private List<SimpleGrantedAuthority> getAuthorities(User user) {
-    return getRoles(user)
-      .map(Role::toSpringRole)
-      .map(SimpleGrantedAuthority::new)
-      .collect(Collectors.toList());
-  }
+    private List<SimpleGrantedAuthority> getAuthorities(User user) {
+        return getRoles(user)
+                .map(Role::toSpringRole)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
 
-
-  private Stream<Role> getRoles(User user) {
-        if (user.getRole().isAdmin()){
+    private Stream<Role> getRoles(User user) {
+        if (user.getRole().isAdmin()) {
             return Arrays.stream(Role.values());
         }
         return Stream.of(user.getRole());
