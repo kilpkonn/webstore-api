@@ -34,10 +34,7 @@ public class UserController {
 
   @PostMapping("register")
   public void register(@RequestBody UserDto userDto) {
-    if (userDto.getUsername() == null) {
-      throw new MyBadRequestException();
-    }
-    if (userDto.getPassword() == null) {
+    if (userDto.getUsername() == null || userDto.getPassword() == null) {
       throw new MyBadRequestException();
     }
     userService.saveUser(userDto);
