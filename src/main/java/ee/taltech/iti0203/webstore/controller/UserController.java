@@ -3,21 +3,15 @@ package ee.taltech.iti0203.webstore.controller;
 import ee.taltech.iti0203.webstore.exception.MyBadRequestException;
 import ee.taltech.iti0203.webstore.pojo.LoginDetails;
 import ee.taltech.iti0203.webstore.pojo.UserDto;
-import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
-import ee.taltech.iti0203.webstore.security.MyUser;
-import ee.taltech.iti0203.webstore.security.MyUserDetailsService;
-import ee.taltech.iti0203.webstore.security.UserSessionHolder;
+import ee.taltech.iti0203.webstore.security.*;
 import ee.taltech.iti0203.webstore.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,12 +26,21 @@ public class UserController {
   private MyUserDetailsService myUserDetailsService;
   private JwtTokenProvider jwtTokenProvider;
 
+  @Secured({Roles.ROLE_UNVERIFIED, Roles.ROLE_USER, Roles.ROLE_ADMIN})
+  @GetMapping
+  public List<UserDto> users() {
+    return userService.getUsers();
+  }
+
+  @Secured(Roles.ROLE_ADMIN)
+  @PutMapping("role")
+  public void changeRole(@RequestBody UserDto userDto) {
+    userService.changeRole(userDto);
+  }
+
   @PostMapping("register")
   public void register(@RequestBody UserDto userDto) {
-    if (userDto.getUsername() == null) {
-      throw new MyBadRequestException();
-    }
-    if (userDto.getPassword() == null) {
+    if (userDto.getUsername() == null || userDto.getPassword() == null) {
       throw new MyBadRequestException();
     }
     userService.saveUser(userDto);
@@ -45,10 +48,7 @@ public class UserController {
 
   @PostMapping("login")
   public LoginDetails login(@RequestBody UserDto userDto) {
-    if (userDto.getUsername() == null) {
-      throw new MyBadRequestException();
-    }
-    if (userDto.getPassword() == null) {
+    if (userDto.getUsername() == null || userDto.getPassword() == null) {
       throw new MyBadRequestException();
     }
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
