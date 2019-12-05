@@ -6,8 +6,6 @@ import ee.taltech.iti0203.webstore.pojo.UserDto;
 import ee.taltech.iti0203.webstore.repository.UserRepository;
 import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
 import ee.taltech.iti0203.webstore.security.Role;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +36,6 @@ public class UserControllerTest {
 
     private static final ParameterizedTypeReference<List<UserDto>> LIST_OF_USERS = new ParameterizedTypeReference<>() {
     };
-
-    @Before
-    public void setUp() {
-        repository.deleteAll();
-    }
-
-    @After
-    public void cleanUp() {
-        repository.deleteAll();
-    }
 
     @Test
     public void can_register_new_user() {
