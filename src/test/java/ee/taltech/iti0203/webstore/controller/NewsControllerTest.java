@@ -1,7 +1,11 @@
 package ee.taltech.iti0203.webstore.controller;
 
+import ee.taltech.iti0203.webstore.model.News;
 import ee.taltech.iti0203.webstore.pojo.NewsDto;
+import ee.taltech.iti0203.webstore.repository.NewsRepository;
 import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
@@ -31,8 +37,32 @@ public class NewsControllerTest {
     @Resource
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private NewsRepository repository;
+
     private static final ParameterizedTypeReference<List<NewsDto>> LIST_OF_NEWS = new ParameterizedTypeReference<>() {
     };
+
+    @Before
+    public void setUp() {
+        repository.deleteAll();
+        News first = new News("Welcome to the flower store!", "Content");
+        first.setCreatedAt(new GregorianCalendar(2019, Calendar.JUNE, 22).getTime());
+        News second = new News("New flowers in stock!", "Content");
+        second.setCreatedAt(new GregorianCalendar(2019, Calendar.JULY, 10).getTime());
+        News third = new News("Imminent downtime.", "Content");
+        third.setId(3L);
+        third.setCreatedAt(new GregorianCalendar(2019, Calendar.AUGUST, 9).getTime());
+
+        repository.save(first);
+        repository.save(second);
+        repository.save(third);
+    }
+
+    @After
+    public void cleanUp() {
+        repository.deleteAll();
+    }
 
     @Test
     public void application_returns_list_of_news() {
@@ -67,11 +97,20 @@ public class NewsControllerTest {
 
     @Test
     public void can_get_news_by_id() {
-        ResponseEntity<NewsDto> entity = template.exchange("/news/3", HttpMethod.GET, entity(), NewsDto.class);
+        NewsDto dummy = new NewsDto();
+        dummy.setHeadline("Just a test...");
+        dummy.setContent("Nothing to worry about.");
+        ResponseEntity<NewsDto> entity = template.exchange("/news", POST, entity(dummy), NewsDto.class);
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
         assertNotNull(entity);
-        NewsDto news = entity.getBody();
+        assertNotNull(entity.getBody());
+        long id = entity.getBody().getId();
+
+        ResponseEntity<NewsDto> response = template.exchange("/news/" + id, HttpMethod.GET, entity(), NewsDto.class);
+        assertNotNull(response);
+        NewsDto news = response.getBody();
         assertNotNull(news);
-        assertEquals("Imminent downtime.", news.getHeadline());
+        assertEquals(dummy.getHeadline(), news.getHeadline());
     }
 
     @Test
