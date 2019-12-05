@@ -1,5 +1,6 @@
 package ee.taltech.iti0203.webstore.model;
 
+import ee.taltech.iti0203.webstore.pojo.UserDto;
 import ee.taltech.iti0203.webstore.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,4 +25,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public User(UserDto userDto) {
+        this.setUsername(userDto.getUsername());
+        this.setPassword(userDto.getPassword());
+        this.setRole(userDto.getRole());
+    }
 }

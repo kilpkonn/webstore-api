@@ -1,5 +1,6 @@
 package ee.taltech.iti0203.webstore.service;
 
+import ee.taltech.iti0203.webstore.exception.MyBadRequestException;
 import ee.taltech.iti0203.webstore.exception.UserExistsException;
 import ee.taltech.iti0203.webstore.model.User;
 import ee.taltech.iti0203.webstore.pojo.UserDto;
@@ -8,6 +9,11 @@ import ee.taltech.iti0203.webstore.security.Role;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 @Service
@@ -16,6 +22,21 @@ public class UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+
+    public List<UserDto> getUsers() {
+        return userRepository.findAll().stream().map(UserDto::new).collect(Collectors.toList());
+    }
+
+    public UserDto changeRole(UserDto userDto) {
+        List<User> existing = userRepository.findByUsernameIgnoreCase(userDto.getUsername());
+        if (isEmpty(existing)) {
+            throw new MyBadRequestException();
+        }
+        User user = existing.get(0);
+        User newUser = new User(userDto);
+        user.setRole(newUser.getRole());
+        return new UserDto(userRepository.save(user));
+    }
 
     public UserDto saveUser(UserDto userDto) {
         if (!isEmpty(userRepository.findByUsernameIgnoreCase(userDto.getUsername()))) {
