@@ -39,6 +39,7 @@ public class UserControllerTest {
 
     @Test
     public void can_register_new_user() {
+        repository.deleteAll();
         UserDto userDto = new UserDto("username", "password");
         ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
         assertTrue(isNotEmpty(entity));
