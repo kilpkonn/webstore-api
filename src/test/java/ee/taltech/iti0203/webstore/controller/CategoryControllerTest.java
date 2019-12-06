@@ -37,7 +37,6 @@ public class CategoryControllerTest {
     @Resource
     private JwtTokenProvider jwtTokenProvider;
 
-
     @Autowired
     private CategoryRepository repository;
 
