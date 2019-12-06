@@ -1,5 +1,6 @@
 package ee.taltech.iti0203.webstore.service;
 
+import ee.taltech.iti0203.webstore.pojo.ImageDto;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class ImageService {
-    private final int MAX_FILE_NAME_LENGTH = 32;
+    private static final int MAX_FILE_NAME_LENGTH = 32;
 
     public ResponseEntity<InputStreamResource> getImage(String url) throws IOException {
         Path path = Paths.get("./images/" + url);
@@ -29,12 +30,12 @@ public class ImageService {
                 .body(new InputStreamResource(new FileInputStream(path.toFile())));
     }
 
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+    public ImageDto uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         fileName = fileName.length() > MAX_FILE_NAME_LENGTH ? fileName.substring(fileName.length() - MAX_FILE_NAME_LENGTH) : fileName;
         Path path = Paths.get("./images/" + fileName);
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return ResponseEntity.ok(fileName);
+        return new ImageDto(fileName);
     }
 
 }
