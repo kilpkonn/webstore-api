@@ -39,16 +39,6 @@ public class UserControllerTest {
     private static final ParameterizedTypeReference<List<UserDto>> LIST_OF_USERS = new ParameterizedTypeReference<>() {
     };
 
-    @Before
-    public void setUp() {
-        repository.deleteAll();
-    }
-
-    @After()
-    public void cleanUp() {
-        repository.deleteAll();
-    }
-
     @Test
     public void can_register_new_user() {
         UserDto userDto = new UserDto("username", "password");
@@ -57,6 +47,7 @@ public class UserControllerTest {
         assertTrue(entity.getStatusCode().is2xxSuccessful());
         List<User> users = repository.findByUsernameIgnoreCase("username");
         assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("username")));
+        repository.delete(users.get(0));
     }
 
     @Test
@@ -73,6 +64,9 @@ public class UserControllerTest {
         assertEquals(details.getUsername(), userDto.getUsername());
         assertEquals(details.getRole(), Role.USER);
         assertTrue(isNotEmpty(details.getToken()));
+
+        List<User> users = repository.findByUsernameIgnoreCase("mynameis");
+        repository.delete(users.get(0));
     }
 
     private HttpEntity<UserDto> entity(UserDto userDto) {
