@@ -3,7 +3,6 @@ package ee.taltech.iti0203.webstore.controller;
 import ee.taltech.iti0203.webstore.pojo.ImageDto;
 import ee.taltech.iti0203.webstore.security.Roles;
 import ee.taltech.iti0203.webstore.service.ImageService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
