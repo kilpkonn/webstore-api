@@ -35,6 +35,7 @@ public class UserService {
         User user = existing.get(0);
         User newUser = new User(userDto);
         user.setRole(newUser.getRole());
+        // user.setId(newUser.getId());
         return new UserDto(userRepository.save(user));
     }
 
