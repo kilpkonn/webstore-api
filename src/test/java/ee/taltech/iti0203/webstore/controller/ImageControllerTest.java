@@ -20,6 +20,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import javax.annotation.Resource;
 import java.nio.file.Paths;
@@ -83,24 +85,27 @@ public class ImageControllerTest {
     public void testUpload() {
         FileSystemResource img = new FileSystemResource(Paths.get("./images/placeholder.jpg").toFile());
 
-        ResponseEntity<ImageDto> resp = template.exchange("/upload/image", HttpMethod.POST, entity(img), ImageDto.class);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", img);
+
+        ResponseEntity<ImageDto> resp = template.exchange("/upload/image", HttpMethod.POST, entity(body), ImageDto.class);
         assertNotNull(resp.getBody());
         ImageDto dto = resp.getBody();
         assertEquals("placeholder.jpg", dto.getUrl());
     }
 
-    private HttpEntity<FileSystemResource> entity(FileSystemResource formData) {
+    private HttpEntity<MultiValueMap> entity(MultiValueMap formData) {
         return new HttpEntity<>(formData, authorizationHeader());
     }
 
-    private HttpEntity<FileSystemResource> entity() {
+    private HttpEntity<MultiValueMap> entity() {
         return new HttpEntity<>(authorizationHeader());
     }
 
     public HttpHeaders authorizationHeader() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + jwtTokenProvider.createTokenForTests("user"));
-        headers.setContentType(MediaType.IMAGE_JPEG);
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         return headers;
     }
 }

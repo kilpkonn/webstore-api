@@ -22,7 +22,7 @@ public class ImageService {
 
     public ResponseEntity<InputStreamResource> getImage(String url) throws IOException {
         Path path = Paths.get("./images/" + url);
-        if (!path.toFile().exists()) {
+        if (!path.toFile().exists() || url == null) {
             path = Paths.get("./images/placeholder.jpg");
         }
         return ResponseEntity.ok()

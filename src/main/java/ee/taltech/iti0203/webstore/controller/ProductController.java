@@ -42,6 +42,7 @@ public class ProductController {
         return productService.getById(id);
     }
 
+    @Deprecated
     @GetMapping("/{id}/image")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable Long id) throws IOException {
         return imageService.getImage(productService.getById(id).getImageUrl());
