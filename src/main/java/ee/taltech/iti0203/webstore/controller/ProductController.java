@@ -1,11 +1,8 @@
 package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
-import ee.taltech.iti0203.webstore.service.ImageService;
 import ee.taltech.iti0203.webstore.security.Roles;
 import ee.taltech.iti0203.webstore.service.ProductService;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,9 +23,6 @@ public class ProductController {
 
     @Resource
     private ProductService productService;
-
-    @Resource
-    private ImageService imageService;
 
     @GetMapping
     public List<ProductDto> products(@RequestParam(required = false) String category,
@@ -40,12 +33,6 @@ public class ProductController {
     @GetMapping("/{id}")
     public ProductDto getProduct(@PathVariable Long id) {
         return productService.getById(id);
-    }
-
-    @Deprecated
-    @GetMapping("/{id}/image")
-    public ResponseEntity<InputStreamResource> getImage(@PathVariable Long id) throws IOException {
-        return imageService.getImage(productService.getById(id).getImageUrl());
     }
 
     @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})

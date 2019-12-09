@@ -52,7 +52,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @Ignore
     public void user_can_login() {
         UserDto userDto = new UserDto("mynameis", "password");
         ResponseEntity<UserDto> response = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
@@ -69,6 +68,30 @@ public class UserControllerTest {
 
         List<User> users = repository.findByUsernameIgnoreCase("mynameis");
         repository.delete(users.get(0));
+    }
+
+    @Test
+    public void cannot_register_null_user() {
+        UserDto userDto = new UserDto(null, null);
+        ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
+        assertTrue(isNotEmpty(entity));
+        assertTrue(entity.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    public void cannot_register_double_user() {
+        List<User> users = repository.findByUsernameIgnoreCase("abc");
+        if (users.size() >= 1) repository.delete(users.get(0));
+
+        UserDto userDto = new UserDto("abc", "pass");
+        ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
+        assertTrue(isNotEmpty(entity));
+        assertTrue(entity.getStatusCode().is2xxSuccessful());
+        users = repository.findByUsernameIgnoreCase("abc");
+        assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("abc")));
+        ResponseEntity<UserDto> entity2 = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
+        assertTrue(isNotEmpty(entity2));
+        assertTrue(entity2.getStatusCode().is4xxClientError());
     }
 
     private HttpEntity<UserDto> entity(UserDto userDto) {
