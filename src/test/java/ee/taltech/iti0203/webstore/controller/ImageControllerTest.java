@@ -2,36 +2,38 @@ package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.model.Category;
 import ee.taltech.iti0203.webstore.model.Product;
-import ee.taltech.iti0203.webstore.pojo.ProductDto;
+import ee.taltech.iti0203.webstore.pojo.ImageDto;
 import ee.taltech.iti0203.webstore.repository.CategoryRepository;
 import ee.taltech.iti0203.webstore.repository.ProductRepository;
+import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import javax.annotation.Resource;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ImageControllerTest {
+
+    @Resource
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private TestRestTemplate template;
@@ -76,14 +78,29 @@ public class ImageControllerTest {
         categoryRepository.deleteAll();
     }
 
+
     @Test
-    @Ignore
-    public void testUpload() throws IOException {
-        FileInputStream img = new FileInputStream(Paths.get("./images/placeholder.jpg").toFile());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        var entity = new HttpEntity<>(img, headers);
-        ResponseEntity<String> resp = template.exchange("/upload/image", HttpMethod.POST, entity, String.class);
+    public void testUpload() {
+        FileSystemResource img = new FileSystemResource(Paths.get("./images/placeholder.jpg").toFile());
+
+        ResponseEntity<ImageDto> resp = template.exchange("/upload/image", HttpMethod.POST, entity(img), ImageDto.class);
         assertNotNull(resp.getBody());
+        ImageDto dto = resp.getBody();
+        assertEquals("placeholder.jpg", dto.getUrl());
+    }
+
+    private HttpEntity<FileSystemResource> entity(FileSystemResource formData) {
+        return new HttpEntity<>(formData, authorizationHeader());
+    }
+
+    private HttpEntity<FileSystemResource> entity() {
+        return new HttpEntity<>(authorizationHeader());
+    }
+
+    public HttpHeaders authorizationHeader() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwtTokenProvider.createTokenForTests("user"));
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return headers;
     }
 }
