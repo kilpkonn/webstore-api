@@ -70,6 +70,28 @@ public class UserControllerTest {
         repository.delete(users.get(0));
     }
 
+    @Test
+    public void cannot_register_null_user() {
+        UserDto userDto = new UserDto(null, null);
+        ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
+        assertTrue(isNotEmpty(entity));
+        assertTrue(entity.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    public void cannot_register_double_user() {
+        UserDto userDto = new UserDto("abc", "pass");
+        ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
+        assertTrue(isNotEmpty(entity));
+        assertTrue(entity.getStatusCode().is2xxSuccessful());
+        List<User> users = repository.findByUsernameIgnoreCase("abc");
+        assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("abc")));
+        ResponseEntity<UserDto> entity2 = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
+        assertTrue(isNotEmpty(entity2));
+        assertTrue(entity2.getStatusCode().is4xxClientError());
+        repository.delete(users.get(0));
+    }
+
     private HttpEntity<UserDto> entity(UserDto userDto) {
         return new HttpEntity<>(userDto, authorizationHeader());
     }
