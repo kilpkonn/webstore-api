@@ -110,7 +110,7 @@ public class ProductControllerTest {
         assertEquals("TestProduct", product.getName());
     }
 
-    @Ignore
+    /*@Ignore
     @Test
     public void can_get_product_image_by_id() {
         ProductDto product = new ProductDto();
@@ -127,7 +127,7 @@ public class ProductControllerTest {
         InputStreamResource image = entity2.getBody();
         assertNotNull(image);
         assertTrue(image.exists());
-    }
+    }*/
 
     @Test
     public void cant_get_product_by_unknown_id() {

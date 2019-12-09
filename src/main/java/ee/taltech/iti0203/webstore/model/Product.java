@@ -48,7 +48,7 @@ public class Product {
     public Product(ProductDto productDto) {
         this.name = productDto.getName();
         this.description = productDto.getDescription();
-        this.imageUrl = productDto.getImageUrl();
+        this.imageUrl = productDto.getImageUrl() != null ? productDto.getImageUrl() : "/placeholder.jpg";
         this.amount = productDto.getAmount();
         this.price = productDto.getPrice();
         if (productDto.getCategory() != null) {

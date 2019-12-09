@@ -52,7 +52,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @Ignore
     public void user_can_login() {
         UserDto userDto = new UserDto("mynameis", "password");
         ResponseEntity<UserDto> response = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
