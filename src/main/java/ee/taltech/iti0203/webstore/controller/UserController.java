@@ -58,11 +58,6 @@ public class UserController {
     return new LoginDetails(myUser.getUsername(), token, toAuthorities(myUser), myUser.getRole());
   }
 
-  @GetMapping("me")
-  public MyUser me() {
-    return UserSessionHolder.getLoggedInUser();
-  }
-
   private List<String> toAuthorities(MyUser myUser) {
     return myUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
   }
