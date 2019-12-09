@@ -38,7 +38,7 @@ logging:
 ---
 
 spring:
-  profiles: testorg.hibernate.dialect.H2Dialect
+  profiles: "test"
 logging:
   file:
     name: logs/test
