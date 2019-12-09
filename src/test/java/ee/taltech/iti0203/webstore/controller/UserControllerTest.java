@@ -8,6 +8,7 @@ import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
 import ee.taltech.iti0203.webstore.security.Role;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Ignore
     public void user_can_login() {
         UserDto userDto = new UserDto("mynameis", "password");
         ResponseEntity<UserDto> response = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
