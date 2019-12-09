@@ -17,6 +17,7 @@ spring:
     properties:
       database-platform: org.hibernate.dialect.H2Dialect
       hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
         temp:
           use_jdbc_metadata_defaults : false
     hibernate:
@@ -37,9 +38,10 @@ logging:
 ---
 
 spring:
-  profiles: test
+  profiles: testorg.hibernate.dialect.H2Dialect
 logging:
-  path: .
-  file: logs/test
+  file:
+    name: logs/test
+    path: .
 
 ---

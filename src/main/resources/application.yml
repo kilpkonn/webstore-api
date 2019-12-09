@@ -30,6 +30,7 @@ spring:
     properties:
       database-platform: org.hibernate.dialect.H2Dialect
       hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
         temp:
           use_jdbc_metadata_defaults: false
     hibernate:
@@ -45,8 +46,9 @@ spring:
 logging:
   level:
     ROOT: DEBUG
-  path: .
-  file: logs/dev
+  file:
+    name: logs/dev
+    path: .
 
 ---
 
@@ -78,5 +80,6 @@ management:
 logging:
   level:
     ROOT: ERROR
-  path: /logs/back
-  file: prod
+  file:
+    name: prod
+    path: /logs/back
