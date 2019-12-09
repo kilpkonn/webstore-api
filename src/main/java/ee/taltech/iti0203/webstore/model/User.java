@@ -26,6 +26,7 @@ public class User {
     private Role role;
 
     public User(UserDto userDto) {
+        this.id = userDto.getId();
         this.setUsername(userDto.getUsername());
         this.setPassword(userDto.getPassword());
         this.setRole(userDto.getRole());
