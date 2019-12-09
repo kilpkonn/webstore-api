@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ImageControllerTest {
+public class UploadControllerTest {
 
     @Resource
     private JwtTokenProvider jwtTokenProvider;

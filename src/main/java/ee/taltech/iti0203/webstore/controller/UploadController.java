@@ -2,7 +2,7 @@ package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.pojo.ImageDto;
 import ee.taltech.iti0203.webstore.security.Roles;
-import ee.taltech.iti0203.webstore.service.ImageService;
+import ee.taltech.iti0203.webstore.service.UploadService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,14 +15,14 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("upload")
-public class ImageController {
+public class UploadController {
 
     @Resource
-    private ImageService imageService;
+    private UploadService uploadService;
 
     @Secured({Roles.ROLE_USER, Roles.ROLE_ADMIN})
     @PostMapping("/image")
     public ImageDto uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) throws IOException {
-        return imageService.uploadImage(file);
+        return uploadService.uploadImage(file);
     }
 }

@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-public class ImageService {
+public class UploadService {
     private static final int MAX_FILE_NAME_LENGTH = 32;
 
     public ImageDto uploadImage(@RequestParam("file") MultipartFile file) throws IOException {

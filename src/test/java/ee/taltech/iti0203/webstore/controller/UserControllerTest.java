@@ -80,16 +80,18 @@ public class UserControllerTest {
 
     @Test
     public void cannot_register_double_user() {
+        List<User> users = repository.findByUsernameIgnoreCase("abc");
+        if (users.size() >= 1) repository.delete(users.get(0));
+
         UserDto userDto = new UserDto("abc", "pass");
         ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
         assertTrue(isNotEmpty(entity));
         assertTrue(entity.getStatusCode().is2xxSuccessful());
-        List<User> users = repository.findByUsernameIgnoreCase("abc");
+        users = repository.findByUsernameIgnoreCase("abc");
         assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("abc")));
         ResponseEntity<UserDto> entity2 = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
         assertTrue(isNotEmpty(entity2));
         assertTrue(entity2.getStatusCode().is4xxClientError());
-        repository.delete(users.get(0));
     }
 
     private HttpEntity<UserDto> entity(UserDto userDto) {
