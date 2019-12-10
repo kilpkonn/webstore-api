@@ -73,7 +73,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void can_change_user_role() {
+    public void admin_can_change_user_role() {
       UserDto dummyUser = new UserDto("roleuser", "password");
       ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(dummyUser), UserDto.class);
       assertTrue(isNotEmpty(entity));
@@ -88,6 +88,24 @@ public class UserControllerTest {
       assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("roleuser")));
 
       assertEquals(Role.UNVERIFIED, users.get(0).getRole());
+    }
+
+    @Test
+    public void other_roles_cant_change_user_role() {
+        UserDto dummyUser = new UserDto("roleuser", "password");
+        ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(dummyUser), UserDto.class);
+        assertTrue(isNotEmpty(entity));
+        assertTrue(entity.getStatusCode().is2xxSuccessful());
+
+        dummyUser.setRole(Role.ADMIN);
+        ResponseEntity<UserDto> response = template.exchange("/users/role", PUT, entity(dummyUser), UserDto.class);
+        assertTrue(response.getStatusCode().is4xxClientError());
+
+        List<User> users = repository.findByUsernameIgnoreCase("roleuser");
+        repository.delete(users.get(0));
+
+        assertEquals("roleuser", users.get(0).getUsername());
+        assertNotEquals(Role.ADMIN, users.get(0).getUsername());
     }
 
     @Test
