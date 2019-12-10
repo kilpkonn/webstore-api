@@ -28,16 +28,16 @@ public class UserService {
         return userRepository.findAll().stream().map(UserInfoDto::new).collect(Collectors.toList());
     }
 
-    public UserDto changeRole(UserDto userDto) {
+    public void changeRole(UserDto userDto) {
         List<User> existing = userRepository.findByUsernameIgnoreCase(userDto.getUsername());
         if (isEmpty(existing)) {
             throw new MyBadRequestException();
         }
-        User user = existing.get(0);
-        User newUser = new User(userDto);
-        user.setRole(newUser.getRole());
-        // user.setId(newUser.getId());
-        return new UserDto(userRepository.save(user));
+        for (User user : existing) {
+            User newUser = new User(userDto);
+            user.setRole(newUser.getRole());
+            userRepository.save(user);
+        }
     }
 
     public UserDto saveUser(UserDto userDto) {
