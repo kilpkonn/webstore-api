@@ -35,13 +35,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String jwtToken = getToken(request);
         if (jwtToken == null) {
-            //passing without authentication to another steps
             chain.doFilter(request, response);
             return;
         }
         String username = getUsername(jwtToken);
         if (username == null) {
-            //passing without authentication to another steps
             chain.doFilter(request, response);
             return;
         }
