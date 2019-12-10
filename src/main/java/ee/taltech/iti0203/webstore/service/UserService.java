@@ -4,6 +4,7 @@ import ee.taltech.iti0203.webstore.exception.MyBadRequestException;
 import ee.taltech.iti0203.webstore.exception.UserExistsException;
 import ee.taltech.iti0203.webstore.model.User;
 import ee.taltech.iti0203.webstore.pojo.UserDto;
+import ee.taltech.iti0203.webstore.pojo.UserInfoDto;
 import ee.taltech.iti0203.webstore.repository.UserRepository;
 import ee.taltech.iti0203.webstore.security.Role;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,8 @@ public class UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
-    public List<UserDto> getUsers() {
-        return userRepository.findAll().stream().map(UserDto::new).collect(Collectors.toList());
+    public List<UserInfoDto> getUsers() {
+        return userRepository.findAll().stream().map(UserInfoDto::new).collect(Collectors.toList());
     }
 
     public UserDto changeRole(UserDto userDto) {

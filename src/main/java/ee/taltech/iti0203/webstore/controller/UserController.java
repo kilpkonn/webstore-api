@@ -3,6 +3,7 @@ package ee.taltech.iti0203.webstore.controller;
 import ee.taltech.iti0203.webstore.exception.MyBadRequestException;
 import ee.taltech.iti0203.webstore.pojo.LoginDetails;
 import ee.taltech.iti0203.webstore.pojo.UserDto;
+import ee.taltech.iti0203.webstore.pojo.UserInfoDto;
 import ee.taltech.iti0203.webstore.security.*;
 import ee.taltech.iti0203.webstore.service.UserService;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class UserController {
 
   @Secured({Roles.ROLE_UNVERIFIED, Roles.ROLE_USER, Roles.ROLE_ADMIN})
   @GetMapping
-  public List<UserDto> users() {
+  public List<UserInfoDto> users() {
     return userService.getUsers();
   }
 
