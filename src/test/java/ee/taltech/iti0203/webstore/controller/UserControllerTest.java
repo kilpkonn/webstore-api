@@ -65,7 +65,7 @@ public class UserControllerTest {
         assertTrue(isNotEmpty(entity.getBody()));
         LoginDetails details = entity.getBody();
         assertEquals(details.getUsername(), userDto.getUsername());
-        assertEquals(details.getRole(), Role.USER);
+        assertEquals(details.getRole(), Role.UNVERIFIED);
         assertTrue(isNotEmpty(details.getToken()));
 
         List<User> users = repository.findByUsernameIgnoreCase("mynameis");
@@ -79,7 +79,7 @@ public class UserControllerTest {
       assertTrue(isNotEmpty(entity));
       assertTrue(entity.getStatusCode().is2xxSuccessful());
 
-      dummyUser.setRole(Role.UNVERIFIED);
+      dummyUser.setRole(Role.USER);
       template.exchange("/users/role", PUT, adminEntity(dummyUser), UserDto.class);
 
       List<User> users = repository.findByUsernameIgnoreCase("roleuser");
@@ -87,7 +87,7 @@ public class UserControllerTest {
       assertTrue(isNotEmpty(users));
       assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("roleuser")));
 
-      assertEquals(Role.UNVERIFIED, users.get(0).getRole());
+      assertEquals(Role.USER, users.get(0).getRole());
     }
 
     @Test

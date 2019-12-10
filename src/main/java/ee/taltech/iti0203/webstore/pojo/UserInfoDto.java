@@ -11,20 +11,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserInfoDto {
     private Long id;
     private String username;
-    private String password;
     private Role role;
 
-    public UserDto(String username, String password) {
+    public UserInfoDto(String username, String password) {
         this.username = username;
-        this.password = password;
     }
 
-    public UserDto(User user) {
+    public UserInfoDto(User user) {
         this.username = user.getUsername();
-        this.password = user.getPassword();
         this.role = user.getRole();
     }
 }
