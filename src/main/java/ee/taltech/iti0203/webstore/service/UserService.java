@@ -50,4 +50,8 @@ public class UserService {
         userRepository.save(user);
         return userDto;
     }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }

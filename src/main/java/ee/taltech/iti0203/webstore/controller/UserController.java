@@ -59,6 +59,12 @@ public class UserController {
         return new LoginDetails(myUser.getUsername(), token, toAuthorities(myUser), myUser.getRole());
     }
 
+    @Secured(Roles.ROLE_ADMIN)
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+    }
+
     private List<String> toAuthorities(MyUser myUser) {
         return myUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
     }
