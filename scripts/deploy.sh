@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Copying placeholder.jpg to ~/images..."
+cp images/placeholder.jpg ~/images
+
 echo "Pulling image"
 docker pull "$CI_REGISTRY_USER"/"$CI_REGISTRY_REPOSITORY":"$CI_COMMIT_SHORT_SHA"
 
