@@ -79,7 +79,6 @@ public class UserControllerTest {
       assertTrue(isNotEmpty(entity));
       assertTrue(entity.getStatusCode().is2xxSuccessful());
 
-      // dummyUser = entity.getBody();
       dummyUser.setRole(Role.UNVERIFIED);
       template.exchange("/users/role", PUT, adminEntity(dummyUser), UserDto.class);
 
@@ -89,8 +88,6 @@ public class UserControllerTest {
       assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("roleuser")));
 
       assertEquals(Role.UNVERIFIED, users.get(0).getRole());
-
-
     }
 
     @Test
