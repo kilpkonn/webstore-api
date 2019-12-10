@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.junit.Assert.*;
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
 
@@ -130,6 +131,16 @@ public class UserControllerTest {
         ResponseEntity<UserDto> entity2 = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
         assertTrue(isNotEmpty(entity2));
         assertTrue(entity2.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    public void can_get_users() {
+        ResponseEntity<List<UserDto>> entity = template.exchange("/users", GET, entity(), LIST_OF_USERS);
+        assertTrue(isNotEmpty(entity));
+        assertTrue(entity.getStatusCode().is2xxSuccessful());
+        assertNotNull(entity.getBody());
+        assertTrue(entity.getBody().size() > 0);
+        assertNotNull(entity.getBody().get(0).getRole());
     }
 
     private HttpEntity<UserDto> entity(UserDto userDto) {
