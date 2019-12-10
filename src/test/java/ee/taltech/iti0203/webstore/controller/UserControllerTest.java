@@ -1,6 +1,7 @@
 package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.model.User;
+import ee.taltech.iti0203.webstore.pojo.CategoryDto;
 import ee.taltech.iti0203.webstore.pojo.LoginDetails;
 import ee.taltech.iti0203.webstore.pojo.UserDto;
 import ee.taltech.iti0203.webstore.repository.UserRepository;
@@ -24,6 +25,7 @@ import java.util.List;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.junit.Assert.*;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -71,6 +73,42 @@ public class UserControllerTest {
     }
 
     @Test
+    public void admin_can_change_user_role() {
+      UserDto dummyUser = new UserDto("roleuser", "password");
+      ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(dummyUser), UserDto.class);
+      assertTrue(isNotEmpty(entity));
+      assertTrue(entity.getStatusCode().is2xxSuccessful());
+
+      dummyUser.setRole(Role.UNVERIFIED);
+      template.exchange("/users/role", PUT, adminEntity(dummyUser), UserDto.class);
+
+      List<User> users = repository.findByUsernameIgnoreCase("roleuser");
+      repository.delete(users.get(0));
+      assertTrue(isNotEmpty(users));
+      assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("roleuser")));
+
+      assertEquals(Role.UNVERIFIED, users.get(0).getRole());
+    }
+
+    @Test
+    public void other_roles_cant_change_user_role() {
+        UserDto dummyUser = new UserDto("roleuser", "password");
+        ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(dummyUser), UserDto.class);
+        assertTrue(isNotEmpty(entity));
+        assertTrue(entity.getStatusCode().is2xxSuccessful());
+
+        dummyUser.setRole(Role.ADMIN);
+        ResponseEntity<UserDto> response = template.exchange("/users/role", PUT, entity(dummyUser), UserDto.class);
+        assertTrue(response.getStatusCode().is4xxClientError());
+
+        List<User> users = repository.findByUsernameIgnoreCase("roleuser");
+        repository.delete(users.get(0));
+
+        assertEquals("roleuser", users.get(0).getUsername());
+        assertNotEquals(Role.ADMIN, users.get(0).getUsername());
+    }
+
+    @Test
     public void cannot_register_null_user() {
         UserDto userDto = new UserDto(null, null);
         ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(userDto), UserDto.class);
@@ -95,16 +133,21 @@ public class UserControllerTest {
     }
 
     private HttpEntity<UserDto> entity(UserDto userDto) {
-        return new HttpEntity<>(userDto, authorizationHeader());
+        return new HttpEntity<>(userDto, authorizationHeader("user"));
+    }
+
+    private HttpEntity<UserDto> adminEntity(UserDto userDto) {
+        return new HttpEntity<>(userDto, authorizationHeader("admin"));
+
     }
 
     private HttpEntity<UserDto> entity() {
-        return new HttpEntity<>(authorizationHeader());
+        return new HttpEntity<>(authorizationHeader("user"));
     }
 
-    public HttpHeaders authorizationHeader() {
+    public HttpHeaders authorizationHeader(String user) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + jwtTokenProvider.createTokenForTests("user"));
+        headers.set("Authorization", "Bearer " + jwtTokenProvider.createTokenForTests(user));
         return headers;
     }
 }
