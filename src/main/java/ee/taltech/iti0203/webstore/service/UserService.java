@@ -46,7 +46,7 @@ public class UserService {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRole(Role.USER);
+        user.setRole(Role.UNVERIFIED);
         userRepository.save(user);
         return userDto;
     }
