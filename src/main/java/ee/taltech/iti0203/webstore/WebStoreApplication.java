@@ -24,11 +24,13 @@ public class WebStoreApplication {
 	@Bean
 	public CommandLineRunner initStore(UserRepository repo) {
 		return (args) -> {
-			User admin = new User();
-	    	admin.setUsername("admin");
-	    	admin.setPassword(passwordEncoder.encode("nimda"));
-	    	admin.setRole(Role.ADMIN);
-	    	repo.save(admin);
+			if (repo.findByUsernameIgnoreCase("admin").size() == 0) {
+				User admin = new User();
+				admin.setUsername("admin");
+				admin.setPassword(passwordEncoder.encode("nimda"));
+				admin.setRole(Role.ADMIN);
+				repo.save(admin);
+			}
 		};
   	}
 }
