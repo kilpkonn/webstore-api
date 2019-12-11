@@ -1,15 +1,11 @@
 package ee.taltech.iti0203.webstore.controller;
 
 import ee.taltech.iti0203.webstore.model.User;
-import ee.taltech.iti0203.webstore.pojo.CategoryDto;
 import ee.taltech.iti0203.webstore.pojo.LoginDetails;
 import ee.taltech.iti0203.webstore.pojo.UserDto;
 import ee.taltech.iti0203.webstore.repository.UserRepository;
 import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
 import ee.taltech.iti0203.webstore.security.Role;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -24,11 +21,10 @@ import java.util.List;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.junit.Assert.*;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserControllerTest {
     @Autowired
@@ -143,6 +139,21 @@ public class UserControllerTest {
         assertNotNull(entity.getBody().get(0).getRole());
     }
 
+    @Test
+    public void admin_can_delete_user() {
+        UserDto dummyUser = new UserDto("deleteduser", "password");
+        ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(dummyUser), UserDto.class);
+        assertTrue(isNotEmpty(entity));
+        assertTrue(entity.getStatusCode().is2xxSuccessful());
+
+        List<User> users = repository.findByUsernameIgnoreCase("deleteduser");
+        Long id = users.get(0).getId();
+        template.exchange("/users/" + id, DELETE, adminEntity(), UserDto.class);
+
+        users = repository.findByUsernameIgnoreCase("deleteduser");
+        assertTrue(users.isEmpty());
+    }
+
     private HttpEntity<UserDto> entity(UserDto userDto) {
         return new HttpEntity<>(userDto, authorizationHeader("user"));
     }
@@ -154,6 +165,10 @@ public class UserControllerTest {
 
     private HttpEntity<UserDto> entity() {
         return new HttpEntity<>(authorizationHeader("user"));
+    }
+
+    private HttpEntity<UserDto> adminEntity() {
+        return new HttpEntity<>(authorizationHeader("admin"));
     }
 
     public HttpHeaders authorizationHeader(String user) {
