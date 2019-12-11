@@ -84,6 +84,7 @@ The customer will interact with the store using an Angular frontend which in tur
 
 #### Nice to haves
 * [x] As a logged in unverified user I can view the users list.
+* [x] As a guest I can view all the available products on the products page and recent announcements on the homepage.
 * [ ] As a customer I can view most popular products.
 * [ ] As an admin I can view statistics of visitors.
 * [ ] As an admin I can pin my current outlet location to contacts map.
