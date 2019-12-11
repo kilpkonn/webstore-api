@@ -21,6 +21,7 @@ public class UserInfoDto {
     }
 
     public UserInfoDto(User user) {
+        this.id = user.getId();
         this.username = user.getUsername();
         this.role = user.getRole();
     }

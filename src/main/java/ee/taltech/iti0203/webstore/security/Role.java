@@ -1,13 +1,13 @@
 package ee.taltech.iti0203.webstore.security;
 
 public enum Role {
-  USER, ADMIN, UNVERIFIED;
+    USER, ADMIN, UNVERIFIED;
 
-  public String toSpringRole() {
-    return "ROLE_" + this.name();
-  }
+    public String toSpringRole() {
+        return "ROLE_" + this.name();
+    }
 
-  public boolean isAdmin() {
-    return this == ADMIN;
-  }
+    public boolean isAdmin() {
+        return this == ADMIN;
+    }
 }

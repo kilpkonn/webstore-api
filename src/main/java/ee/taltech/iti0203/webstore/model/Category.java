@@ -7,8 +7,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Data
 @Entity
