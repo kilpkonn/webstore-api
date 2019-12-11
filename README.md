@@ -13,20 +13,14 @@ Public IP: [13.48.149.235](http://13.48.149.235)
 ## How to run locally:
 
 __Make sure you have:__
-* Docker (or Docker toolbox for windows)
-* Docker-compose
 * Java 11 or newer
 * Gradle
 
-cd to project root <br>
-Start database:
-
-```console
-docker-compose up
-```
+cd to project root  
+  
 Start backend:
 ```console
-gradle bootRun
+./gradlew bootRun
 ```
 You can find api at `localhost:8080/api/{api_name}`
 
