@@ -30,7 +30,7 @@ public class ImageCleaner {
         this.productRepository = productRepository;
     }
 
-    @Scheduled(cron = "0 0 3 1/1 * ? *")
+    @Scheduled(cron = "0 0 3 * * *")
     public void create() {
         LOG.debug("Starting to clean hanging images...");
 
