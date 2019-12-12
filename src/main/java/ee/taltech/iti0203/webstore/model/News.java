@@ -37,5 +37,6 @@ public class News {
     public News(NewsDto newsDto) {
         this.headline = newsDto.getHeadline();
         this.content = newsDto.getContent();
+        this.imageUrl = newsDto.getImageUrl();
     }
 }
