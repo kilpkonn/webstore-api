@@ -15,12 +15,14 @@ public class NewsDto {
     private Long id;
     private String headline;
     private String content;
+    private String imageUrl;
     private Date createdAt;
 
     public NewsDto(News news) {
         this.id = news.getId();
         this.headline = news.getHeadline();
         this.content = news.getContent();
+        this.imageUrl = news.getImageUrl();
         this.createdAt = news.getCreatedAt();
     }
 }

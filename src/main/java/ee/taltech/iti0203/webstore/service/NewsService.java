@@ -47,6 +47,7 @@ public class NewsService {
         News newNews = new News(newsDto);
         news.setContent(newNews.getContent());
         news.setHeadline(newNews.getHeadline());
+        news.setImageUrl(newNews.getImageUrl());
         return new NewsDto(newsRepository.save(news));
     }
 
