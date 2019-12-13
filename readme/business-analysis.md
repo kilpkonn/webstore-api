@@ -80,7 +80,7 @@ The customer will interact with the store using an Angular frontend which in tur
 * [x] As a new employee I can sign up as an unverified user and login using the corresponding forms.
 * [x] As a logged in (verified) user I can add or delete products, announcements etc.
 * [x] As a logged in admin I can change user roles and delete users in addition to adding or deleting products etc.
-* [x] As a logged in (verified) user or admin I can upload images when adding new products.
+* [x] As a logged in (verified) user or admin I can upload an image to go along with a new product or announcement.
 
 #### Nice to haves
 * [x] As a logged in unverified user I can view the users list.
