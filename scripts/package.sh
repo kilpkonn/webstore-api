@@ -36,7 +36,7 @@ export BICyan='\033[1;96m'       # Cyan
 export BIWhite='\033[1;97m'      # White
 
 echo -e "${BICyan}Building container... ${IBlue}"
-docker build -t "${CI_REGISTRY_USER}/${CI_REGISTRY_REPOSITORY}:${CI_COMMIT_SHORT_SHA} ."
+docker build -t "${CI_REGISTRY_USER}/${CI_REGISTRY_REPOSITORY}:${CI_COMMIT_SHORT_SHA}" .
 echo -e "${IGreen}Finished building container!"
 echo -e "${BICyan}Pushing container to DockerHub... ${IBlue}"
 docker push "${CI_REGISTRY_USER}/${CI_REGISTRY_REPOSITORY}"
