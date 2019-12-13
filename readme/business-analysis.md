@@ -76,13 +76,15 @@ The customer will interact with the store using an Angular frontend which in tur
 ### Planned for part 3
 
 #### Must haves
-* [ ] As a user I can comfortably use the website with a mobile device thanks to responsive web design. 
-* [ ] As a customer I can sign up and login using the corresponding forms.
-* [ ] As a logged in customer I can view product ratings and rate products by clicking on stars on a product page.
-* [ ] As a logged in admin I am the only one who can add or delete products, announcements etc.
-* [ ] As a customer I can sort products by rating using a selector on the products page.
+* [x] As a user I can comfortably use the website with a mobile device thanks to responsive web design. 
+* [x] As a new employee I can sign up as an unverified user and login using the corresponding forms.
+* [x] As a logged in (verified) user I can add or delete products, announcements etc.
+* [x] As a logged in admin I can change user roles and delete users in addition to adding or deleting products etc.
+* [x] As a logged in (verified) user or admin I can upload an image to go along with a new product or announcement.
 
 #### Nice to haves
+* [x] As a logged in unverified user I can view the users list.
+* [x] As a guest I can view all the available products on the products page and recent announcements on the homepage.
 * [ ] As a customer I can view most popular products.
 * [ ] As an admin I can view statistics of visitors.
 * [ ] As an admin I can pin my current outlet location to contacts map.
