@@ -19,11 +19,12 @@ public class UploadService {
     public ImageDto uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename()).replace(' ', '_');
         fileName = fileName.length() > MAX_FILE_NAME_LENGTH ? fileName.substring(fileName.length() - MAX_FILE_NAME_LENGTH) : fileName;
-        Path path = Paths.get("./images/%s", fileName);
+        Path path = Paths.get("./images/" + fileName);
 
         int i = 0;
         while (path.toFile().exists())
-            path = Paths.get("./images/%s", String.format("%s(%d)",fileName, ++i));
+            path = Paths.get("./images/" + String.format("%s(%d)%s",
+                    fileName.substring(0, fileName.indexOf('.')), ++i, fileName.substring(fileName.indexOf('.'))));
 
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         return new ImageDto(fileName);
