@@ -65,7 +65,7 @@ docker run -e "SPRING_PROFILES_ACTIVE=prod" \
 echo -e "${Green}"
 docker container ls -a -s
 
-echo "${BICyan}Removing old images${Yellow}"
+echo -e "${BICyan}Removing old images${Yellow}"
 docker image ls
 echo -e "${Purple}"
 docker system prune -a -f # Needed for unnamed images / containers / etc

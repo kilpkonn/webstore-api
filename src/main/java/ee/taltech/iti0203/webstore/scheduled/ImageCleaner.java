@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,24 +33,28 @@ public class ImageCleaner {
 
     @Scheduled(cron = "0 0 3 * * *")
     public void create() {
-        LOG.debug("Starting to clean hanging images...");
+        LOG.info("Starting to clean hanging images...");
 
         List<String> usedImages = Stream.concat(
                 newsRepository.findAll().stream().map(News::getImageUrl),
                 productRepository.findAll().stream().map(Product::getImageUrl))
                 .distinct()
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
         try (Stream<Path> paths = Files.walk(Paths.get("./images/"))) {
-            paths.filter(Files::isRegularFile)
-                    .filter(f -> !usedImages.contains(f.toString()))
-                    .peek(p -> LOG.debug(p.toString()))
-                    .forEach(f -> f.toFile().delete());
+            long count = paths.filter(Files::isRegularFile)
+                    .filter(f -> !usedImages.contains(f.getFileName().toString()))
+                    .filter(f -> !f.getFileName().toString().equals("placeholder.jpg"))
+                    .peek(f -> LOG.debug(f.toString()))
+                    .map(f -> f.toFile().delete())
+                    .count();
+            LOG.info(String.format("Deleted %d image(s)!", count));
         } catch (IOException e) {
             e.printStackTrace();
             LOG.error(e.getMessage());
         }
-        LOG.debug("Cleaning images finished!");
+        LOG.info("Cleaning images finished!");
     }
 
 }
