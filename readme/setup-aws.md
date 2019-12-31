@@ -3,6 +3,7 @@
 ## Table of Contents
 * [Get EC2 server](#get-ec2-server)
     * [Choose region](#choose-region)
+    * [Setup EC2](#setup-ec2)
 
 
 ## Get EC2 server
@@ -28,3 +29,11 @@ This will allow the world to see your web page.
 10. Launch
     * Create new key pair
     * Download key and store it at `~/.ssh/id_webstore_server` or similar location
+### Convert .pem private key to ppk (Windows only)
+Putty doesn't support pem, so you have to convert key with `PuTTYgen`
+1. Open PuTTYgen
+2. Under `Type of key to generate`, choose `RSA`
+3. Choose `Load` and select `.pem` file previously downloaded.
+4. Click ` Save private key` and you should be good to go!
+
+### Add keys for another device
