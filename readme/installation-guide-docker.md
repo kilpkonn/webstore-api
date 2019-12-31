@@ -339,10 +339,12 @@ mkdir /home/<user>/images
 
 ## Gitlab variables setup
 **You also need to set following variables under Settings > CI/CD > Variables:**
- - CI_REGISTRY_USER - user that controls docker repository (currently `kilpkonn`)
- - CI_REGISTRY_REPOSITORY - repository that will contain your docker files 
- (currently `webstore-api` for back and `webstore-front` for front)
- - CI_REGISTRY_TOKEN - token to sign into docker hub
+ - **CI_REGISTRY_USER** - user that controls docker repository _(currently `kilpkonn`)_
+ - **CI_REGISTRY_REPOSITORY** - repository that will contain your docker files 
+ _(currently `webstore-api` for back and `webstore-front` for front)_
+ - **CI_REGISTRY_TOKEN** - token to sign into docker hub
+ - **CI_DEPLOY_USER** - user that deploys app _(pi-runner for example)_
+ - **CI_DEPLOY_SERVER** - ip/dns of server your gonna deploy to
  
 ## Custom config setup
 Copy `application.yml` to server
