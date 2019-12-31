@@ -182,6 +182,14 @@ sudo usermod -aG docker gitlab-runner
 sudo -u gitlab-runner -H docker info
 ```
 
+### Fix cd not working for Rasperry
+See: https://gitlab.com/gitlab-org/gitlab-runner/issues/4092
+```bash
+sudo nano /home/gitlab-runner/.bash_logout
+# Comment out the part that clears console
+# Save and exit
+```
+
 ### Generate ssh keys for deployment
 Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.  
 First enter:
@@ -331,10 +339,12 @@ mkdir /home/<user>/images
 
 ## Gitlab variables setup
 **You also need to set following variables under Settings > CI/CD > Variables:**
- - CI_REGISTRY_USER - user that controls docker repository (currently `kilpkonn`)
- - CI_REGISTRY_REPOSITORY - repository that will contain your docker files 
- (currently `webstore-api` for back and `webstore-front` for front)
- - CI_REGISTRY_TOKEN - token to sign into docker hub
+ - **CI_REGISTRY_USER** - user that controls docker repository _(currently `kilpkonn`)_
+ - **CI_REGISTRY_REPOSITORY** - repository that will contain your docker files 
+ _(currently `webstore-api` for back and `webstore-front` for front)_
+ - **CI_REGISTRY_TOKEN** - token to sign into docker hub
+ - **CI_DEPLOY_USER** - user that deploys app _(pi-runner for example)_
+ - **CI_DEPLOY_SERVER** - ip/dns of server your gonna deploy to
  
 ## Custom config setup
 Copy `application.yml` to server
