@@ -51,9 +51,9 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
 
     echo -e "${Yellow}"
     docker container ls -a -s
-    echo -e "${BICyan}Stopping container:${BIYellow} $DATABASE_CONTAINER_NAME ${Purple}"
+    echo -e "${BICyan}Stopping container:${BIYellow} $DATABASE_CONTAINER_NAME ${IPurple}"
     docker stop "$DATABASE_CONTAINER_NAME" || true
-    echo -e "${BICyan}Removing container:${BIYellow} $DATABASE_CONTAINER_NAME ${Purple}"
+    echo -e "${BICyan}Removing container:${BIYellow} $DATABASE_CONTAINER_NAME ${IPurple}"
     docker rm "$DATABASE_CONTAINER_NAME" || true
 
     echo -e "${Green}"
@@ -76,7 +76,7 @@ if [ ! "$(docker ps -q -f name="$DATABASE_CONTAINER_NAME")" ]; then
         -d "postgres" \
         # -u "postgres" # Will own data folders
 
-    echo -e "${Green}"
+    echo -e "${Yellow}"
     docker container ls -a -s
     echo -e "${BIGreen}Generated new password for database, make sure to write it down!${BPurple}"
     echo "$DB_PASS"
