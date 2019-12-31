@@ -229,11 +229,10 @@ Later we will copy this public key to deployment server.
 ## Deployment server setup
 
 ### Add user that will deploy app
-Add user _(we are using gitlab-runner)_ for simplicity. Make sure to choose strong password.  
-Rest of the info can be
-left blank
+Add user _(we are using pi-runner)_ for simplicity. Make sure to choose strong password.  
+Rest of the info can be left blank
 ```bash
-adduser username
+sudo adduser username
 ```
 
 ### Install docker for deployment server
@@ -308,11 +307,12 @@ Whilst being ssh-d into gitlab-runner server run following:
 `user` is the user that will deploy the app (previously created) and `host` is the ip od deployment server.
 We will be using gitlab-runner as the user.
 ```bash
-ssh-copy-id -i ~/.ssh/id_webstore user@host  
+# Only works if password login is enabled
+ssh-copy-id -i ~/.ssh/id_deploy user@host  
 ```
 Test the new key
 ```bash
-ssh -i ~/.ssh/id_webstore user@host
+ssh -i ~/.ssh/id_deploy user@host
 ```
 
 ### Create files to persist docker containers data
@@ -363,7 +363,7 @@ sudo docker stop postgres-container
 # You need to delete contents postgres-data after that as it will otherwise persist old password
 ```
 Save the password to custom config
-```
+```bash
 # Copy the password printed by `run_postgres.sh`
 # Then edit previously set up application.yml to save the password (change testPassword to one you copied)
 sudo nano /home/<user>/config/application.yml
