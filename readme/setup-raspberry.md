@@ -7,7 +7,7 @@ I went with manual installation, so installation wih NOOBS is not tested.
     * [Download SD card formatter](#download-sd-card-formatter)
     * [Format card](#format-card)
     * [Download NOOBS](#download-and-extract-noobs)
-* [Install it manually](#manual-installation)
+* [Manual installation](#manual-installation)
     * [Download image](#download-image)
     * [Download balenaEtcher](#download-balenaetcher)
     * [Flash SD card](#flash-sd-card)
