@@ -182,6 +182,14 @@ sudo usermod -aG docker gitlab-runner
 sudo -u gitlab-runner -H docker info
 ```
 
+### Fix cd not working for Rasperry
+See: https://gitlab.com/gitlab-org/gitlab-runner/issues/4092
+```bash
+sudo nano /home/gitlab-runner/.bash_logout
+# Comment out the part that clears console
+# Save and exit
+```
+
 ### Generate ssh keys for deployment
 Tutorial from [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) guide.  
 First enter:
