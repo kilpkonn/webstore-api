@@ -38,8 +38,6 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
 ```bash
 ssh -i KEYFILE ubuntu@PUBLIC_DNS
 ```
-[Lecturer keys](https://gitlab.cs.ttu.ee/olpahh/setup-guides/blob/master/iti0203-project/ssh-keys) have been added to user ubuntu as well.
-
   
 ### Update server
   
@@ -98,8 +96,9 @@ sudo gitlab-runner start
 ### Register gitlab runner
 ```bash
 # Register runner 
-# URL for registration: https://gitlab.cs.ttu.ee/
-# Token for backend: Xg9t4qmnggHzJEdTtxur
+# URL for registration: https://gitlab.com/
+# Token can be found in backend repo
+# Tags: webstore
 # Executor is shell
 sudo gitlab-runner register
 ```
