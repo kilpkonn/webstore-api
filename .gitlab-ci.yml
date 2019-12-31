@@ -55,7 +55,7 @@ deploy webstore:
   tags:
     - webstore
   script:
-    - bash ./scripts/deploy.sh
+    - echo "TODO"
   only:
     - master
     - tags

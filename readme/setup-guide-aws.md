@@ -4,6 +4,9 @@
 * [Get EC2 server](#get-ec2-server)
     * [Choose region](#choose-region)
     * [Setup EC2](#setup-ec2)
+    * [Convert .pem keys](#convert-pem-private-key-to-ppk-windows-only)
+* [Add keys for another device](#add-keys-for-another-device)
+    
 
 
 ## Get EC2 server
@@ -36,4 +39,12 @@ Putty doesn't support pem, so you have to convert key with `PuTTYgen`
 3. Choose `Load` and select `.pem` file previously downloaded.
 4. Click ` Save private key` and you should be good to go!
 
-### Add keys for another device
+## Add keys for another device
+You can generate keys with 
+```bash
+ssh-keygen
+```
+Copy public key
+```bash
+ssh-copy-id -i ~/.ssh/id_webstore_server ubuntu@aws_ec2_address_that_is_really_long
+```

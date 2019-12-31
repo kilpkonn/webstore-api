@@ -1,10 +1,5 @@
 # Installation guide for the server 
 
-**Note that we are currently running gitlab-runner in deployment server**
-When we have Rasperry (or something else) set up for gitlab-runner we can move gitlab-runner there.
-Deployment stage in pipeline has to be executed in deployment server so when we have 2 servers ready
-will change pipeline's last stage.
-
 ## Information
 
 Domain: [https://www.flowerstore.ee](https://www.flowerstore.ee)  
@@ -41,8 +36,6 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
 ```bash
 ssh -i KEYFILE ubuntu@PUBLIC_DNS
 ```
-[Lecturer keys](https://gitlab.cs.ttu.ee/olpahh/setup-guides/blob/master/iti0203-project/ssh-keys) have been added to
- user ubuntu as well.  
 
 ### Update server
   
@@ -121,8 +114,9 @@ sudo apt install gitlab-runner
 ### Register gitlab runner
 ```bash
 # Register runner 
-# URL for registration: https://gitlab.cs.ttu.ee/
-# Token for backend: Xg9t4qmnggHzJEdTtxur
+# URL for registration: https://gitlab.com/
+# Token can be found in backend repo
+# Tags: webstore
 # Executor is shell
 sudo gitlab-runner register
 ```
@@ -200,7 +194,7 @@ Output
 Generating public/private rsa key pair.
 Enter file in which to save the key (/your_home/.ssh/id_rsa):
 ```
-Enter `id_webstore` to save the key pair into the .ssh/ subdirectory in your home directory with name `id_webstore`  
+Enter `id_deploy` to save the key pair into the .ssh/ subdirectory in your home directory with name `id_deploy`  
 After that you should then see the following prompt:
 ```bash
 Output
@@ -235,11 +229,10 @@ Later we will copy this public key to deployment server.
 ## Deployment server setup
 
 ### Add user that will deploy app
-Add user _(we are using gitlab-runner)_ for simplicity. Make sure to choose strong password.  
-Rest of the info can be
-left blank
+Add user _(we are using pi-runner)_ for simplicity. Make sure to choose strong password.  
+Rest of the info can be left blank
 ```bash
-adduser username
+sudo adduser username
 ```
 
 ### Install docker for deployment server
@@ -314,11 +307,12 @@ Whilst being ssh-d into gitlab-runner server run following:
 `user` is the user that will deploy the app (previously created) and `host` is the ip od deployment server.
 We will be using gitlab-runner as the user.
 ```bash
-ssh-copy-id -i ~/.ssh/id_webstore user@host  
+# Only works if password login is enabled
+ssh-copy-id -i ~/.ssh/id_deploy user@host  
 ```
 Test the new key
 ```bash
-ssh -i ~/.ssh/id_webstore user@host
+ssh -i ~/.ssh/id_deploy user@host
 ```
 
 ### Create files to persist docker containers data
@@ -369,7 +363,7 @@ sudo docker stop postgres-container
 # You need to delete contents postgres-data after that as it will otherwise persist old password
 ```
 Save the password to custom config
-```
+```bash
 # Copy the password printed by `run_postgres.sh`
 # Then edit previously set up application.yml to save the password (change testPassword to one you copied)
 sudo nano /home/<user>/config/application.yml
