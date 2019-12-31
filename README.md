@@ -28,7 +28,7 @@ You can find api at `localhost:8080/api/{api_name}`
 Analysis can be found in [business-analysis.md](readme/business-analysis.md)
 
 ## Installation Guide for server / gitlab runner
-Setup guide for raspberry can be found in
+Setup guide for Raspberry can be found in
 [setup-guide-raspberry.md](readme/setup-guide-raspberry.md)  
 Setup guide for AWS can be found in
 [setup-guide-aws.md](readme/setup-guide-aws.md)  

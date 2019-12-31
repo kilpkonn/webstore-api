@@ -111,3 +111,15 @@ Test the new key
 ```bash
 ssh -i ~/.ssh/id_pi-runner pi@raspberrypi.local  
 ```
+
+### Disable password login
+```bash
+# Edit ssh config
+sudo nano /etc/ssh/sshd_config
+# Rplace "#PasswordAuthentication yes" with "PasswordAuthentication no"
+# Save and exit
+
+# Restart ssh service
+sudo service ssh restart
+```
+**Make sure you don't loose your keys as otherwise you can't access your pi any more!**
