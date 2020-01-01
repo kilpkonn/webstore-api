@@ -55,7 +55,7 @@ deploy webstore:
   tags:
     - webstore
   script:
-    - ssh CI_DEPLOY_USER@CI_DEPLOY_SERVER 'bash -s' < ./scripts/deploy.sh
+    - ssh $CI_DEPLOY_USER@$CI_DEPLOY_SERVER 'bash -s' < ./scripts/deploy.sh
   only:
     - master
     - tags
