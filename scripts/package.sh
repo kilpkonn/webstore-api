@@ -48,7 +48,8 @@ ${CI_REGISTRY_USER}/${CI_REGISTRY_REPOSITORY}:${CI_COMMIT_SHORT_SHA}"
 echo -e "${BICyan}Removing old images${Yellow}"
 docker image ls
 echo -e "${Purple}"
-docker system prune -a -f # Needed for unnamed images / containers / etc
+# docker system prune -a -f # Needed for unnamed images / containers / etc
+docker rmi $'(docker images -q "$CI_REGISTRY_USER"/"$CI_REGISTRY_REPOSITORY")'
 echo -e "${Green}"
 docker image ls
 echo -e "${Color_Off}"
