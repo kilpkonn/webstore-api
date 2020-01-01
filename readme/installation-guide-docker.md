@@ -17,6 +17,8 @@ Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
     * [Install gitlab runner](#install-gitlab-runner)
     * [Register gitlab runner](#register-gitlab-runner)
     * [Install docker](#install-docker)
+    * [Fix cd not working](#fix-cd-not-working-for-rasperry)
+    * [Enable experimental features for docker](#enable-experimental-features-for-docker)
     * [Generate ssh keys for deployment](#generate-ssh-keys-for-deployment)
 * [Deployment server setup](#deployment-server-setup)
     * [Add user to deploy](#add-user-that-will-deploy-app)
@@ -180,6 +182,22 @@ sudo docker system prune -a
 sudo usermod -aG docker gitlab-runner
 # Verify that gitlab-runner has access to Docker
 sudo -u gitlab-runner -H docker info
+```
+
+### Enable experimental features for docker
+```bash
+# Edit docker daemon service
+sudo systemctl edit docker
+# Paste following:
+
+# [Service]
+# ExecStart=
+# ExecStart=/usr/bin/dockerd -H fd:// --experimental=true
+
+# Save and exit
+# Reload service
+systemctl daemon-reload
+sudo service docker restart
 ```
 
 ### Fix cd not working for Rasperry
