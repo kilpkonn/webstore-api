@@ -44,7 +44,7 @@ docker container ls -a -s
 docker stop "$APP_CONTAINER_NAME" || true
 echo -e "${BICyan}Removing${IBlue} $APP_CONTAINER_NAME ${Purple}"
 docker rm "$APP_CONTAINER_NAME" || true
-echo -e "${Purple}"
+echo -e "${Yellow}"
 docker container ls -a -s
 
 echo -e "${BICyan}Creating internal network bridge for proxy-back-database (if none exsists)${IRed}"
