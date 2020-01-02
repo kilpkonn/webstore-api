@@ -8,7 +8,6 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - export APP_CONTAINER_NAME=webstore-back-container
   - export DATABASE_CONTAINER_NAME=postgres-container
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_TOKEN
 
 build webstore:
   stage: build
@@ -45,6 +44,7 @@ package webstore:
   tags:
     - webstore
   script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_TOKEN
     - bash ./scripts/package.sh
   only:
     - master
