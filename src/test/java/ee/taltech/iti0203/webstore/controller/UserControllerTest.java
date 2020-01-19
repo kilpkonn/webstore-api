@@ -3,6 +3,7 @@ package ee.taltech.iti0203.webstore.controller;
 import ee.taltech.iti0203.webstore.model.User;
 import ee.taltech.iti0203.webstore.pojo.LoginDetails;
 import ee.taltech.iti0203.webstore.pojo.UserDto;
+import ee.taltech.iti0203.webstore.pojo.UserInfoDto;
 import ee.taltech.iti0203.webstore.repository.UserRepository;
 import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
 import ee.taltech.iti0203.webstore.security.Role;
@@ -36,7 +37,7 @@ public class UserControllerTest {
     @Resource
     private JwtTokenProvider jwtTokenProvider;
 
-    private static final ParameterizedTypeReference<List<UserDto>> LIST_OF_USERS = new ParameterizedTypeReference<>() {
+    private static final ParameterizedTypeReference<List<UserInfoDto>> LIST_OF_USERS = new ParameterizedTypeReference<>() {
     };
 
     @Test
@@ -131,12 +132,14 @@ public class UserControllerTest {
 
     @Test
     public void can_get_users() {
-        ResponseEntity<List<UserDto>> entity = template.exchange("/users", GET, entity(), LIST_OF_USERS);
+        ResponseEntity<List<UserInfoDto>> entity = template.exchange("/users", GET, entity(), LIST_OF_USERS);
         assertTrue(isNotEmpty(entity));
         assertTrue(entity.getStatusCode().is2xxSuccessful());
         assertNotNull(entity.getBody());
         assertTrue(entity.getBody().size() > 0);
+        assertNotNull(entity.getBody().get(0).getId());
         assertNotNull(entity.getBody().get(0).getRole());
+        assertNotNull(entity.getBody().get(0).getUsername());
     }
 
     @Test
