@@ -16,10 +16,6 @@ public class UserInfoDto {
     private String username;
     private Role role;
 
-    public UserInfoDto(String username, String password) {
-        this.username = username;
-    }
-
     public UserInfoDto(User user) {
         this.id = user.getId();
         this.username = user.getUsername();

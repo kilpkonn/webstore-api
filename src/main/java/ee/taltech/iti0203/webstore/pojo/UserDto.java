@@ -1,6 +1,5 @@
 package ee.taltech.iti0203.webstore.pojo;
 
-import ee.taltech.iti0203.webstore.model.User;
 import ee.taltech.iti0203.webstore.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,9 +21,9 @@ public class UserDto {
         this.password = password;
     }
 
-    public UserDto(User user) {
+    /*public UserDto(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.role = user.getRole();
-    }
+    }*/
 }
