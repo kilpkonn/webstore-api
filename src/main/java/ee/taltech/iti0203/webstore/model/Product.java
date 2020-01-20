@@ -25,8 +25,11 @@ public class Product {
     private String name;
     private String description;
     private Integer amount;
-    private Double price;
 
+    @Column(name = "price_low")
+    private Double priceLow;
+    @Column(name = "price_high")
+    private Double priceHigh;
     @Column(name = "image_url")
     private String imageUrl;
 
@@ -38,11 +41,12 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String description, Integer amount, Double price) {
+    public Product(String name, String description, Integer amount, Double priceLow, Double priceHigh) {
         this.name = name;
         this.description = description;
         this.amount = amount;
-        this.price = price;
+        this.priceLow = priceLow;
+        this.priceHigh = priceHigh;
     }
 
     public Product(ProductDto productDto) {
@@ -50,7 +54,8 @@ public class Product {
         this.description = productDto.getDescription();
         this.imageUrl = productDto.getImageUrl() != null ? productDto.getImageUrl() : "/placeholder.jpg";
         this.amount = productDto.getAmount();
-        this.price = productDto.getPrice();
+        this.priceLow = productDto.getPriceLow();
+        this.priceHigh = productDto.getPriceHigh();
         if (productDto.getCategory() != null) {
             this.category = new Category(productDto.getCategory());
         }

@@ -56,13 +56,13 @@ public class ProductControllerTest {
         repository.deleteAll();
         categoryRepository.deleteAll();
 
-        var p1 = new Product("Agapanthus", "Agapanthus desc", 5, 20.55);
-        var p2 = new Product("Bells of Ireland", "Bells of Ireland desc", 10, 9.99);
-        var p3 = new Product("Carnation", "Carnation desc", 10, 9.11);
-        var p4 = new Product("Daffodil", "Daffodil desc", 3, 3.50);
-        var p5 = new Product("Ornithogalum", "Ornithogalum desc", 101, 6.50);
-        var p6 = new Product("Violet", "Violet desc", 0, 2.20);
-        var p7 = new Product("Chrysanthemum", "Carnation desc", 10, 2.99);
+        var p1 = new Product("Agapanthus", "Agapanthus desc", 5, 20.55, 20.55);
+        var p2 = new Product("Bells of Ireland", "Bells of Ireland desc", 10, 9.99, 9.99);
+        var p3 = new Product("Carnation", "Carnation desc", 10, 9.11, 9.11);
+        var p4 = new Product("Daffodil", "Daffodil desc", 3, 3.50, 3.50);
+        var p5 = new Product("Ornithogalum", "Ornithogalum desc", 101, 6.50, 6.50);
+        var p6 = new Product("Violet", "Violet desc", 0, 2.20, 2.20);
+        var p7 = new Product("Chrysanthemum", "Carnation desc", 10, 2.99, 2.99);
 
         var cat1 = new Category("red");
         p3.setCategory(cat1);
@@ -99,7 +99,8 @@ public class ProductControllerTest {
         product.setName("TestProduct");
         product.setDescription("Random");
         product.setAmount(10);
-        product.setPrice(5.0);
+        product.setPriceLow(5.0);
+        product.setPriceHigh(5.0);
         ResponseEntity<ProductDto> entity = template.exchange("/products", POST, entity(product), ProductDto.class);
         assertNotNull(entity.getBody());
 
@@ -179,7 +180,8 @@ public class ProductControllerTest {
         product.setName("TestProduct");
         product.setDescription("Random");
         product.setAmount(10);
-        product.setPrice(5.0);
+        product.setPriceLow(5.0);
+        product.setPriceHigh(5.0);
         ResponseEntity<ProductDto> entity = template.exchange("/products", POST, entity(product), ProductDto.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
         ProductDto prod = entity.getBody();
@@ -198,7 +200,8 @@ public class ProductControllerTest {
         product.setName("TestProduct");
         product.setDescription("Random");
         product.setAmount(10);
-        product.setPrice(5.0);
+        product.setPriceLow(5.0);
+        product.setPriceHigh(5.0);
         product.setCategory(categoryDto);
 
         ResponseEntity<ProductDto> entity = template.exchange("/products", POST, entity(product), ProductDto.class);
