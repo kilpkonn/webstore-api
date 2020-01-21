@@ -26,7 +26,7 @@ public class WebStoreApplication {
     @Bean
     public CommandLineRunner initStore(UserRepository repo) {
         return (args) -> {
-            if (repo.findByUsernameIgnoreCase("admin").size() == 0) {
+            if (repo.findAll().size() == 0) {
                 User admin = new User();
                 admin.setUsername("admin");
                 admin.setPassword(passwordEncoder.encode("nimda"));
