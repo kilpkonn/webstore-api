@@ -7,8 +7,8 @@ Copy it's contents to `.gitlab-ci.yml` (the one that's in project root) to build
 ## Information
 
 Domain: [https://www.flowerstore.ee](https://www.flowerstore.ee)  
-Public IP: [13.48.149.235](http://13.48.149.235)  
-Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
+Public IP: [13.53.135.244](http://13.53.135.244)  
+Public DNS: **ec2-13-53-135-244.eu-north-1.compute.amazonaws.com**
 
 ## Table of Contents
 * [Initial setup](#initial-setup)

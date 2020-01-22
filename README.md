@@ -7,7 +7,7 @@
 A RESTful API backend for a webstore created for ITI0203 course.
 
 **Currently deployed to: [https://www.flowerstore.ee](https://www.flowerstore.ee)**  
-Public IP: [13.48.149.235](http://13.48.149.235) 
+Public IP: [13.53.135.244](http://13.53.135.244) 
 
 ## How to run locally:
 
