@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,8 +23,14 @@ import javax.annotation.Resource;
 import java.util.List;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
-import static org.junit.Assert.*;
-import static org.springframework.http.HttpMethod.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -72,20 +80,20 @@ public class UserControllerTest {
 
     @Test
     public void admin_can_change_user_role() {
-      UserDto dummyUser = new UserDto("roleuser", "password");
-      ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(dummyUser), UserDto.class);
-      assertTrue(isNotEmpty(entity));
-      assertTrue(entity.getStatusCode().is2xxSuccessful());
+        UserDto dummyUser = new UserDto("roleuser", "password");
+        ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(dummyUser), UserDto.class);
+        assertTrue(isNotEmpty(entity));
+        assertTrue(entity.getStatusCode().is2xxSuccessful());
 
-      dummyUser.setRole(Role.USER);
-      template.exchange("/users/role", PUT, adminEntity(dummyUser), UserDto.class);
+        dummyUser.setRole(Role.USER);
+        template.exchange("/users/role", PUT, adminEntity(dummyUser), UserDto.class);
 
-      List<User> users = repository.findByUsernameIgnoreCase("roleuser");
-      repository.delete(users.get(0));
-      assertTrue(isNotEmpty(users));
-      assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("roleuser")));
+        List<User> users = repository.findByUsernameIgnoreCase("roleuser");
+        assertTrue(isNotEmpty(users));
+        assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("roleuser")));
 
-      assertEquals(Role.USER, users.get(0).getRole());
+        assertEquals(Role.USER, users.get(0).getRole());
+        repository.delete(users.get(0));
     }
 
     @Test
@@ -132,6 +140,7 @@ public class UserControllerTest {
 
     @Test
     public void can_get_users() {
+        repository.findAll().forEach(System.out::println);
         ResponseEntity<List<UserInfoDto>> entity = template.exchange("/users", GET, entity(), LIST_OF_USERS);
         assertTrue(isNotEmpty(entity));
         assertTrue(entity.getStatusCode().is2xxSuccessful());

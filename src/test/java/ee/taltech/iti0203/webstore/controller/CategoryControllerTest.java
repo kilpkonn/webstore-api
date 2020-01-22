@@ -103,8 +103,9 @@ public class CategoryControllerTest {
         assertNotNull(entity.getBody());
         assertNotNull(entity.getBody().getName());
 
-        template.exchange("/categories/3", HttpMethod.DELETE, entity(), CategoryDto.class);
-        entity = template.exchange("/categories/3", HttpMethod.GET, entity(), CategoryDto.class);
+        template.exchange(String.format("/categories/%d", entity.getBody().getId()), HttpMethod.DELETE, entity(),
+                CategoryDto.class);
+        entity = template.exchange(String.format("/categories/%d", entity.getBody().getId()), HttpMethod.GET, entity(), CategoryDto.class);
         assertNotNull(entity);
         assertNotNull(entity.getBody());
         assertNull(entity.getBody().getName());

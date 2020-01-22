@@ -130,7 +130,7 @@ public class NewsControllerTest {
         NewsDto newNews = entity.getBody();
         assertNotNull(newNews);
         assertEquals("New Headline!", newNews.getHeadline());
-        template.exchange("/news/4", HttpMethod.DELETE, entity(), NewsDto.class);
+        template.exchange(String.format("/news/%d", id), HttpMethod.DELETE, entity(), NewsDto.class);
     }
 
     @Test
