@@ -7,6 +7,8 @@ import ee.taltech.iti0203.webstore.pojo.UserInfoDto;
 import ee.taltech.iti0203.webstore.repository.UserRepository;
 import ee.taltech.iti0203.webstore.security.JwtTokenProvider;
 import ee.taltech.iti0203.webstore.security.Role;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -39,6 +42,9 @@ public class UserControllerTest {
     @Autowired
     private TestRestTemplate template;
 
+    @Resource
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     UserRepository repository;
 
@@ -47,6 +53,36 @@ public class UserControllerTest {
 
     private static final ParameterizedTypeReference<List<UserInfoDto>> LIST_OF_USERS = new ParameterizedTypeReference<>() {
     };
+
+    @Before
+    public void setUp() {
+        repository.deleteAll();
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword(passwordEncoder.encode("nimda"));
+        admin.setRole(Role.ADMIN);
+        User user = new User();
+        user.setUsername("user");
+        user.setPassword(passwordEncoder.encode("user"));
+        user.setRole(Role.USER);
+        repository.save(admin);
+        repository.save(user);
+    }
+
+    @After
+    public void cleanUp() {
+        repository.deleteAll();
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword("nimda");
+        admin.setRole(Role.ADMIN);
+        User user = new User();
+        user.setUsername("user");
+        user.setPassword("user");
+        user.setRole(Role.USER);
+        repository.save(admin);
+        repository.save(user);
+    }
 
     @Test
     public void can_register_new_user() {
