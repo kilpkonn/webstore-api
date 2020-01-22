@@ -80,6 +80,8 @@ public class UserControllerTest {
 
     @Test
     public void admin_can_change_user_role() {
+        repository.findByUsernameIgnoreCase("roleuser").forEach(u -> repository.delete(u));
+
         UserDto dummyUser = new UserDto("roleuser", "password");
         ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(dummyUser), UserDto.class);
         assertTrue(isNotEmpty(entity));
@@ -153,6 +155,8 @@ public class UserControllerTest {
 
     @Test
     public void admin_can_delete_user() {
+        repository.findByUsernameIgnoreCase("deleteuser").forEach(u -> repository.delete(u));
+
         UserDto dummyUser = new UserDto("deleteduser", "password");
         ResponseEntity<UserDto> entity = template.exchange("/users/register", POST, new HttpEntity<>(dummyUser), UserDto.class);
         assertTrue(isNotEmpty(entity));
