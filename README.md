@@ -8,7 +8,7 @@ _Originally created in ITI0203 course (2019)_
 A RESTful API backend for a webstore created for ITI0203 course.
 Frontend can be found [here](https://github.com/kilpkonn/webstore-front)
 
-**Currently deployed to: [https://www.flowerstore.ee](https://www.flowerstore.ee)**  
+**Currently deployed to: [https://www.taimetuba.ee](https://www.taimetuba.ee)**  
 Public IP: [13.53.135.244](http://13.53.135.244) 
 
 ## How to run locally:
