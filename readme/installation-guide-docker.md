@@ -2,9 +2,9 @@
 
 ## Information
 
-Domain: [https://www.flowerstore.ee](https://www.flowerstore.ee)  
-Public IP: [13.48.149.235](http://13.48.149.235)  
-Public DNS: **ec2-13-48-149-235.eu-north-1.compute.amazonaws.com**
+Domain: [https://www.taimetuba.ee](https://www.taimetuba.ee)  
+Public IP: [13.53.135.244](http://13.53.135.244)  
+Public DNS: **ec2-13-53-135-244.eu-north-1.compute.amazonaws.com**
 
 ## Table of Contents
 * [Initial setup](#initial-setup)
