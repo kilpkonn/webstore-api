@@ -322,10 +322,19 @@ sudo ufw allow 80
 ```
 After that get the certificates.
 ```bash
-sudo certbot certonly --standalone --preferred-challenges http -d flowerstore.ee
+# For website
+sudo certbot certonly --standalone --preferred-challenges http -d <your_url.ee>
+# Get dhparams
+sudo openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
+```
+Make nginx https config
+```bash
+sudo touch /etc/letsencrypt/options-ssl-nginx.conf
+# Copy config from somewhere (https://github.com/simnalamburt/nginx.conf/blob/master/options-ssl-nginx.conf)
+sudo nano /etc/letsencrypt/options-ssl-nginx.conf
 ```
 Your certificates should be saved into `/etc/letsencrypt/...` as this is the directory that will be mounted to nginx
-proxy container.  
+proxy container.
 If you are using different hostname, don't forget to change nginx config in front end.
  
 ### Add gitlab-runner ssh keys
