@@ -6,7 +6,7 @@ Copy it's contents to `.gitlab-ci.yml` (the one that's in project root) to build
 
 ## Information
 
-Domain: [https://www.taimetuba.ee](https://www.taimetuba.ee)  
+Domain: [https://taimetuba.ee](https://taimetuba.ee)  
 Public IP: [13.53.135.244](http://13.53.135.244)  
 Public DNS: **ec2-13-53-135-244.eu-north-1.compute.amazonaws.com**
 
