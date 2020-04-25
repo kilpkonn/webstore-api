@@ -336,6 +336,11 @@ sudo nano /etc/letsencrypt/options-ssl-nginx.conf
 Your certificates should be saved into `/etc/letsencrypt/...` as this is the directory that will be mounted to nginx
 proxy container.
 If you are using different hostname, don't forget to change nginx config in front end.
+
+**Later you can update certs by:**
+```bash
+sudo certbot renew
+```
  
 ### Add gitlab-runner ssh keys
 Whilst being ssh-d into gitlab-runner server run following:
