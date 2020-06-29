@@ -4,6 +4,7 @@ import ee.taltech.iti0203.webstore.exception.ProductNotFoundException;
 import ee.taltech.iti0203.webstore.model.Product;
 import ee.taltech.iti0203.webstore.pojo.CategoryDto;
 import ee.taltech.iti0203.webstore.pojo.ProductDto;
+import ee.taltech.iti0203.webstore.repository.CategoryRepository;
 import ee.taltech.iti0203.webstore.repository.ProductRepository;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
@@ -22,9 +23,14 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(
+            ProductRepository productRepository,
+            CategoryRepository categoryRepository
+    ) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<ProductDto> getProducts(String name, String category) {
@@ -55,11 +61,17 @@ public class ProductService {
             throw new ProductNotFoundException();
         }
         Product product = existing.get();
-        Product newProduct = new Product(productDto);
-        product.setName(newProduct.getName());
-        product.setAmount(newProduct.getAmount());
-        product.setDescription(newProduct.getDescription());
-        product.setCategory(newProduct.getCategory());
+        product.setName(productDto.getName());
+        product.setAmount(productDto.getAmount());
+        product.setPriceLow(productDto.getPriceLow());
+        product.setPriceHigh(productDto.getPriceHigh());
+        product.setDescription(productDto.getDescription());
+        if (productDto.getCategory() != null) {
+            product.setCategory(categoryRepository
+                    .findById(productDto.getCategory()
+                    .getId()
+                    ).orElse(product.getCategory()));
+        }
         return convert(productRepository.save(product));
     }
 
